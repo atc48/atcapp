@@ -5,7 +5,7 @@
   var NONAME_TYPE = "noNameType";
   
   var Dispatcher = function () {
-    this.listeners = new Array();
+    this.__listeners = new Array();
   };
   Dispatcher.prototype.addEventListener =
     Dispatcher.prototype.on =
@@ -18,7 +18,7 @@
 	type:         type,
 	eventHandler: eventHandler
       };
-      this.listeners.push( listener );
+      this.__listeners.push( listener );
     }
   
   /**
@@ -35,9 +35,9 @@
 	event = type;
 	type  = event.type;
       }
-      for (var i = 0; i < this.listeners.length; i++) {
-	if (type == this.listeners[i].type) {
-	  this.listeners[i].eventHandler(event);
+      for (var i = 0; i < this.__listeners.length; i++) {
+	if (type == this.__listeners[i].type) {
+	  this.__listeners[i].eventHandler(event);
 	}
       }
     }
