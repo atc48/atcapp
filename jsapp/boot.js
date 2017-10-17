@@ -1,24 +1,18 @@
 atcapp.boot = function (canvasId) {
   var stage = new createjs.Stage(canvasId);
    
-  var circle = new createjs.Shape();
-  circle.graphics.beginFill("DeepSkyBlue").drawCircle(0, 0, 50);
+  var circle = new atcapp.Circle();
   circle.x = 100;
   circle.y = 100;
   stage.addChild(circle);
-  
+
+  stage.enableMouseOver();
   stage.update();
   
-  
-  // windowのリサイズ設定
-  var id;
-  $(window).on('resize', function(e){
-    clearTimeout(id);
-    id = setTimeout(function(){
-      stage.canvas.width = $(e.target).width();
-      stage.canvas.height = $(e.target).height();
-      stage.update();
-    }, 100);
+  var stageMan = new atcapp.StageSizeManager(stage);
+
+  stageMan.on("resize", function () {
+    console.log("resize");
   });
-  $(window).trigger('resize');
+    
 }
