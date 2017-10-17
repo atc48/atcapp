@@ -1,0 +1,5 @@
+/.bundle
+*.ignore
+.DS_Store
+*~
+/*.ln
