@@ -25,7 +25,8 @@
   }
 
   Circle.prototype.hoverMsg = function (e) {
-    return "I am Circle. (x,y)=" + this.mouseX +
+    var pt = this.globalToLocal(e.stageX, e.stageY);
+    return "I am Circle. (x,y)=(" + pt.x + "," + pt.y + ")" +
       ", color=" + this.color + ", size=" + this.size;
   };
   
