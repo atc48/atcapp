@@ -48,8 +48,10 @@ class WmapCanpos(Canpos):
         assert(Canpos.iscoord(east, north))
         self.east = east
         self.north = north
+        # first step: x is simply multiply
         self.x, self.y = self.coord2canpos(east, north)
     def transit_western_to_east(self):
+        # second step: move to easter.
         self.x += 360
     @classmethod
     def coord2canpos(cls, east, north):
