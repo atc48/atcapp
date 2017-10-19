@@ -1,7 +1,6 @@
 
 class Canpos:
-    MULT = 10.0
-    ROUND = 4
+    MULT = 1.0
 
     def __init__(self, east, north):
         assert(self.iscoord(east, north)), "({}, {})".format(east, north)
@@ -11,7 +10,7 @@ class Canpos:
         assert(self.iscanpos(x, y))
         self.x = x
         self.y = y
-    def round(self, r=ROUND):
+    def round(self, r):
         if r==None: return self
         self.x, self.y = [round(a, r) for a in [self.x, self.y]]
         return self
@@ -31,14 +30,33 @@ class Canpos:
     @classmethod
     def coord2canpos(cls, east, north):
         assert(cls.iscoord(east, north))
-        return [(east + 180.0) * cls.MULT, (north * -1 + 90.0) * cls.MULT]
+        x = (east + 360 if east < 0 else east) * cls.MULT
+        y = (north * -1 + 90) * cls.MULT
+        return [x, y]
     @classmethod
     def canpos2coord(cls, x, y):
         assert(cls.iscanpos(x, y))
         x /= cls.MULT; y /= cls.MULT
-        return [x - 180.0, (y - 90.0) * -1]
-    
+        east  = x - 360 if x > 180 else x
+        north = (y - 90) * -1
+        return [east, north]
 
+class WmapCanpos(Canpos):
+    MULT = Canpos.MULT
+    INTERMEDIATE_GREENICHE_X = 0
+    def __init__(self, east, north):
+        assert(Canpos.iscoord(east, north))
+        self.east = east
+        self.north = north
+        self.x, self.y = self.coord2canpos(east, north)
+    def transit_western_to_east(self):
+        self.x += 360
+    @classmethod
+    def coord2canpos(cls, east, north):
+        x = (east) * cls.MULT
+        y = (north * -1 + 90) * cls.MULT
+        return [x, y]
+    
 if __name__ == "__main__":
     import random
     for i in range(0, 1000):

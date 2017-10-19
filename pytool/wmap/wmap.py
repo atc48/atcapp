@@ -15,7 +15,7 @@ class Point:
         assert(self.iscoord(arr))
         self.east  = float(arr[0])
         self.north = float(arr[1])
-        self.canpos = canpos.Canpos(arr[0], arr[1])
+        self.canpos = canpos.WmapCanpos(arr[0], arr[1])
     @staticmethod
     def isnum(i):
         return isinstance(i, float) or isinstance(i, int)
@@ -29,12 +29,28 @@ class Polygon:
         points_list = [[Point(r) for r in inarr] for inarr in arr]
         self.points = points_list[0]
         self.hole_points_list  = points_list[1:]
-
+        self.sub_points = self.transit_western_x_to_east() or None
+    def min_x(self):
+        return min([p.canpos.x for p in self.points])
+    def max_x(self):
+        return max([p.canpos.x for p in self.points])
+    def transit_western_x_to_east(self):
+        if (canpos.WmapCanpos.INTERMEDIATE_GREENICHE_X <= self.min_x()): return None
+        trans = lambda p: p.canpos.transit_western_to_east()
+        if(self.max_x() <= canpos.WmapCanpos.INTERMEDIATE_GREENICHE_X):
+            for p in self.points: trans(p)
+            for points in self.hole_points_list:
+                for p in points: trans(p)
+            return None
+        points_dup = copy.deepcopy(self.points)
+        for p in points_dup: trans(p)
+        return points_dup
+    
 class Country:
     def __init__(self, data):
         assert(isinstance(data, dict) and data['type'] == 'Feature')
         self.name = self.str(data['properties']['name'])
-        self.idx   = self.str(data['id'])
+        self.code = self.str(data['id'])
         if data['geometry'] == None:
             self.geotype = 'None'
             return None
@@ -74,16 +90,52 @@ class MapData:
     def filter(self):
         self.countries = [c for c in self.countries if(c.geotype != 'None')]
         return self
+    def find_country_by_name(name):
+        founds = [c for c in self.countries if c.name == name]
+        assert len(founds) == 1, name
+        return founds[0]
+    def simplify(self, round_):
+        # {'JPN': [{p:[[1,2][3,4]..], h:[[1,2][3,4]..]} ..], ..}
+        result = {}
+        for country in self.countries:
+            polygon_hashes = []
+            for polygon in country.polygons:
+                polygon_h = {'p': [p.canpos.round(round_).to_r() for p in polygon.points]}
+                if( len(polygon.hole_points_list) > 0 ):
+                    polygon_h['h'] = [
+                        [p.canpos.round(round_).to_r() for p in points] for points in
+                            polygon.hole_points_list
+                        ]
+                if(polygon.sub_points):
+                    polygon_h['s'] = [p.canpos.round(round_).to_r() for p in polygon.sub_points]
+                polygon_hashes.append(polygon_h)
+            result[country.code] = polygon_hashes
+        return result
 
+def output_json():
+    VAR_NAME = "atcapp.DATA_WORLDMAP"
+    lo = MapData('./world.json').filter()
+    hi = MapData('./world.hires.json').filter()
+    if(False):
+        print(len(str(lo.simplify(None))))
+        print(len(str(lo.simplify(4))))
+        print(len(str(lo.simplify(2))))
+        print(len(str(hi.simplify(None)['JPN'])))
+        print(len(str(hi.simplify(4)['JPN'])))
+    lo_json = lo.simplify(2)
+    hi_json = hi.simplify(4)
+    result = lo_json
+    result['JPN'] = hi_json['JPN']
+    print(VAR_NAME + " = " + str(result) + ";")
 
 def show_debug():
     low  = MapData('./world.json')
     for country in low.countries:
-        print("{}, {}, {}, {}, {}".format(country, country.idx, country.name, \
+        print("{}, {}, {}, {}, {}".format(country, country.code, country.name, \
                                           country.geotype, len(country.polygons) ))
     high = MapData('./world.hires.json');
     for country in low.countries:
-        print("{}, {}, {}, {}, {}".format(country, country.idx, country.name, \
+        print("{}, {}, {}, {}, {}".format(country, country.code, country.name, \
                                           country.geotype, len(country.polygons) ))
     print("low:  len(all)={}, len(not-none)={}".format(
         len(low.countries), len(low.filter().countries)))
@@ -99,6 +151,8 @@ def show_debug():
         print(c.polygons)
         print(c.polygons[0].points)
         print(c.polygons[0].hole_points_list)
-
+    
+    
 if __name__ == "__main__":
-    show_debug()
+    #show_debug()
+    output_json();
