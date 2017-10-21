@@ -16,5 +16,10 @@ var __ = {
       }
     }
     debugger;
+  },
+  log: function (msg) {
+    if (console && console.log) {
+      console.log(msg);
+    }
   }
 };

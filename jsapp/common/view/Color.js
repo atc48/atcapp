@@ -1,6 +1,7 @@
 atcapp.COLOR = (function (){
   var C = {
-    NORMAL: "#ffffff"
+    NORMAL: "#ffffff",
+    WORLDMAP: "#3a3a3a"
   };
 
   return C;
