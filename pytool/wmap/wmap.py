@@ -114,8 +114,8 @@ class MapData:
 
 def output_json():
     VAR_NAME = "atcapp.DATA_WORLDMAP"
-    lo = MapData('./world.json').filter()
-    hi = MapData('./world.hires.json').filter()
+    lo = MapData('./data/world.json').filter()
+    hi = MapData('./data/world.hires.json').filter()
     if(False):
         print(len(str(lo.simplify(None))))
         print(len(str(lo.simplify(4))))
@@ -129,11 +129,11 @@ def output_json():
     print(VAR_NAME + " = " + str(result) + ";")
 
 def show_debug():
-    low  = MapData('./world.json')
+    low  = MapData('./data/world.json')
     for country in low.countries:
         print("{}, {}, {}, {}, {}".format(country, country.code, country.name, \
                                           country.geotype, len(country.polygons) ))
-    high = MapData('./world.hires.json');
+    high = MapData('./data/world.hires.json');
     for country in low.countries:
         print("{}, {}, {}, {}, {}".format(country, country.code, country.name, \
                                           country.geotype, len(country.polygons) ))
