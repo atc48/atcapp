@@ -9,6 +9,7 @@
   
   function WorldMapLayer() {
     this.CoordinatedLayer_constructor();
+    
     var MAP_DATA = atcapp.DATA_WORLDMAP;
     var shape = new createjs.Shape();
     var g = shape.graphics;
@@ -23,6 +24,9 @@
 	}
       });
     });
+
+    this.scaleX = this.scaleY = 1.0;
+    this.scaleY *= app.Coord.Y_RATIO;
     
     this.addChild(shape);
     

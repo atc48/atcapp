@@ -11,9 +11,13 @@
   function ZoomObserver($stage, uiCommand) {
     __.assert($stage && $stage[0] && uiCommand);
 
+    var _keyObser = new app.KeyboardObserver( $(window) );
     $stage.on(MOUSE_WHEEL_EVENT, _onMouseWheel);
     
     function _onMouseWheel(e) {
+      if (!_keyObser.isMetaKeyDown) {
+	return;
+      }
       e.preventDefault();
       var delta = (function () {
 	if (e.originalEvent.deltaY) { return - e.originalEvent.deltaY; }

@@ -9,7 +9,8 @@ atcapp.boot = function (canvasId) {
   var layerMan = new atcapp.StageLayerManager(stage, mapLayerMan);
 
   stageSizeMan.on("resize", function () {
-    __.log("resize");
+    //__.log("resize: " + stage.canvas.width + ", " + stage.canvas.height );
+    //__.log("        " + stageSizeMan.curWidth + ", " + stageSizeMan.curHeight );
   });
   
   // DEBUG
