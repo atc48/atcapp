@@ -7,9 +7,11 @@
   
   function StageSizeManager(stage) {
     this.super_constructor();
-    
+
     var $window = $(window);
     var self = this;
+    this.curWidth  = stage.canvas.width;
+    this.curHeight = stage.canvas.height;
 
     var deferer = new app.Deferer(onResize);
     $window.on('resize', _.bind(deferer.on, deferer));
@@ -19,8 +21,8 @@
     onResize();
 
     function onResize() {
-      stage.canvas.width = $window.width();
-      stage.canvas.height = $window.height();
+      this.curWidth  = stage.canvas.width  = $window.width();
+      this.curHeight = stage.canvas.height = $window.height();
       stage.update();
       self.fire("resize");
     }
