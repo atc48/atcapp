@@ -21,8 +21,8 @@
     onResize();
 
     function onResize() {
-      this.curWidth  = stage.canvas.width  = $window.width();
-      this.curHeight = stage.canvas.height = $window.height();
+      self.curWidth  = stage.canvas.width  = $window.width();
+      self.curHeight = stage.canvas.height = $window.height();
       stage.update();
       self.fire("resize");
     }
