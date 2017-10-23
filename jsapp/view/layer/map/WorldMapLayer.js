@@ -25,9 +25,7 @@
       });
     });
 
-    this.scaleX = this.scaleY = 1.0;
-    this.scaleY *= app.Coord.Y_RATIO;
-    
+    this.__updateScale(1.0);
     this.addChild(shape);
     
     function _drawPolygon(g, points) {

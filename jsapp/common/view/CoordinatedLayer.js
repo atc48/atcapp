@@ -1,6 +1,6 @@
 (function (pkg, fac) {
-  pkg.CoordinatedLayer = fac(createjs);
-})(atcapp, function(createjs) {
+  pkg.CoordinatedLayer = fac(createjs, pkg);
+})(atcapp, function(createjs, app) {
 
   createjs.extend(CoordinatedLayer, createjs.Container);
   createjs.promote(CoordinatedLayer, "Container");
@@ -12,6 +12,11 @@
   function CoordinatedLayer() {
     this.Container_constructor();
   }
+
+  CoordinatedLayer.prototype.__updateScale = function (scale) {
+    this.scaleX = this.scaleY = scale;
+    this.scaleY *= app.Coord.Y_RATIO;
+  };
 
   return CoordinatedLayer;
 });

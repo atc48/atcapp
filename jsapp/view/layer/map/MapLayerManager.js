@@ -7,7 +7,9 @@
     this.stageSizeMan = stageSizeMan;
     
     this.container = new createjs.Container();
+    this.coordGridLayer = new app.CoordGridLayer();
     this.worldMapLayer  = new app.WorldMapLayer();
+    this.container.addChild(this.coordGridLayer);
     this.container.addChild(this.worldMapLayer);
 
     this.sizeAdapter = new app.MapSizeAdapter(this.container, uiCommand, stageSizeMan);
