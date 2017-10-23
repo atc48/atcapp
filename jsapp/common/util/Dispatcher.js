@@ -11,8 +11,8 @@
     Dispatcher.prototype.on =
     function(type, eventHandler) {
       if (typeof type === 'function') {
-	type = NONAME_TYPE;
 	eventHandler = type;
+	type = NONAME_TYPE;
       }
       __.assert(typeof type === 'string' && typeof eventHandler === 'function');
       var listener = {
@@ -29,7 +29,7 @@
     Dispatcher.prototype.fire =
     function(type, opt_event) {
       var event = opt_event;
-      if (typeof type === 'function') {
+      if (typeof type === 'object') {
 	event = type;
 	type = NONAME_TYPE;
       }
