@@ -8,14 +8,13 @@
     return 'DOMMouseScroll';
   })();
 			 
-  function ZoomObserver($stage, uiCommand) {
-    __.assert($stage && $stage[0] && uiCommand);
+  function ZoomObserver($stage, uiCommand, keyObserver) {
+    __.assert($stage && $stage[0] && uiCommand && keyObserver);
 
-    var _keyObser = new app.KeyboardObserver( $(window) );
     $stage.on(MOUSE_WHEEL_EVENT, _onMouseWheel);
     
     function _onMouseWheel(e) {
-      if (!_keyObser.isMetaKeyDown) {
+      if (!keyObserver.isMetaKeyDown) {
 	return;
       }
       e.preventDefault();
