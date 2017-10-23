@@ -14,12 +14,20 @@
 
     this.sizeAdapter = new app.MapSizeAdapter(this.container, uiCommand, stageSizeMan);
     uiCommand.addEventListener("mapMove", _.bind(this.onMapMove, this));
+
+    this.sizeAdapter.on(_.bind(this._onMapScaleChange, this));
+    this._onMapScaleChange( {scale: this.sizeAdapter.curScale} );
   }
 
   MapLayerManager.prototype.onMapMove = function(e) {
     this.container.x += e.moveX;
     this.container.y += e.moveY;
   };
+
+  MapLayerManager.prototype._onMapScaleChange = function (e) {
+    var scale = e.scale;
+    this.coordGridLayer.onScaleUpdated(scale);
+  }
 
   return MapLayerManager;
 });

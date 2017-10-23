@@ -5,19 +5,27 @@
   var DEFAULT_SCALE = 10.0;
   var ZOOM_MULT = 0.05;
 
+  createjs.extend(MapSizeAdapter, app.Dispatcher);
+  createjs.promote(MapSizeAdapter, "Dispatcher");
+  
   function MapSizeAdapter(container, uiCommand, stageSizeMan) {
     __.assert(container && uiCommand && stageSizeMan);
+    this.Dispatcher_constructor();
+
     this.container = container;
     this.uiCommand = uiCommand;
     this.stageSizeMan = stageSizeMan;
 
     this.uiCommand = uiCommand.on("zoom", _.bind(this._onZoomInput, this));
-    this.container.scaleX = this.container.scaleY = DEFAULT_SCALE;
+    this.curScale = DEFAULT_SCALE;
+    this.container.scaleX = this.container.scaleY = this.curScale;
   }
 
   MapSizeAdapter.prototype._onZoomInput = function(e) {
     var nextScale = this.container.scaleX * (1.0 + ZOOM_MULT * (e.delta > 0 ? 1 : -1))
     this.updateScale(nextScale);
+    this.curScale = nextScale;
+    this.fire({scale: nextScale});
   };
 
   MapSizeAdapter.prototype.updateScale = function (scale) {
