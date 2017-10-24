@@ -11,7 +11,6 @@
     this.CoordinatedLayer_constructor();
 
     this.addChild( __createGridShape(0) );
-    this.__updateScale(1.0);
   }
 
   CoordGridLayer.prototype.onScaleUpdated = function (scale) {
