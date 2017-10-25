@@ -1,3 +1,4 @@
+import re
 
 class Canpos:
     MULT = 1.0
@@ -41,6 +42,28 @@ class Canpos:
         east  = x - 360 if x > 180 else x
         north = (y - 90) * -1
         return [east, north]
+
+    AIP_COORD_RE = re.compile('([0-9]+)N([0-9]+)E')
+    @classmethod
+    def canpos_by_aip_coord(cls, s): # ex: "4545N14000E" / "410010N1405546E"
+        assert(isinstance(s, str))
+        m = cls.AIP_COORD_RE.match(s);
+        has_min = len(m.group(0)) >= 12
+        north = east = 0.0
+        north_str, east_str = m.group(1), m.group(2)
+        if(has_min):
+            north += float(north_str[-2:]) / 3600
+            east  += float( east_str[-2:]) / 3600
+            north_str = north_str[:-2]
+            east_str  = east_str[:-2]
+        north += float(north_str[-2:]) / 60
+        east  += float( east_str[-2:]) / 60
+        north_str = north_str[:-2]
+        east_str  = east_str[:-2]
+        assert(len([x for x in [north_str, east_str] if len(x)>0 and len(x)<=3])==2), [s]
+        north += float(north_str)
+        east  += float(east_str)
+        return Canpos(east, north)
 
 class WmapCanpos(Canpos):
     MULT = Canpos.MULT
