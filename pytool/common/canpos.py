@@ -1,6 +1,7 @@
 
 class Canpos:
     MULT = 1.0
+    SCALE_Y = 111 / 91;
 
     def __init__(self, east, north):
         assert(self.iscoord(east, north)), "({}, {})".format(east, north)
@@ -26,23 +27,24 @@ class Canpos:
     @classmethod
     def iscanpos(cls, x, y):
         return cls.isnum(x) and cls.isnum(y) and \
-            0 <= x and x <= 360*cls.MULT and 0 <= y and y <= 180*cls.MULT
+            0 <= x and x <= 360*cls.MULT and 0 <= y and y <= 180*cls.MULT*cls.SCALE_Y
     @classmethod
     def coord2canpos(cls, east, north):
         assert(cls.iscoord(east, north))
         x = (east + 360 if east < 0 else east) * cls.MULT
-        y = (north * -1 + 90) * cls.MULT
+        y = (north * -1 + 90) * cls.MULT * cls.SCALE_Y
         return [x, y]
     @classmethod
     def canpos2coord(cls, x, y):
         assert(cls.iscanpos(x, y))
-        x /= cls.MULT; y /= cls.MULT
+        x /= cls.MULT; y /= cls.MULT * cls.SCALE_Y
         east  = x - 360 if x > 180 else x
         north = (y - 90) * -1
         return [east, north]
 
 class WmapCanpos(Canpos):
     MULT = Canpos.MULT
+    SCALE_Y = Canpos.SCALE_Y
     INTERMEDIATE_GREENICHE_X = 0
     def __init__(self, east, north):
         assert(Canpos.iscoord(east, north))
@@ -56,7 +58,7 @@ class WmapCanpos(Canpos):
     @classmethod
     def coord2canpos(cls, east, north):
         x = (east) * cls.MULT
-        y = (north * -1 + 90) * cls.MULT
+        y = (north * -1 + 90) * cls.MULT * cls.SCALE_Y
         return [x, y]
     
 if __name__ == "__main__":
@@ -65,7 +67,7 @@ if __name__ == "__main__":
         if i % 100 == 0:
             print("test[" + str(i) + "]")
         e, n = (random.uniform(-180, 180), random.uniform(-90, 90))
-        c = Canpos(e, n).round()
+        c = Canpos(e, n).round(1000)
         e2, n2 = Canpos.canpos2coord(c.x, c.y)
         assert round(e) == round(e2) and round(n) == round(n2), \
             "{}, {}, {}, {}".format(e, e2, n, n2)

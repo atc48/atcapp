@@ -41,18 +41,18 @@
     if (gridSep <= 0) {
       return shape;
     }
-    var g = shape.graphics;
+    var g = new app.CanposGraphicsWrapper(shape.graphics);
     var x, y;
     var X_MAX = 360, Y_MAX = 180;
     g.setStrokeStyle( 1, "butt", "miter", 10, true );
     for (x = 0; x <= X_MAX; x += gridSep) {
       g.beginStroke( _color(x) );
-      g.moveTo(x,     0);
+      g.moveTo(x, 0);
       g.lineTo(x, Y_MAX);
     }
     for (y = 0; y <= Y_MAX; y += gridSep) {
       g.beginStroke( _color(y) );
-      g.moveTo(    0, y);
+      g.moveTo(0, y);
       g.lineTo(X_MAX, y);
     }
     g.endStroke();

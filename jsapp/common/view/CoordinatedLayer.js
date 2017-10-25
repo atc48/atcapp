@@ -12,14 +12,10 @@
   function CoordinatedLayer(opt) {
     opt = opt || {};
     this.Container_constructor();
-    if (!opt.no_bent_scale) {
-      this.__updateScale(1.0);
-    }
   }
 
   CoordinatedLayer.prototype.__updateScale = function (scale) {
     this.scaleX = this.scaleY = scale;
-    this.scaleY *= app.Coord.Y_RATIO;
   };
 
   return CoordinatedLayer;
