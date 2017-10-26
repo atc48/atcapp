@@ -10,7 +10,6 @@ Canpos = canpos.Canpos
 ENR2_1_PATH = "./data/aip-enr-2.1.html"
 
 FUKUOKA_FIR_VAR_NAME = "atcapp.DATA_FUKUOKA_FIR"
-SECTORS_VAR_NAME     = "atcapp.DATA_SECTORS"
 
 def print_fukuoka_fir(table):
     ems = table.find('tbody').find('tr').find('td').find_all('em')
