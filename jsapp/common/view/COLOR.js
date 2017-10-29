@@ -9,6 +9,8 @@ atcapp.COLOR = (function (){
     FIR_BDY: { color: "#ffffff",
 	       alpha: 0.2,
 	       dash: [2, 4]},
+    SECTOR:  { color: "#555",
+	       alpha: 0.8},
     NOP: null
   };
 

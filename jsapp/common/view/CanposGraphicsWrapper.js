@@ -11,7 +11,7 @@
     "moveTo", "lineTo"
   ];
   var OTHER_METHODS = [
-    "setStrokeStyle", "beginStroke", "endStroke"
+    "setStrokeStyle", "beginStroke", "endStroke", "setStrokeDash"
   ];
   
   _.each(CANPOS_CONV_METHODS, function (methodName) {

@@ -11,6 +11,7 @@
       this.coordGridLayer = new app.CoordGridLayer(),
       this.worldMapLayer  = new app.WorldMapLayer(),
       this.firLayer       = new app.FirLayer(),
+      this.sectorBdyLayer = new app.SectorBdyLayer(),
       null
     );
 

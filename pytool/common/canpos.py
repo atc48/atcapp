@@ -16,8 +16,18 @@ class Canpos:
         if r==None: return self
         self.x, self.y = [round(a, r) for a in [self.x, self.y]]
         return self
+    def to_round(self, r):
+        c = self.dup()
+        return c.round(r)
     def to_r(self):
         return [self.x, self.y]
+    def to_arr(self):
+        return self.to_r()
+    def dup(self):
+        return Canpos(self.east, self.north)
+    def __eq__(self, other):
+        return self.__class__ == other.__class__ and \
+            self.to_r() == other.to_r()
     @staticmethod
     def isnum(i):
         return isinstance(i, float) or isinstance(i, int)
@@ -45,8 +55,13 @@ class Canpos:
 
     AIP_COORD_RE = re.compile('([0-9]+)N([0-9]+)E')
     @classmethod
+    def canpos_list_by_aip_coord(cls, s):
+        strs = ["{}N{}E".format(p[0], p[1]) for p
+                in re.findall(cls.AIP_COORD_RE, s) ] #[('390010', '1403200'),...)]
+        return [cls.canpos_by_aip_coord(s) for s in strs]
+    @classmethod
     def canpos_by_aip_coord(cls, s): # ex: "4545N14000E" / "410010N1405546E"
-        assert(isinstance(s, str))
+        assert(cls.is_aip_coord_str(s))
         m = cls.AIP_COORD_RE.match(s);
         has_min = len(m.group(0)) >= 12
         north = east = 0.0
@@ -64,6 +79,9 @@ class Canpos:
         north += float(north_str)
         east  += float(east_str)
         return Canpos(east, north)
+    @classmethod    
+    def is_aip_coord_str(cls, s):
+        return isinstance(s, str) and bool( cls.AIP_COORD_RE.match(s) )
 
 class WmapCanpos(Canpos):
     MULT = Canpos.MULT
