@@ -1,22 +1,21 @@
 import sys
-from bs4 import BeautifulSoup # pip install beautifulsoup4
 import re
 from functools import reduce
+from bs4 import BeautifulSoup
 
 sys.path.append('../common/')
-import canpos
-Canpos = canpos.Canpos
+from canpos import Canpos
+
 
 ENR2_1_PATH = "./data/aip-enr-2.1.html"
-
 FUKUOKA_FIR_VAR_NAME = "atcapp.DATA_FUKUOKA_FIR"
 
 def print_fukuoka_fir(table):
     ems = table.find('tbody').find('tr').find('td').find_all('em')
     coord_strs = [em.get_text() for em in ems if em.get_text() ]
     coord_strs = reduce(lambda x,y: x + y, [str.split('-') for str in coord_strs])
-    #          = ['4545N14000E', '4545N14200E', ...]
-    assert(len(coord_strs) > 0)
+    #          => ['4545N14000E', '4545N14200E', ...]
+    assert coord_strs
     canpos_list = [
         Canpos.canpos_by_aip_coord(s) for s in coord_strs
     ]
