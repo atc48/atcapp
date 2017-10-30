@@ -34,8 +34,8 @@
     this.container.scaleX = this.container.scaleY = scale;
     __setStageCenterLocalPos(this.container, this.stageSizeMan, oldCenterLocal);
 
-    this.curScale = nextScale;
-    this.fire("scale", {scale: nextScale});
+    this.curScale = scale;
+    this.fire("scale", {scale: scale});
   };
 
   function __getStageCenterLocalPos(container, stageSizeMan) {
