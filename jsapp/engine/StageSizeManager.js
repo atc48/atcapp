@@ -24,7 +24,7 @@
       self.curWidth  = stage.canvas.width  = $window.width();
       self.curHeight = stage.canvas.height = $window.height();
       stage.update();
-      self.fire("resize");
+      self.fire("resize", {width: self.curWidth, height: self.curHeight});
     }
   }
 
