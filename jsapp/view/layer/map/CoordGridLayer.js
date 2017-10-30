@@ -43,16 +43,17 @@
     }
     var g = new app.CanposGraphicsWrapper(shape.graphics);
     var x, y;
-    var X_MAX = 360, Y_MAX = 180;
+    var X_MIN =   0, X_MAX = 360,
+	Y_MIN = -90, Y_MAX =  90;
     g.setStrokeStyle( 1, "butt", "miter", 10, true );
-    for (x = 0; x <= X_MAX; x += gridSep) {
+    for (x = X_MIN; x <= X_MAX; x += gridSep) {
       g.beginStroke( _color(x) );
-      g.moveTo(x, 0);
+      g.moveTo(x, Y_MIN);
       g.lineTo(x, Y_MAX);
     }
-    for (y = 0; y <= Y_MAX; y += gridSep) {
+    for (y = Y_MIN; y <= Y_MAX; y += gridSep) {
       g.beginStroke( _color(y) );
-      g.moveTo(0, y);
+      g.moveTo(X_MIN, y);
       g.lineTo(X_MAX, y);
     }
     g.endStroke();
