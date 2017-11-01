@@ -10,21 +10,40 @@
 
     var $window = $(window);
     var self = this;
-    this.curWidth  = stage.canvas.width;
-    this.curHeight = stage.canvas.height;
+    this.stageSize = new _StageSize().update(
+      stage.canvas.width,
+      stage.canvas.height
+    );
 
     var deferer = new app.Deferer(onResize);
     $window.on('resize', _.bind(deferer.on, deferer));
     $window.trigger('resize');
 
-    // TODO: dispatch size change.
     onResize();
 
+    this.getStageSize = function () {
+      return this.stageSize;
+    };
+
     function onResize() {
-      self.curWidth  = stage.canvas.width  = $window.width();
-      self.curHeight = stage.canvas.height = $window.height();
+      self.stageSize.update(
+	stage.canvas.width  = $window.width(),
+	stage.canvas.height = $window.height()
+      );
       stage.update();
-      self.fire("resize", {width: self.curWidth, height: self.curHeight});
+    }
+  }
+
+  createjs.extend(_StageSize, app.Dispatcher);
+  createjs.promote(_StageSize, "super");
+
+  function _StageSize() {
+    this.super_constructor();
+    this.update = function (w, h) {
+      this.curWidth  = w;
+      this.curHeight = h;
+      this.fire("resize", {width: this.curWidth, height: this.curHeight});
+      return this;
     }
   }
 

@@ -6,8 +6,9 @@ atcapp.boot = function (canvasId) {
   var keyObserver = new atcapp.KeyboardObserver( $(window) );
   
   var stageSizeMan = new atcapp.StageSizeManager(stage);
-  var mapLayerMan = new atcapp.MapLayerManager(stageSizeMan, uiCommand);
-  var layerMan = new atcapp.StageLayerManager(stage, stageSizeMan, mapLayerMan);
+  var stageSize = stageSizeMan.getStageSize();
+  var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand);
+  var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
 
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender(
     uiCommand,
@@ -16,9 +17,9 @@ atcapp.boot = function (canvasId) {
     new atcapp.LayerDragObserver()
   ).init(stage);
 
-  stageSizeMan.on("resize", function () {
+  stageSize.on("resize", function () {
     //__.log("resize: " + stage.canvas.width + ", " + stage.canvas.height );
-    //__.log("        " + stageSizeMan.curWidth + ", " + stageSizeMan.curHeight );
+    //__.log("        " + stageSize.curWidth + ", " + stageSize.curHeight );
   });
   
   // DEBUG
@@ -28,6 +29,12 @@ atcapp.boot = function (canvasId) {
   stage.addChild(circle);
   // DEBUG
 
+  /**
+   * Initial Setting
+   */
+  var mapFix = new atcapp.MapFixCommandSender(uiCommand);
+  mapFix.scaleMinBounds(20, 18).centerCoordination(137.5, 37.5).fix();
+  
   stage.enableMouseOver();
   stage.update();
 

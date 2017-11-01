@@ -1,11 +1,8 @@
 (function (pkg, fac){
   pkg.MapLayerManager = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
-
   
-  function MapLayerManager(stageSizeMan, uiCommand) {
-    this.stageSizeMan = stageSizeMan;
-
+  function MapLayerManager(stageSize, uiCommand) {
     var self = this;
     
     this.container = new createjs.Container();
@@ -18,18 +15,25 @@
       null
     );
 
+    // TODO: provide this obj for external classes.
     this.mapCoordConverter = new app.MapCoordConverter(
       _.bind(this.container.globalToLocal, this.container));
-    this.sizeAdapter = new app.MapSizeAdapter(this.container, uiCommand, stageSizeMan);
-    this.sizeAdapter.on("scale", _.bind(this._onMapScaleChange, this));
-    this._onMapScaleChange( {scale: this.sizeAdapter.curScale} );
 
+    this.uiCommandHandler = new app.MapUICommandHandler(
+      uiCommand, this.container, stageSize);
+    this.uiCommandHandler.on("scale", _.bind(this._onMapScaleChange, this));
+    this.uiCommandHandler.on("move",  _.bind(this._onMapMove,        this));
+    
     this.container.addEventListener("mousedown", _.bind(this._onMouseDown, this));
   }
 
   MapLayerManager.prototype._onMapScaleChange = function (e) {
     var scale = e.scale;
     this.coordGridLayer.onScaleUpdated(scale);
+  }
+
+  MapLayerManager.prototype._onMapMove = function (e) {
+    // do something if needed
   }
 
   MapLayerManager.prototype._onMouseDown = function (e) {

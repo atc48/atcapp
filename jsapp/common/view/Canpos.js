@@ -2,11 +2,15 @@
   pkg.Canpos = fac();
 })(atcapp, function () {
 
+  var SCALE_Y = 111 / 91;
+
+  /**
+   * Canpos
+   */
   function Canpos(x, y) {
     this.x = x;
     this.y = y;
   }
-  var SCALE_Y = 111 / 91;
 
   Canpos.canposByCoord = function (east, north) {
     return new Canpos(
@@ -25,6 +29,9 @@
     );
   }
 
+  /**
+   * Coord
+   */
   function Coord(east, north) {
     this.east = east;
     this.north = north;
@@ -53,6 +60,20 @@
   };
 
   Canpos.Coord = Coord;
+
+  /**
+   * Bounds
+   */
+  function Bounds(width, height) {
+    __.assert(_.isNumber(width) && _.isNumber(height));
+    this.width  = width;  // canpos space width
+    this.height = height; // canpos space height
+  }
+  Bounds.boundsByCoord = function(lat, lon) {
+    return new Bounds(lat, lon * SCALE_Y);
+  }
+  Canpos.boundsByCoord = Bounds.boundsByCoord;  
+  Canpos.Bounds = Bounds;
 
   return Canpos;
 });
