@@ -8,29 +8,28 @@
     return 'DOMMouseScroll';
   })();
 			 
-  function ZoomObserver($stage, uiCommand, keyObserver) {
-    __.assert($stage && $stage[0] && uiCommand && keyObserver);
+  function ZoomObserver($stage) {
+    __.assert($stage && $stage[0]);
 
-    $stage.on(MOUSE_WHEEL_EVENT, _onMouseWheel);
+    this.setup = function (keyObserver, onZoomed) {
+      __.assert(_.isObject(keyObserver), _.isFunction(onZoomed));
+      $stage.on(MOUSE_WHEEL_EVENT, _onMouseWheel);
     
-    function _onMouseWheel(e) {
-      if (!keyObserver.isMetaKeyDown) {
-	return;
+      function _onMouseWheel(e) {
+	if (!keyObserver.isMetaKeyDown) {
+	  return;
+	}
+	e.preventDefault();
+	var delta = (function () {
+	  if (e.originalEvent.deltaY) { return - e.originalEvent.deltaY; }
+	  if (e.originalEvent.wheelDelta) { return e.originalEvent.wheelDelta }
+	  return e.originalEvent.detail;
+	  // Scroll UP   : delta < 0
+	  // Scroll DOWN : delta > 0
+	})();
+	onZoomed(- delta);
       }
-      e.preventDefault();
-      var delta = (function () {
-	if (e.originalEvent.deltaY) { return - e.originalEvent.deltaY; }
-	if (e.originalEvent.wheelDelta) { return e.originalEvent.wheelDelta }
-	return e.originalEvent.detail;
-	// Scroll UP   : delta < 0
-	// Scroll DOWN : delta > 0
-      })();
-      _onZoomed(- delta);
-    }
-
-    function _onZoomed(delta) {
-      uiCommand.fire("zoom", {delta: delta});
-    }
+    };
   }
   
   return ZoomObserver;
