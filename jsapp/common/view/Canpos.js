@@ -50,7 +50,6 @@
     var r = opt.r || 2;
     var lonSign = this.north >= 0 ? "N" : "S";
     var latSign = this.east  <= 180 ? "E" : "W";
-    console.log(this.north);
     var lon = (this.north >= 0 ? this.north : - this.north).toFixed(r);
     var lat = (this.east >= 0 ? this.east : this.east - 180).toFixed(r);
     if (opt.format) {

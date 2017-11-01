@@ -28,7 +28,6 @@
     g.moveTo(points[0][0], points[0][1]);
     _.each(points.slice(1), function (p) {
       g.lineTo(p[0], p[1]);
-      console.log(p);
     });
     g.endStroke();
     return shape;
