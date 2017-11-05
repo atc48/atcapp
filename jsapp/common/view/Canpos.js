@@ -29,6 +29,11 @@
     );
   }
 
+  Canpos.bounds = {
+    width:  360,
+    height: 180 * SCALE_Y
+  };
+
   /**
    * Coord
    */

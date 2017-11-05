@@ -2,8 +2,9 @@
   pkg.MapLayerManager = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
   
-  function MapLayerManager(stageSize, uiCommand) {
+  function MapLayerManager(stageSize, uiCommand, flightLayerMan) {
     var self = this;
+    this.flightLayerMan = flightLayerMan;
     
     this.container = new createjs.Container();
     this.container.addChild(
@@ -12,6 +13,7 @@
       this.worldMapLayer  = new app.WorldMapLayer(),
       this.firLayer       = new app.FirLayer(),
       this.sectorBdyLayer = new app.SectorBdyLayer(),
+      this.flightLayerMan.layer,
       null
     );
 
@@ -30,6 +32,15 @@
   MapLayerManager.prototype._onMapScaleChange = function (e) {
     var scale = e.scale;
     this.coordGridLayer.onScaleUpdated(scale);
+    this.flightLayerMan.onMapScaleChange(scale);
+    /*
+    if (!this.timer) {
+      var self = this;
+      this.timer = setTimeout(function () {
+	self.flightLayerMan.layer.cache(0, 0, app.Canpos.bounds.width, app.Canpos.bounds.height, Math.min(20, self.container.scaleX));
+	self.timer = null;
+      }, 200);
+    }*/
   }
 
   MapLayerManager.prototype._onMapMove = function (e) {

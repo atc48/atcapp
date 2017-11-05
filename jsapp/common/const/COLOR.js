@@ -11,6 +11,11 @@ atcapp.COLOR = (function (){
 	       dash: [2, 4]},
     SECTOR:  { color: "#555",
 	       alpha: 0.8},
+    SIMBOL: {
+      NORMAL:   "aqua",//"#F0F8FF",
+      ACTIVE:   "yellow",
+      DEACTIVE: "#B0C4DE"
+    },
     NOP: null
   };
 

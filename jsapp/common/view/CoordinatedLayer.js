@@ -12,11 +12,22 @@
   function CoordinatedLayer(opt) {
     opt = opt || {};
     this.Container_constructor();
+    this.__childScale = 1.0 / this.scaleX;
   }
 
-  CoordinatedLayer.prototype.__updateScale = function (scale) {
-    this.scaleX = this.scaleY = scale;
+  CoordinatedLayer.prototype.__updateChildrenReciprocalScale = function(opt_mapScale) {
+    var parentScale = opt_mapScale || this.scale;
+    var i, numChildren = this.numChildren,
+	childScale = 1.0 / parentScale,
+	child;
+    
+    for (i = 0; i < numChildren; i++) {
+      child = this.getChildAt(i);
+      child.scaleX = child.scaleY = childScale;
+    }
+    this.__childScale = childScale;
   };
+
 
   return CoordinatedLayer;
 });

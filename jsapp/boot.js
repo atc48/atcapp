@@ -4,11 +4,16 @@ atcapp.boot = function (canvasId) {
 
   var uiCommand = new atcapp.UICommand();
   var keyObserver = new atcapp.KeyboardObserver( $(window) );
-  
+
+  var flightDataProvider = new atcapp.FlightDataProvider();
+
   var stageSizeMan = new atcapp.StageSizeManager(stage);
   var stageSize = stageSizeMan.getStageSize();
-  var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand);
+  var flightLayerMan = new atcapp.FlightLayerManager(flightDataProvider);
+  var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan);
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
+
+  atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
 
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender(
     uiCommand,
@@ -42,4 +47,8 @@ atcapp.boot = function (canvasId) {
   createjs.Ticker.addEventListener("tick", function () {
     stage.update();
   });
+
+  return {
+    flightDataProvider: flightDataProvider
+  };
 }
