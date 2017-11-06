@@ -4,15 +4,12 @@
 
   var ZOOM_MULT = 0.05;
 
-  createjs.extend(MapUICommandHandler, app.Dispatcher);
-  createjs.promote(MapUICommandHandler, "Dispatcher");
-  
-  function MapUICommandHandler(uiCommand, container, stageSize) {
-    __.assert(container && uiCommand && stageSize);
-    this.Dispatcher_constructor();
+  function MapUICommandHandler(uiCommand, container, stageSize, mapStatus) {
+    __.assert(container && uiCommand && stageSize && mapStatus);
 
     this.uiCommand = uiCommand;
     this.container = container;
+    this.mapStatus = mapStatus;
     this.posCalc   = new _ContainerPositionCalculator(container, stageSize);
     this.scaleCalc = new _ContainerScaleCalculator(stageSize);
 
@@ -50,19 +47,19 @@
     }
   }
 
-  // will fire
+  // will fire via mapStatus
   MapUICommandHandler.prototype._doUpdateScale = function (scale) {
     __.assert(_.isNumber(scale));
     this.container.scaleX = this.container.scaleY = scale;
-    this.fire("scale", {scale: scale});
+    this.mapStatus.fire("scale", {scale: scale});
   }
 
-  // will fire
+  // will fire via mapStatus
   MapUICommandHandler.prototype._doUpdatePosition = function (localP) {
     __.assert(_.isObject(localP) && _.isNumber(localP.x) && _.isNumber(localP.y));
     this.container.x = localP.x;
     this.container.y = localP.y;
-    this.fire("move", {});
+    this.mapStatus.fire("move", {});
   }
   
   MapUICommandHandler.prototype._updateCenterPositionTo = function (centerP) {

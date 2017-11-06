@@ -15,6 +15,7 @@ atcapp.boot = function (canvasId) {
   var flightLayerMan = new atcapp.FlightLayerManager(flightDataProvider);
   var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan);
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
+  var mapStatus = mapLayerMan.getMapStatus();
 
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
 

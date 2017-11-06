@@ -21,12 +21,17 @@
     this.mapCoordConverter = new app.MapCoordConverter(
       _.bind(this.container.globalToLocal, this.container));
 
+    // external object: you can get getMapStatus()
+    this.mapStatus = new app.MapStatus(this.mapCoordConverter);
+
     this.uiCommandHandler = new app.MapUICommandHandler(
-      uiCommand, this.container, stageSize);
-    this.uiCommandHandler.on("scale", _.bind(this._onMapScaleChange, this));
-    this.uiCommandHandler.on("move",  _.bind(this._onMapMove,        this));
+      uiCommand, this.container, stageSize, this.mapStatus);
+    this.mapStatus.on("scale", _.bind(this._onMapScaleChange, this));
+    this.mapStatus.on("move",  _.bind(this._onMapMove,        this));
     
     this.container.addEventListener("mousedown", _.bind(this._onMouseDown, this));
+
+    this.mapStatus.setup();
   }
 
   MapLayerManager.prototype._onMapScaleChange = function (e) {
@@ -52,6 +57,10 @@
     app.StatusBar.getInstance().setMsg(
       coord.toExp({r:2})
     );
+  };
+
+  MapLayerManager.prototype.getMapStatus = function () {
+    return this.mapStatus;
   };
 
   return MapLayerManager;
