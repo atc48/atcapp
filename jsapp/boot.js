@@ -17,6 +17,14 @@ atcapp.boot = function (canvasId) {
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
   var mapStatus = mapLayerMan.getMapStatus();
 
+  mapStatus.on("change", function () {
+    //__.log("change");
+  });
+  mapStatus.on("gridChanged", function (e) {
+    //__.log(e.diff.get());
+    //__.log(e.gridMap.getGrids().length);
+  });
+
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
 
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender(

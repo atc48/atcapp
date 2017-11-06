@@ -1,6 +1,8 @@
 (function (pkg, fac){
   pkg.MapLayerManager = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
+
+  var GRID_DEBUG = false;
   
   function MapLayerManager(stageSize, uiCommand, flightLayerMan) {
     var self = this;
@@ -22,7 +24,13 @@
       _.bind(this.container.globalToLocal, this.container));
 
     // external object: you can get getMapStatus()
-    this.mapStatus = new app.MapStatus(this.mapCoordConverter);
+    this.mapStatus = new app.MapStatus(this.mapCoordConverter, stageSize);
+    if (GRID_DEBUG) {
+      this.container.addChild(
+	this.gridDebugLayer = new app.GridDebugLayer()
+      );
+      this.gridDebugLayer.setup(this.mapStatus);
+    }
 
     this.uiCommandHandler = new app.MapUICommandHandler(
       uiCommand, this.container, stageSize, this.mapStatus);
@@ -31,7 +39,7 @@
     
     this.container.addEventListener("mousedown", _.bind(this._onMouseDown, this));
 
-    this.mapStatus.setup();
+    this.mapStatus.setup(this.mapCoordConverter, stageSize);
   }
 
   MapLayerManager.prototype._onMapScaleChange = function (e) {

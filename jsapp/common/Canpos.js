@@ -29,6 +29,23 @@
     );
   }
 
+  Canpos.prototype.normalize = function () {
+    this.x = _limit(this.x, 360 - 0.001);
+    this.y = _limit(this.y, 180 - 0.001);
+    return this;
+    function _limit(n, max) {
+      return Math.max(0, Math.min(max, n));
+    }
+  };
+
+  Canpos.prototype.equals = function (other) {
+    return this.x == other.x && this.y == other.y;
+  };
+
+  Canpos.prototype.assertNumber = function () {
+    __.assert(_.isNumber(this.x) && _.isNumber(this.y));
+  };
+  
   Canpos.bounds = {
     width:  360,
     height: 180 * SCALE_Y
@@ -61,6 +78,12 @@
       return opt.format(lonSign, lon, latSign, lat);
     }
     return lonSign + lon + " " + latSign + lat;
+  };
+  Coord.prototype.equals = function (other) {
+    return this.east == other.east && this.north == other.north;
+  };
+  Coord.prototype.assertNumber = function () {
+    __.assert(_.isNumber(this.east) && _.isNumber(this.north));
   };
 
   Canpos.Coord = Coord;
