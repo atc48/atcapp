@@ -12,9 +12,9 @@
   }
 
   Deferer.prototype.on = function () {
-    window.clearTimeout(this.timerId);
+    if (this.timerId) { window.clearTimeout(this.timerId); }
     this.timerId = setTimeout(this.fn, this.delay);
-  }
+  };
 
   return Deferer;
 });
