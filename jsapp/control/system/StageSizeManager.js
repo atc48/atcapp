@@ -42,7 +42,8 @@
     this.update = function (w, h) {
       this.curWidth  = w;
       this.curHeight = h;
-      this.fire("resize", {width: this.curWidth, height: this.curHeight});
+      this.fire("resize", {type: "StageSize.resize",
+			   width: this.curWidth, height: this.curHeight});
       return this;
     }
   }

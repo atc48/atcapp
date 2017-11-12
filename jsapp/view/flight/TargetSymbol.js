@@ -26,8 +26,12 @@
       .lineTo(  WING, -NOSE )
       .lineTo(     0,  NOSE )
       .lineTo( -WING, -NOSE );
-
   }
+
+  TargetSymbol.prototype.highlight = function () {
+    this._draw(C.HIGHLIGHT);
+    this.updateCache();
+  };
 
   return TargetSymbol;
 });

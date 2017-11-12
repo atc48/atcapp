@@ -2,12 +2,17 @@
   pkg.LayerDragObserver = fac(__, createjs, pkg);
 })(atcapp, function (__, createjs, app) {
 
+  createjs.extend(LayerDragObserver, app.Dispatcher);
+  createjs.promote(LayerDragObserver, "Dispatcher");
+
   function LayerDragObserver() {
+    this.Dispatcher_constructor();
   }
 
   LayerDragObserver.prototype.setup = function (container, keyObserver, onDragged) {
     __.assert(container && _.isObject(keyObserver) && _.isFunction(onDragged));
 
+    var self = this;
     var _lastPos = null;
     container.addEventListener("mousedown", onStart);
     
@@ -17,6 +22,7 @@
 
       e.preventDefault();
       _lastPos = { x: e.stageX, y: e.stageY };
+      self.fire("start");
       container.addEventListener("pressmove", onMove);
       container.addEventListener("pressup", onFinish);
     }
@@ -27,6 +33,7 @@
     }
     function onFinish(e) {
       reset();
+      self.fire("end");
     }
     function reset() {
       _lastPos = null;

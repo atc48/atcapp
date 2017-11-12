@@ -1,6 +1,6 @@
 (function (pkg, fac){
-  pkg.Canpos = fac();
-})(atcapp, function () {
+  pkg.Canpos = fac(__, createjs);
+})(atcapp, function (__, createjs) {
 
   var SCALE_Y = 111 / 91;
 
@@ -44,7 +44,13 @@
 
   Canpos.prototype.assertNumber = function () {
     __.assert(_.isNumber(this.x) && _.isNumber(this.y));
+    __.assert(!_.isNaN(this.x) && !_.isNaN(this.y));
   };
+
+  Canpos.prototype.getRectangle = function (rightBtm) {
+    __.assert(_.isObject(rightBtm) && rightBtm.x >= this.x && rightBtm.y >= this.y);
+    return new createjs.Rectangle(this.x, this.y, rightBtm.x - this.x, rightBtm.y - this.y);
+  }
   
   Canpos.bounds = {
     width:  360,

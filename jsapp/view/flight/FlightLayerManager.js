@@ -2,32 +2,64 @@
   pkg.FlightLayerManager = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
 
-  function FlightLayerManager(flightDataProvider) {
+  var BACK_LAYER_UPDATE_INTERVAL = 10 * 1000;
+
+  function FlightLayerManager() {
     this.layer = new app.CoordinatedLayer();
     this.layer.addChild(
       this.backLayer = new app.FlightLayer(),
       this.mainLayer = new app.FlightLayer()
     );
-    flightDataProvider.on(_.bind(this._onFlightData, this));
+    this.flightsDistributor = new app.FlightsLayerDistributor(this.mainLayer, this.backLayer);
+    this.mapScale = 1;
   }
 
-  FlightLayerManager.prototype._onFlightData = function (data) {
-    var layer = this.mainLayer;
-    var childScale = this.flightScale;
-    layer.removeAllChildren();
-    _.each(data.flights, function (flightData) {
-      if (flightData.ground_flag()) { return; }
-      var flight = new app.Flight().updateData(flightData);
-      flight.scaleX = flight.scaleY = childScale;
-      layer.addChild( flight );
-    });
+  FlightLayerManager.prototype.setup = function (flightDataProvider, mapStatus, layerDragObserver) {
+    this.flightDataProvider = flightDataProvider;
+    this.mapStatus = mapStatus;
+    
+    flightDataProvider.on(_.bind(this._distributeFlights, this));
+
+    this.cacheControl = new app.FlightLayerCacheControl(
+      this.layer, this.mainLayer, this.backLayer, this.mapStatus);
+    
+    mapStatus.on("gridChanged_prolong", _.bind(this._distributeFlights, this));
+
+    setInterval(_.bind(this._refreshBackLayerCache, this), BACK_LAYER_UPDATE_INTERVAL);
+
+    layerDragObserver.on("start", _.bind(this._onLayerDragStart, this));
+    layerDragObserver.on("end",   _.bind(this._onLayerDragEnd, this));
   };
-  
+
   FlightLayerManager.prototype.onMapScaleChange = function (scale) {
     this.mainLayer.__updateChildrenReciprocalScale(scale);
     this.backLayer.__updateChildrenReciprocalScale(scale);
     this.flightScale = this.mainLayer.__childScale;
+    this.mapScale = scale;
+    this.backLayer.uncache();
   }
+
+  FlightLayerManager.prototype._distributeFlights = function () {
+    this.flightsDistributor.distribute(
+      this.flightDataProvider.flightDataList,
+      this.flightDataProvider.gridToIdsMap,
+      this.mapStatus,
+      this.mainLayer.__childScale
+    );
+    this.cacheControl.backLayerCache().uncache();
+  };
+
+  FlightLayerManager.prototype._refreshBackLayerCache = function () {
+    this.cacheControl.backLayerCache().refreshCache();
+  };
+
+  FlightLayerManager.prototype._onLayerDragStart = function () {
+    this.cacheControl.captureLayer();
+  };
+
+  FlightLayerManager.prototype._onLayerDragEnd   = function () {
+    this.cacheControl.unlockCaptureLayer();
+  };
 
   return FlightLayerManager;
 });

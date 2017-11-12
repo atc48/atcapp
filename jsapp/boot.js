@@ -12,8 +12,8 @@ atcapp.boot = function (canvasId) {
 
   var stageSizeMan = new atcapp.StageSizeManager(stage);
   var stageSize = stageSizeMan.getStageSize();
-  var flightLayerMan = new atcapp.FlightLayerManager(flightDataProvider);
-  var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan);
+  var flightLayerMan = new atcapp.FlightLayerManager();
+  var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan, layerDragObserver);
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
   var mapStatus = mapLayerMan.getMapStatus();
 
@@ -40,6 +40,7 @@ atcapp.boot = function (canvasId) {
   });
 
   fpsManager.setup(stage, uiCommand);
+  flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver);
   
   // DEBUG
   var circle = new atcapp.Circle();

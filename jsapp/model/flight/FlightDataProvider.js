@@ -10,6 +10,8 @@
   function FlightDataProvider() {
     this.Dispatcher_constructor();
     FlightData = app.FlightData;
+    this.flightDataList = [];
+    this.gridToIdsMap = {};
   }
 
   FlightDataProvider.prototype.update = function (raw) {
@@ -19,15 +21,17 @@
     __.assert(_.isObject(raw) && _.isArray(raw.keys) && _.isArray(raw.flights));
 
     FlightData.updateKeys(raw.keys);
-    this.flights = _.map(raw.flights, function (flightRaw) {
+    this.flightDataList = _.map(raw.flights, function (flightRaw) {
       return new FlightData(flightRaw);
     });
-
-    if (this.flights.length <= 0) {
+    this.gridToIdsMap = raw.grid_map; // grid to flight-index-in-flights map
+    
+    if (this.flightDataList.length <= 0) {
       return this;
     }
     
-    this.fire({flights: this.flights});
+    this.fire({flightDataList: this.flightDataList,
+	       gridToIdsMap: this.gridToIdsMap});
     return this;
   };
 

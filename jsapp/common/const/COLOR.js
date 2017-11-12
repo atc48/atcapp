@@ -14,7 +14,8 @@ atcapp.COLOR = (function (){
     SIMBOL: {
       NORMAL:   "aqua",//"#F0F8FF",
       ACTIVE:   "yellow",
-      DEACTIVE: "#B0C4DE"
+      DEACTIVE: "#B0C4DE",
+      HIGHLIGHT: "red"
     },
     NOP: null
   };

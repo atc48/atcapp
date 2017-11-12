@@ -51,7 +51,7 @@
   MapUICommandHandler.prototype._doUpdateScale = function (scale) {
     __.assert(_.isNumber(scale));
     this.container.scaleX = this.container.scaleY = scale;
-    this.mapStatus.fire("scale", {scale: scale});
+    this.mapStatus.fire("scale", {type: "MapStatus.scale", scale: scale});
   }
 
   // will fire via mapStatus
@@ -59,7 +59,7 @@
     __.assert(_.isObject(localP) && _.isNumber(localP.x) && _.isNumber(localP.y));
     this.container.x = localP.x;
     this.container.y = localP.y;
-    this.mapStatus.fire("move", {});
+    this.mapStatus.fire("move", {type: "MapStatus.move"});
   }
   
   MapUICommandHandler.prototype._updateCenterPositionTo = function (centerP) {
