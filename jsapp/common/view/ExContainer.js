@@ -1,6 +1,6 @@
 (function (pkg, factory) {
-  pkg.ExContainer = factory(_, __, createjs);
-})(atcapp, function (_, __, createjs) {
+  pkg.ExContainer = factory(_, __, createjs, pkg);
+})(atcapp, function (_, __, createjs, app) {
 
   createjs.extend(ExContainer, createjs.Container);
   createjs.promote(ExContainer, "Container");
@@ -14,6 +14,9 @@
       this.addEventListener("mouseover", _.bind(this.__mouseOver, this));
       this.addEventListener("mouseout",  _.bind(this.__mouseOut, this));
       this.cursor = "pointer";
+    }
+    if (opt["drag"]) {
+      this._dragger = new app.ViewDragger(this);
     }
     this.id = opt["id"] || ("ExContainer_id_" + __idInc++);
   }

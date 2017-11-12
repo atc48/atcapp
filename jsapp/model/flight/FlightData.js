@@ -31,7 +31,15 @@
   };
 
   FlightData.prototype.isGround = function () {
-    return !!this._raw['ground_flag'];
+    return !!this.ground_flag();
+  };
+
+  FlightData.prototype.altExp = function () {
+    return "FL" + Math.round(this.alt() / 100);
+  };
+
+  FlightData.prototype.speedExp = function () {
+    return "G" + this.speed() + "kt";
   };
 
   // TODO: define getDepAirport(), getDestAirport()

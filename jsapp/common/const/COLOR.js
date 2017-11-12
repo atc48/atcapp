@@ -17,7 +17,15 @@ atcapp.COLOR = (function (){
       DEACTIVE: "#B0C4DE",
       HIGHLIGHT: "red"
     },
+    FONT: "Verdana",
+    FONT_COLOR: "#aaaaaa",
     NOP: null
+  };
+
+  C.DATA_BLOCK = {
+    FONT: C.FONT,
+    COLOR: C.FONT_COLOR,
+    LINE_COLOR: "#aaaaaa"
   };
 
   return C;
