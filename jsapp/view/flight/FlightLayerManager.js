@@ -36,7 +36,7 @@
     this.backLayer.__updateChildrenReciprocalScale(scale);
     this.flightScale = this.mainLayer.__childScale;
     this.mapScale = scale;
-    this.backLayer.uncache();
+    this.cacheControl.backLayerCache().uncache();
   }
 
   FlightLayerManager.prototype._distributeFlights = function () {

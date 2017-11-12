@@ -17,6 +17,11 @@
     this._hasLayerCaptured = false;
 
     this._backLayerCache = new _BackLayerCache(backLayer, mapStatus);
+
+    if (NO_BACK_LAYER_CACHE) {
+      this.backLayer.visible = false;
+      this.layer.removeChild( this.backLayer );
+    }
   }
 
   FlightLayerCacheControl.prototype.captureLayer = function () {
@@ -29,8 +34,10 @@
     cacheScale = Math.min(cacheScale, CACHE_SCALE_MAX);
 
     this.layer.cache(rect.x, rect.y, rect.width, rect.height, cacheScale);
-    this.mainLayer.visible =
+    this.mainLayer.visible = false;
+    if (!NO_BACK_LAYER_CACHE) {
       this.backLayer.visible = false;
+    }
   };
   
   FlightLayerCacheControl.prototype.unlockCaptureLayer = function () {
@@ -38,8 +45,10 @@
     this._hasLayerCaptured = false;
 
     this.layer.uncache();
-    this.mainLayer.visible =
-      this.backLayer.visible = true;    
+    this.mainLayer.visible = true
+    if (!NO_BACK_LAYER_CACHE) {
+      this.backLayer.visible = true;
+    }
   };
 
   FlightLayerCacheControl.prototype.backLayerCache = function () {
@@ -56,6 +65,7 @@
     if (NO_BACK_LAYER_CACHE) {
       return;
     }
+    this.backLayer.visible = true;
     this.backLayer.uncache();
   };
 
@@ -67,6 +77,7 @@
     var canposMax = app.Canpos.bounds;
     var cacheScale = Math.min(20, Math.round(mapScale)) * CACHE_SCALE_MULT;
     this.backLayer.cache(0, 0, canposMax.width, canposMax.height, cacheScale);
+    this.backLayer.visible = false;
   };
 
   return FlightLayerCacheControl;
