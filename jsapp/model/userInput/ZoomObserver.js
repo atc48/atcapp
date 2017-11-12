@@ -2,11 +2,7 @@
   pkg.ZoomObserver = fac($, __, pkg);
 })(atcapp, function ($, __, app) {
 
-  var MOUSE_WHEEL_EVENT = (function () {
-    if ('onwheel' in document) { return 'wheel'; }
-    if ('onmousewheel' in document) { return 'mousewheel'; }
-    return 'DOMMouseScroll';
-  })();
+  var MOUSE_WHEEL_EVENT = app.BrowserDepends.MOUSE_WHEEL_EVENT;
 			 
   function ZoomObserver($stage) {
     __.assert($stage && $stage[0]);
