@@ -19,9 +19,8 @@
     __.assert(_.isObject(data));
     this.x = data.x();
     this.y = data.y();
-    this.rotation = data.heading();
     this.alpha = 0.5;
-    this.scaleX = this.scaleY = 0.01;
+    this.targetSymbol.updateData(data);
     return this;
   };
 

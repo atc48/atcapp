@@ -33,5 +33,9 @@
     this.updateCache();
   };
 
+  TargetSymbol.prototype.updateData = function (data) {
+    this.rotation = data.heading();
+  };
+
   return TargetSymbol;
 });
