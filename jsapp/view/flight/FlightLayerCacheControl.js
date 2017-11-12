@@ -5,6 +5,8 @@
   var CACHE_SCALE_MULT = 1.0;
   var CACHE_SCALE_MAX  = 200;
 
+  var NO_BACK_LAYER_CACHE = true;
+
   function FlightLayerCacheControl(layer, mainLayer, backLayer, mapStatus) {
     __.assert(layer.children.indexOf(mainLayer) >= 0 &&
 	      layer.children.indexOf(backLayer) >= 0);
@@ -51,10 +53,16 @@
   }
   
   _BackLayerCache.prototype.uncache = function () {
+    if (NO_BACK_LAYER_CACHE) {
+      return;
+    }
     this.backLayer.uncache();
   };
 
   _BackLayerCache.prototype.refreshCache = function () {
+    if (NO_BACK_LAYER_CACHE) {
+      return;
+    }
     var mapScale = this.mapStatus.getScale();
     var canposMax = app.Canpos.bounds;
     var cacheScale = Math.min(20, Math.round(mapScale)) * CACHE_SCALE_MULT;
