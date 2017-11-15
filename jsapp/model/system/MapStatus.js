@@ -108,18 +108,17 @@
   function _GridMapDiff(cur, prev) {
     this.cur = cur;
     this.prev = prev || null;
-    this.diff = null;
   }
-  _GridMapDiff.prototype.get = function () {
-    if (this.diff) { return this.diff; }
+  _GridMapDiff.prototype.getDiff = function () {
+    if (this._diff) { return this._diff; }
     __.assert(!this.cur.gridsEquals(this.prev));
     var newGrids = this.cur.getGrids();
     var oldGrids = this.prev && this.prev.getGrids() || [];
-    this.diff = {
+    this._diff = {
       add: _.difference(newGrids, oldGrids), // added grids
       red: _.difference(oldGrids, newGrids)  // reduced grids
     };
-    return this.diff;
+    return this._diff;
   };
 
   return MapStatus;

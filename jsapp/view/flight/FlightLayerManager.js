@@ -23,7 +23,7 @@
     this.cacheControl = new app.FlightLayerCacheControl(
       this.layer, this.mainLayer, this.backLayer, this.mapStatus);
     
-    mapStatus.on("gridChanged_prolong", _.bind(this._distributeFlights, this));
+    mapStatus.on("gridChanged_prolong", _.bind(this._onGridChanged, this));
 
     setInterval(_.bind(this._refreshBackLayerCache, this), BACK_LAYER_UPDATE_INTERVAL);
 
@@ -47,6 +47,15 @@
       this.mainLayer.__childScale
     );
     this.cacheControl.backLayerCache().uncache();
+  };
+
+  FlightLayerManager.prototype._onGridChanged = function (e) {
+    this.flightsDistributor.onGridChanged(
+      this.flightDataProvider.flightDataList,
+      this.flightDataProvider.gridToIdsMap,
+      this.mainLayer.__childScale,
+      e.diff
+    );
   };
 
   FlightLayerManager.prototype._refreshBackLayerCache = function () {

@@ -10,7 +10,6 @@
     this.addChild( this.line         = new app.BoundsLine() );
     this.addChild( this.targetSymbol = new app.TargetSymbol() );
     this.addChild( this.dataBlock    = new app.DataBlock(this) );
-    //this.addChild( new app.Circle() );
 
     this.dataBlock.dispatcher.on("move", this._onDataBlockMove);
   }
@@ -26,6 +25,10 @@
 
   Flight.prototype.updateData = function (data) {
     __.assert(_.isObject(data));
+    if (this.unixTime == data.unix_time()) {
+      return;
+    }
+    this.unixTime = data.unix_time();
     this.x = data.x();
     this.y = data.y();
     this.targetSymbol.updateData(data);
@@ -33,6 +36,10 @@
     this._updateLine();
 
     return this;
+  };
+
+  Flight.prototype.updateScale = function (childScale) {
+    this.scaleX = this.scaleY = childScale;    
   };
 
   Flight.prototype._updateLine = function () {
