@@ -2,8 +2,9 @@
   pkg.FpsManager = fac(createjs, _, __, pkg);
 })(atcapp, function (createjs, _, __, app) {
 
-  var ACTIVE_FPS   = 25;
+  var ACTIVE_FPS   =  25;
   var DEACTIVE_FPS =  1;
+  var STAGE_UPDATE_MINIMUM_INTERVAL = 1000 / ACTIVE_FPS;
 
   var DEACTIVATE_DELAY = 1000;
   var Ticker = createjs.Ticker;
@@ -12,7 +13,7 @@
 
   function FpsManager(stage) {
     this.stage = stage;
-    Ticker.setFPS(DEACTIVE_FPS);
+    Ticker.framerate = DEACTIVE_FPS;
     Ticker.addEventListener("tick", _.bind(onTick, this));
     this.deactDeferer = new app.Deferer(_.bind(deactivate, this), DEACTIVATE_DELAY);
 
@@ -20,7 +21,7 @@
       this.update();
     }
     function deactivate() {
-      Ticker.setFPS(DEACTIVE_FPS);
+      Ticker.framerate = DEACTIVE_FPS;
       //__log("FpsMan: FPS=" + Ticker.getTicks());
     }
   }
@@ -39,8 +40,8 @@
   };
 
   FpsManager.prototype.activate = function () {
-    Ticker.setFPS(ACTIVE_FPS);
-    //__log("FpsMan: FPS=" + Ticker.getTicks());
+    Ticker.framerate = ACTIVE_FPS;
+    //__log("FpsMan: FPS=" + Ticker.getFPS());
     this.update();
     this.deactDeferer.on();
     
@@ -61,7 +62,7 @@
     
     this.stage.update();
     
-    _.delay(__disableJustUpdatedFlag);
+    _.delay(__disableJustUpdatedFlag, STAGE_UPDATE_MINIMUM_INTERVAL);
     //__log("FpsMan: stage.update()");
   };
 
