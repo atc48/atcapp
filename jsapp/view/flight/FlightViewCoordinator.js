@@ -168,8 +168,12 @@
     var r2 = Math.pow(xDiff, 2) + Math.pow(yDiff, 2);
     var r1 = Math.sqrt(r2);
     var force = DATA_BLOCK_FORCE_COEF / r2;
-    this._force.x += (- force * xDiff / r1) * FORCE_X_MULT;
-    this._force.y += (- force * yDiff / r1);
+    var forceX = (- force * xDiff / r1) * FORCE_X_MULT;
+    var forceY = (- force * yDiff / r1);
+    forceX = Math.floor(forceX);
+    forceY = Math.floor(forceY);
+    this._force.x += forceX;
+    this._force.y += forceY;
   };
 
   _FlightWrapper.prototype.onOneIngridFinish = function () {
