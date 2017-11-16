@@ -11,8 +11,8 @@
     this.Container_constructor();
     opt = opt || {};
     if (opt["hover"]) {
-      this.addEventListener("mouseover", _.bind(this.__mouseOver, this));
-      this.addEventListener("mouseout",  _.bind(this.__mouseOut, this));
+      this.addEventListener("mouseover", this.__mouseOver);
+      this.addEventListener("mouseout",  this.__mouseOut);
       this.cursor = "pointer";
     }
     if (opt["drag"]) {
@@ -39,13 +39,15 @@
   };
 
   ExContainer.prototype.__mouseOver = function (e) {
-    var msg = this.override__hoverMsg(e);
+    var self = e.currentTarget;
+    var msg = self.override__hoverMsg(e);
     if (!msg) { return; }
-    __hoverMsger.setMsg(msg, this.id);
+    __hoverMsger.setMsg(msg, self.id);
     // TODO: implement popup
   }
   ExContainer.prototype.__mouseOut = function (e) {
-    __hoverMsger.delMsg(this.id);
+    var self = e.currentTarget;
+    __hoverMsger.delMsg(self.id);
     // TODO: implement popup
   }
   

@@ -105,6 +105,10 @@
     this.fire(eventType, event);
   };
 
+  MapStatus.prototype.getStageGrid = function (opt_divideUnit) {
+    return new app.BoundsGrid( this.stageSize.getRect(), opt_divideUnit );
+  };
+
   function _GridMapDiff(cur, prev) {
     this.cur = cur;
     this.prev = prev || null;

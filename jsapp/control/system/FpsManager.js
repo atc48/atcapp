@@ -3,7 +3,7 @@
 })(atcapp, function (createjs, _, __, app) {
 
   var ACTIVE_FPS   =  25;
-  var DEACTIVE_FPS =  1;
+  var DEACTIVE_FPS =  10;
   var STAGE_UPDATE_MINIMUM_INTERVAL = 1000 / ACTIVE_FPS;
 
   var DEACTIVATE_DELAY = 1000;

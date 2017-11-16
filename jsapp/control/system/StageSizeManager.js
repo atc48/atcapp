@@ -46,6 +46,9 @@
 			   width: this.curWidth, height: this.curHeight});
       return this;
     }
+    this.getRect = function () {
+      return new createjs.Rectangle(0, 0, this.curWidth, this.curHeight);
+    };
   }
 
   return StageSizeManager;

@@ -128,6 +128,16 @@
     return this._canposBounds;
   };
 
+  GridMap.prototype.getRoundedCanposBounds = function () {
+    if (this._roundedCanposBounds) { return this._roundedCanposBounds; }
+    var grids = this.getGrids();
+    var gridTop  = GridMap.gridToCanpos(_.first(grids));
+    var gridLast = GridMap.gridToCanpos(_.last(grids));
+    var rect = gridTop.getRectangle( gridLast );
+    this._roundedCanposBounds = rect;
+    return rect;
+  };
+
   GridMap.gridNumOf = function (e, n) {
     return __calc.getGrid(e, n);
   };

@@ -12,15 +12,40 @@
     this.addChild( this.dataBlock    = new app.DataBlock(this) );
 
     this.dataBlock.dispatcher.on("move", this._onDataBlockMove);
+    this.setState("low");
+    this.targetSymbol.addEventListener("click", this._onClick);
+    this.targetSymbol.addEventListener("mouseover", this._onOver);
+    this.targetSymbol.addEventListener("mouseout",  this._onOut);
   }
 
+  Flight.prototype._onClick = function (e) {
+    var self = e.currentTarget.parent; 
+    self._isDataBlockFix = !self._isDataBlockFix;
+    if (self._isDataBlockFix) {
+      self.setState("normal");
+    } else {
+      self.setState("low");
+    }
+  };
+
+  Flight.prototype._onOver = function (e) {
+    var self = e.currentTarget.parent;
+    self.setState("normal");
+  };
+
+  Flight.prototype._onOut = function (e) {
+    var self = e.currentTarget.parent;
+    self.setState("low");
+  };
+  
   Flight.prototype.override__hoverMsg = function (e) {
     return this.id;
   };
 
-  Flight.prototype._onDataBlockMove = function (e) {
+  Flight.prototype._onDataBlockMove = function(e) { // do not wrap by _.bind to slim memory
     var self = e.parent;
     self._updateLine();
+    self._isDataBlockFix = true;
   };
 
   Flight.prototype.updateData = function (data) {
@@ -33,9 +58,57 @@
     this.y = data.y();
     this.targetSymbol.updateData(data);
     this.dataBlock.updateData(data);
-    this._updateLine();
 
     return this;
+  };
+
+  Flight.prototype.setState = function (state) {
+    if (this.state == state) { return; }
+    this.state = state;
+
+    if (state == "low") {
+      this._toggleDataBlock( false );
+      return;
+    }
+
+    if (state == "normal") {
+      this._toggleDataBlock( true );
+      return;
+    }
+
+    __.assert(false, "invalid state=" + state);
+
+    // ISSUE: "high" ?
+  };
+
+  Flight.prototype.getDataBlockStagePos = function () {
+    var pos = this.dataBlock.getForcePos();
+    var space = this._isDataBlockFix ? this : this.dataBlock; // I don't know why we should do this?
+    return space.localToGlobal(pos.x, pos.y);
+  };
+
+  Flight.prototype.updateByForce = function (dataBlockStagePos) {
+    if (dataBlockStagePos.hide) {
+      this.setState("low");
+    } else {
+      var pos = this.dataBlock.globalToLocal(dataBlockStagePos.x, dataBlockStagePos.y);
+      this.dataBlock.updateForcePos(pos.x, pos.y);
+      this.setState("normal");
+      this._updateLine();
+    }
+  };
+
+  Flight.prototype.getIsDataBlockFix = function () {
+    return this._isDataBlockFix;
+  };
+
+  Flight.prototype._toggleDataBlock = function (visible) {
+    if (this._isDataBlockFix) { visible = true; }
+    this.dataBlock.visible = visible;
+    this.line.visible = visible;
+    if (visible) {
+      this._updateLine();
+    }
   };
 
   Flight.prototype.updateScale = function (childScale) {
@@ -43,7 +116,6 @@
   };
 
   Flight.prototype._updateLine = function () {
-    if (this._isDataBlockFix) { return; }
     this.line.update( this.dataBlock.getTransformedBounds() );
   };
 

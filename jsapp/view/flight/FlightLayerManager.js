@@ -22,7 +22,9 @@
 
     this.cacheControl = new app.FlightLayerCacheControl(
       this.layer, this.mainLayer, this.backLayer, this.mapStatus);
-    
+
+    this.viewCoordinator = new app.FlightViewCoordinator(this.mapStatus);
+
     mapStatus.on("gridChanged_prolong", _.bind(this._onGridChanged, this));
 
     setInterval(_.bind(this._refreshBackLayerCache, this), BACK_LAYER_UPDATE_INTERVAL);
@@ -56,6 +58,9 @@
       this.mainLayer.__childScale,
       e.diff
     );
+    var activeFlights = this.flightsDistributor.getActiveFlights();
+    //activeFlights = activeFlights.slice(100, 102);
+    this.viewCoordinator.coordinate( activeFlights );
   };
 
   FlightLayerManager.prototype._refreshBackLayerCache = function () {

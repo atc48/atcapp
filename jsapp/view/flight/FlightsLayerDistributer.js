@@ -27,6 +27,9 @@
       var cs = data.callsign();
       var flight = pool.moveToMainLayer( cs );
       flight.updateData( data );
+      if (data.isGround()) {
+	console.log("FlightsLayerDistributor: isGround=" + data);
+      }
       flight.updateScale( scale );
     });
     
@@ -54,6 +57,10 @@
     finder.forEachGridToFlightData(diff.red, function (data) {
       pool.moveToBackLayer( data.callsign() );
     });
+  };
+
+  FlightsLayerDistributor.prototype.getActiveFlights = function () {
+    return this.flightViewPool.getMainLayerFlights();
   };
 
   function _Finder(flightDataList, gridToFlightIds) {

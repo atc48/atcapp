@@ -39,6 +39,10 @@
     this.flightPool.clear();
   };
 
+  FlightViewPool.prototype.getMainLayerFlights = function () {
+    return this.mainLayer.getChildren();
+  };
+
   function _LayerWrapper(layer, _flightPool) {
 
     this.addChild = function (cs) {
@@ -59,6 +63,10 @@
 	layer.removeChild( flight );
       }
     };
+
+    this.getChildren = function () {
+      return layer.children;
+    }
 
     this.clear = function () {
       layer.removeAllChildren();
