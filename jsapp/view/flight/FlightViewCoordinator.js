@@ -2,7 +2,7 @@
   pkg.FlightViewCoordinator = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
 
-  var TOO_MANY_LEN = 50;
+  var TOO_MANY_LEN = 80;
   var DATA_BLOCK_FORCE_COEF = 1.5 * 10000;
   var NUM_STAGE_DIVIDE = 1;
   var NUM_FRAMES_LOOP  = 10 * 3;
@@ -67,17 +67,11 @@
     this.fltMap.forEachGridKey(function (gridKey, flts) {
       self._calcIngridForce(flts);
     });
-    var lowCount = 0;
     this.fltMap.reset(function (flt) {
       flt.fixPos();
-      return;
-      if (flt.flight.state == "normal" && lowCount < 5) {
-	if (flt.isDiverging()) {
-	  flt.flight.setState("low");
-	  lowCount++;
-	} else {
-	  flt.flight.setState("normal");
-	}
+      if (self.loopCount > 10 && flt.isDiverging()) {
+	flt.flight.setState("low");
+	self.fltMap.remove(flt);
       }
     });
     this.loopCount++;
@@ -99,11 +93,11 @@
   
   
   function _FlightWrapperMap(stageGrid) {
-    var _map, _keys, _flts;
+    var _map, _keys, _flts, _rems;
     var self = this;
 
     this.init = function (flights) {
-      _map = {}; _keys = []; _flts = [];
+      _map = {}; _keys = []; _flts = []; _rems = [];
       
       _.each(flights, function (flight) {
 	var flt = new _FlightWrapper(flight, stageGrid);
@@ -115,6 +109,12 @@
 
     this.reset = function (opt_eachFltFn) {
       _map = {}; _keys = [];
+      _.each(_rems, function (flt) {
+	if (_flts.indexOf(flt) >= 0) {
+	  _flts.splice(_flts.indexOf(flt), 1);
+	}
+      });
+      _rems = [];
       var fn = opt_eachFltFn || _.noop;
       _.each(_flts, function (flt) {
 	fn(flt);
@@ -131,16 +131,26 @@
       });
     };
 
+    this.remove = function (flt) {
+      _rems.push( flt );
+    };
+
     this.forEachGridKey = function (fn) {
       _keys = _.uniq(_keys);
       _.each(_keys, function (key) {
 	var flts = _map[key];
+	_.each(_rems, function (f) {
+	  if (flts.indexOf(f) >= 0) {
+	    flts.splice(flts.indexOf(f), 1);
+	  }
+	});
 	fn(key, flts);
       });
     };
 
     this.forEachFlt = function (fn) {
       _.each(_flts, function (flt) {
+	if (_rems.indexOf(flt) >= 0) { return; }
 	fn(flt);
       });
     };
@@ -207,7 +217,7 @@
   };
 
   _FlightWrapper.prototype.isDiverging = function () {
-    return this.lastForceAbs > 40;
+    return this.lastForceAbs > 80;
   };
 
   return FlightViewCoordinator;

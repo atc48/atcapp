@@ -21,6 +21,7 @@
   Flight.prototype._onClick = function (e) {
     var self = e.currentTarget.parent; 
     self._isDataBlockFix = !self._isDataBlockFix;
+    self._afterOutState = null;
     if (self._isDataBlockFix) {
       self.setState("normal");
     } else {
@@ -30,12 +31,13 @@
 
   Flight.prototype._onOver = function (e) {
     var self = e.currentTarget.parent;
+    self._afterOutState = self.state;
     self.setState("normal");
   };
 
   Flight.prototype._onOut = function (e) {
     var self = e.currentTarget.parent;
-    self.setState("low");
+    self.setState( self._afterOutState || "low" );
   };
   
   Flight.prototype.override__hoverMsg = function (e) {
