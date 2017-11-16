@@ -5,7 +5,8 @@
   var TOO_MANY_LEN = 100;
   var DATA_BLOCK_FORCE_COEF = 1.5 * 10000;
   var NUM_STAGE_DIVIDE = 1;
-  var NUM_FRAMES_LOOP  = 25;
+  var NUM_FRAMES_LOOP  = 10 * 3;
+  var FORCE_X_MULT = 3;
   
   function FlightViewCoordinator(mapStatus) {
     this.mapStatus = mapStatus;
@@ -144,6 +145,9 @@
   };
 
   _FlightWrapper.prototype.getGridKeys = function () {
+    if (NUM_STAGE_DIVIDE == 1) {
+      return ["1"];
+    }
     var keys = this.stageGrid.getDoubledGridKeys(
       //this.flight.x, this.flight.y);
       this._pos.x, this._pos.y);
@@ -164,7 +168,7 @@
     var r2 = Math.pow(xDiff, 2) + Math.pow(yDiff, 2);
     var r1 = Math.sqrt(r2);
     var force = DATA_BLOCK_FORCE_COEF / r2;
-    this._force.x += (- force * xDiff / r1);
+    this._force.x += (- force * xDiff / r1) * FORCE_X_MULT;
     this._force.y += (- force * yDiff / r1);
   };
 
