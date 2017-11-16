@@ -14,7 +14,7 @@
     this.mapScale = 1;
   }
 
-  FlightLayerManager.prototype.setup = function (flightDataProvider, mapStatus, layerDragObserver) {
+  FlightLayerManager.prototype.setup = function (flightDataProvider, mapStatus, layerDragObserver, stageSize) {
     this.flightDataProvider = flightDataProvider;
     this.mapStatus = mapStatus;
     
@@ -23,9 +23,10 @@
     this.cacheControl = new app.FlightLayerCacheControl(
       this.layer, this.mainLayer, this.backLayer, this.mapStatus);
 
-    this.viewCoordinator = new app.FlightViewCoordinator(this.mapStatus);
+    this.viewCoordinator = new app.FlightViewCoordinator(this.mapStatus, stageSize);
 
     mapStatus.on("gridChanged_prolong", _.bind(this._onGridChanged, this));
+    mapStatus.on("changed_prolong", _.bind(this._onMapChangedProlong, this));
 
     setInterval(_.bind(this._refreshBackLayerCache, this), BACK_LAYER_UPDATE_INTERVAL);
 
@@ -60,6 +61,11 @@
     );
     var activeFlights = this.flightsDistributor.getActiveFlights();
     //activeFlights = activeFlights.slice(100, 102);
+    this.viewCoordinator.coordinate( activeFlights );
+  };
+
+  FlightLayerManager.prototype._onMapChangedProlong = function (e) {
+    var activeFlights = this.flightsDistributor.getActiveFlights();
     this.viewCoordinator.coordinate( activeFlights );
   };
 

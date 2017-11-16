@@ -2,28 +2,39 @@
   pkg.FlightViewCoordinator = fac(_, __, createjs, pkg);
 })(atcapp, function(_, __, createjs, app) {
 
-  var TOO_MANY_LEN = 100;
+  var TOO_MANY_LEN = 50;
   var DATA_BLOCK_FORCE_COEF = 1.5 * 10000;
   var NUM_STAGE_DIVIDE = 1;
   var NUM_FRAMES_LOOP  = 10 * 3;
   var FORCE_X_MULT = 3;
   
-  function FlightViewCoordinator(mapStatus) {
+  function FlightViewCoordinator(mapStatus, stageSize) {
     this.mapStatus = mapStatus;
+    this.stageSize = stageSize;
     createjs.Ticker.addEventListener("tick", _.bind(this._onTick, this));
   }
 
   var p = FlightViewCoordinator.prototype;
 
   p.coordinate = function (activeFlights) {
+    var stageSize = this.stageSize;
     this.calculator = null;
-    if (activeFlights.length > TOO_MANY_LEN) {
-      _.each(activeFlights, function (flight) {
+    var flights = activeFlights;
+
+    flights = _.filter(flights, function (f) {
+      f.setState("low");
+      var gPos = f.localToGlobal(0, 0);
+      return gPos.x > 0 && gPos.y > 0 &&
+	gPos.x < stageSize.curWidth && gPos.y < stageSize.curHeight;
+    });
+
+    if (flights.length > TOO_MANY_LEN) {
+      _.each(flights, function (flight) {
 	flight.setState( "low" );
       });
       return;
     }
-    _.each(activeFlights, function (flight) {
+    _.each(flights, function (flight) {
       flight.setState("normal");
     });
 
@@ -31,7 +42,7 @@
     var stageGrid = this.mapStatus.getStageGrid(NUM_STAGE_DIVIDE);
     var fltMap = new _FlightWrapperMap(stageGrid);
 
-    fltMap.init(activeFlights);
+    fltMap.init(flights);
 
     var calculator = new _ForceCalculator(fltMap);
     this.calculator = calculator;

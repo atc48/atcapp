@@ -40,7 +40,7 @@ atcapp.boot = function (canvasId) {
   });
 
   fpsManager.setup(stage, uiCommand);
-  flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver);
+  flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, stageSize);
   
   // DEBUG
   var circle = new atcapp.Circle();

@@ -9,6 +9,8 @@
   var GRID_CHANGE_DELAY_MAX = 1000 * 3;
   var GRID_CHANGE_PROLONG_DEFER_DELAY = 400;
 
+  var MAP_CHANGE_PROLONG_DELAY = 400;
+
   /**
    * External interface for map scale, grid status, etc.
    *   this class is only for observing event but not for firing,
@@ -48,6 +50,9 @@
     this._onGridChangeProlongDefer = new app.Deferer(function () {
       self._onGridChange("gridChanged_prolong");
     }, GRID_CHANGE_PROLONG_DEFER_DELAY);
+    this._onMapChangeProlongDefer = new app.Deferer(_.bind(function () {
+      this.fire("changed_prolong");
+    }, this), MAP_CHANGE_PROLONG_DELAY);
   };
   
   // dispatches "scale" => {scale: scale}
@@ -83,6 +88,7 @@
     }
     this._gridMap = null;
     this.fire("change", {});
+    this._onMapChangeProlongDefer.on();
 
     this._onGridChangeDefer.on();
     this._onGridChangeProlongDefer.on();
