@@ -9,6 +9,7 @@
   
   function FlightLayer() {
     this.CoordinatedLayer_constructor();
+    this.compositeOperation = "lighter"
   }
 
   return FlightLayer;

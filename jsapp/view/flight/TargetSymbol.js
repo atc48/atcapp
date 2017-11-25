@@ -10,12 +10,14 @@
   var NOSE = 8;
   var C = app.COLOR.SIMBOL;
   var TRI = app.IMG.TRIANGLE;
+  var USE_CACHE = true;
 
   function TargetSymbol() {
     this.super_constructor();
     //this.super_constructor( TRI );
     this._draw( C.NORMAL );
-    this.cache(-WING, -NOSE, WING * 2, NOSE * 2);
+    USE_CACHE && this.cache(-WING, -NOSE, WING * 2, NOSE * 2);
+    this.alpha = C.ALPHA;
   }
 
   TargetSymbol.prototype._draw = function (color) {
@@ -30,7 +32,7 @@
 
   TargetSymbol.prototype.highlight = function () {
     this._draw(C.HIGHLIGHT);
-    this.updateCache();
+    USE_CACHE && this.updateCache();
   };
 
   TargetSymbol.prototype.updateData = function (data) {

@@ -12,7 +12,8 @@ atcapp.COLOR = (function (){
     SECTOR:  { color: "#555",
 	       alpha: 0.8},
     SIMBOL: {
-      NORMAL:   "aqua",//"#F0F8FF",
+      ALPHA: 0.7,
+      NORMAL:   "#fbffff",//"#00c8c8",//"aqua",//"#F0F8FF",
       ACTIVE:   "yellow",
       DEACTIVE: "#B0C4DE",
       HIGHLIGHT: "red"
