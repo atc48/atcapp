@@ -21,12 +21,12 @@
   Flight.prototype._onClick = function (e) {
     var self = e.currentTarget.parent; 
     self._isDataBlockFix = !self._isDataBlockFix;
-    self._afterOutState = null;
-    if (self._isDataBlockFix) {
-      self.setState("normal");
+    if (self._afterOutState == "low") {
+      self.setState( "normal" );
     } else {
-      self.setState("low");
+      self.setState( self.state == "normal" ? "low" : "normal" );
     }
+    self._afterOutState = null;
   };
 
   Flight.prototype._onOver = function (e) {
@@ -37,7 +37,9 @@
 
   Flight.prototype._onOut = function (e) {
     var self = e.currentTarget.parent;
-    self.setState( self._afterOutState || "low" );
+    if (self._afterOutState) {
+      self.setState( self._afterOutState );
+    }
   };
   
   Flight.prototype.override__hoverMsg = function (e) {
@@ -65,7 +67,6 @@
   };
 
   Flight.prototype.setState = function (state) {
-    if (this.state == state) { return; }
     this.state = state;
 
     if (state == "low") {
@@ -105,7 +106,6 @@
   };
 
   Flight.prototype._toggleDataBlock = function (visible) {
-    if (this._isDataBlockFix) { visible = true; }
     this.dataBlock.visible = visible;
     this.line.visible = visible;
     if (visible) {
