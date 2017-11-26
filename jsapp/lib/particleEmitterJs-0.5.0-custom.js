@@ -344,7 +344,8 @@ this.createjs = this.createjs || {};
     //#endregion
 
     // ** BASE METHODS
-    p.DisplayObject_initialise = p.initialize;
+    /** fixed to adapt the newer createjs version by atcapp **/
+    p.DisplayObject_initialise = createjs.DisplayObject;// p.initialize;
     p.DisplayObject_draw = p.draw;
     p.DisplayObject_updateContext = p.updateContext;
 
