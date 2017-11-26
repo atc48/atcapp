@@ -66,7 +66,7 @@ this.createjs = this.createjs || {};
         this.particleBaseId = id;
     }
 
-    p.updateParticle = function (ctx) {
+  p.updateParticle = function (ctx) {
 
         var currentTimeMs = createjs.Ticker.getTime();
 
@@ -1019,6 +1019,8 @@ this.createjs = this.createjs || {};
         particle.uncache();
         var particleIndex = this._particles.indexOf(particle);
         this._particles.splice(particleIndex, 1);
+
+        this.parent && // added by atcapp to fix null error.
         this.parent.removeChild(particle);
 
         if (this._particles.length == 0 && this.state == createjs.ParticleEmitterState.Running && this.emitterType == createjs.ParticleEmitterType.OneShot) {

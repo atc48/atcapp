@@ -1,12 +1,13 @@
 (function (pkg, fac) {
-  pkg.LayerDragObserver = fac(__, createjs, pkg);
-})(atcapp, function (__, createjs, app) {
+  pkg.LayerDragObserver = fac(_, __, createjs, pkg);
+})(atcapp, function (_, __, createjs, app) {
 
   createjs.extend(LayerDragObserver, app.Dispatcher);
   createjs.promote(LayerDragObserver, "Dispatcher");
 
   function LayerDragObserver() {
     this.Dispatcher_constructor();
+    this.btn = {getIsActive: _.noop};
   }
 
   LayerDragObserver.prototype.setup = function (container, keyObserver, onDragged) {
@@ -15,10 +16,10 @@
     var self = this;
     var _lastPos = null;
     container.addEventListener("mousedown", onStart);
-    
+
     function onStart(e) {
       if (_lastPos) { reset(); }
-      if (!keyObserver.isMetaKeyDown) { return; }
+      if (!keyObserver.isMetaKeyDown && !self.btn.getIsActive()) { return; }
 
       e.preventDefault();
       _lastPos = { x: e.stageX, y: e.stageY };
@@ -41,6 +42,11 @@
       container.removeEventListener("mousedown", onFinish);
     }
   }
+
+  LayerDragObserver.prototype.setupUiBtn = function (btn) {
+    __.assert(_.isFunction(btn.getIsActive));
+    this.btn = btn;
+  };
 
   return LayerDragObserver;
 });

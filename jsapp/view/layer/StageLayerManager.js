@@ -4,20 +4,15 @@
 
   function StageLayerManager(stage, stageSize, mapLayerMan) {
 
-    this.bgLayer  = new createjs.Container();
-    this.mapLayer = mapLayerMan.container;
-    this.toolLayer = new app.ToolLayer();
-
-    stage.addChild(this.bgLayer);
-    stage.addChild(this.mapLayer);
-    stage.addChild(this.toolLayer);
+    stage.addChild( this.bgLayer  = new createjs.Container() );
+    stage.addChild( this.mapLayer = mapLayerMan.container );
+    stage.addChild( this.toolLayer = new app.ToolLayer() );
 
     stageSize.on("resize", _.bind(onStageSizeChange, this));
 
     function onStageSizeChange(e) {
       this.bgLayer.removeChildAt(0);
       this.bgLayer.addChild( __createBackground(stageSize) );
-      this.toolLayer.onStageResize(e.width, e.height);
     }
   }
 

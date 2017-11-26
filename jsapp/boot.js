@@ -17,6 +17,10 @@ atcapp.boot = function (canvasId) {
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
   var mapStatus = mapLayerMan.getMapStatus();
 
+  layerMan.toolLayer.setup( stageSizeMan.getStageSize() );
+  layerDragObserver.setupUiBtn( layerMan.toolLayer.instantPanel.getMapDragButtonDelegate() );
+  zoomObserver.setupUiBtn(      layerMan.toolLayer.instantPanel.getMapDragButtonDelegate() );
+
   mapStatus.on("change", function () {
     //__.log("change");
   });

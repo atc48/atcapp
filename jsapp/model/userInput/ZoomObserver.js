@@ -6,13 +6,19 @@
 			 
   function ZoomObserver($stage) {
     __.assert($stage && $stage[0]);
+    this.btn = {getIsActive: _.noop};
+    this.setupUiBtn = function (btn) {
+      __.assert(_.isFunction(btn.getIsActive));
+      this.btn = btn;
+    };
 
     this.setup = function (keyObserver, onZoomed) {
       __.assert(_.isObject(keyObserver), _.isFunction(onZoomed));
       $stage.on(MOUSE_WHEEL_EVENT, _onMouseWheel);
+      var self = this;
     
       function _onMouseWheel(e) {
-	if (!keyObserver.isMetaKeyDown) {
+	if (!keyObserver.isMetaKeyDown && !self.btn.getIsActive()) {
 	  return;
 	}
 	e.preventDefault();

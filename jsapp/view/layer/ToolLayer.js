@@ -21,12 +21,23 @@
       self.statusBarView.text = e.msg;
     });
 
+    this.instantPanel = new atcapp.InstantPanel();
+
     this.addChild( this.statusBarView );
+    this.addChild( this.instantPanel );
   }
 
-  ToolLayer.prototype.onStageResize = function (stageWidth, stageHeight) {
+  ToolLayer.prototype.setup = function (stageSize) {
+    this.stageSize = stageSize;
+
+    this.instantPanel.setup( stageSize );
+
+    stageSize.on("resize", _.bind(this.onStageResize, this));
+  };
+
+  ToolLayer.prototype.onStageResize = function (e) {
     this.statusBarView.x = STATUS_BAR.MARGIN;
-    this.statusBarView.y = stageHeight - STATUS_BAR.FONT_SIZE;
+    this.statusBarView.y = this.stageSize.curHeight - STATUS_BAR.FONT_SIZE;
   };
 
   return ToolLayer;
