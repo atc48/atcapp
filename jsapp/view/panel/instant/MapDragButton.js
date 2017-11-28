@@ -10,6 +10,8 @@
   function MapDragButton(size) {
     this.parent_constructor( app.IMG.MAP_DRAG_BTN, {img_org_size: IMG_ORG_SIZE, active_state_btn: 1} );
     this.scaleX = this.scaleY = size / IMG_ORG_SIZE;
+
+    // fires "active" and "deactive" events via super class.
   }
 
   return MapDragButton;

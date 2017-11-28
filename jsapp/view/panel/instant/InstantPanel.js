@@ -27,7 +27,9 @@
     return {
       getIsActive: function () {
 	return !!( self.mapDragBtn && self.mapDragBtn.isActive );
-      }
+      },
+      on : function (a,b) { self.mapDragBtn.dispatcher.on(a,b); },
+      off: function (a,b) { self.mapDragBtn.dispatcher.off(a,b); }
     }
   };
 

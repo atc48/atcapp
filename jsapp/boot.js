@@ -16,10 +16,12 @@ atcapp.boot = function (canvasId) {
   var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan, layerDragObserver);
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
   var mapStatus = mapLayerMan.getMapStatus();
+  var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender();
 
+  var mapDragPanelBtn = layerMan.toolLayer.instantPanel.getMapDragButtonDelegate();
   layerMan.toolLayer.setup( stageSizeMan.getStageSize() );
-  layerDragObserver.setupUiBtn( layerMan.toolLayer.instantPanel.getMapDragButtonDelegate() );
-  zoomObserver.setupUiBtn(      layerMan.toolLayer.instantPanel.getMapDragButtonDelegate() );
+  layerDragObserver.setupUiBtn( mapDragPanelBtn );
+  zoomObserver.setupUiBtn( mapDragPanelBtn );
 
   mapStatus.on("change", function () {
     //__.log("change");
@@ -31,12 +33,10 @@ atcapp.boot = function (canvasId) {
 
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
 
-  var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender(
-    uiCommand,
-    keyObserver,
-    zoomObserver,
-    layerDragObserver
-  ).init(stage);
+  mapUserInputCommandSender.setup(uiCommand, zoomObserver, layerDragObserver);
+  layerDragObserver.setup(
+    mapLayerMan.getMapDraggableLayer(), keyObserver, mapDragPanelBtn);
+  zoomObserver.setup(keyObserver);
 
   stageSize.on("resize", function () {
     //__.log("resize: " + stage.canvas.width + ", " + stage.canvas.height );

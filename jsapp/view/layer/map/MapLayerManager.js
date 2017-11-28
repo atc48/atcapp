@@ -4,9 +4,10 @@
 
   var GRID_DEBUG = false;
   
-  function MapLayerManager(stageSize, uiCommand, flightLayerMan) {
+  function MapLayerManager(stageSize, uiCommand, flightLayerMan, layerDragObserver) {
     var self = this;
     this.flightLayerMan = flightLayerMan;
+    this.stageSize = stageSize;
 
     this.container = new createjs.Container();
     this.container.addChild(
@@ -16,6 +17,7 @@
       this.firLayer       = new app.FirLayer(),
       this.sectorBdyLayer = new app.SectorBdyLayer(),
       this.flightLayerMan.layer,
+      this.mapDragLayer   = new createjs.Container(),
       null
     );
 
@@ -40,6 +42,10 @@
     this.container.addEventListener("mousedown", _.bind(this._onMouseDown, this));
 
     this.mapStatus.setup(this.mapCoordConverter, stageSize);
+
+    this.mapDragLayer.cursor = "move";
+    layerDragObserver.on("onMapDragMode",  _.bind(this._onMapDragMode,  this));
+    layerDragObserver.on("offMapDragMode", _.bind(this._offMapDragMode, this));
   }
 
   MapLayerManager.prototype.getMapStatus = function () {
@@ -61,6 +67,23 @@
     app.StatusBar.getInstance().setMsg(
       coord.toExp({r:2})
     );
+  };
+
+  MapLayerManager.prototype.getMapDraggableLayer = function () {
+    return this.container;
+  }
+
+  MapLayerManager.prototype._onMapDragMode = function () {
+    var graphics = new createjs.Graphics().beginFill("#000000")
+	.drawRect(0, 0, this.stageSize.curWidth, this.stageSize.curHeight);
+    var shape = new createjs.Shape(graphics);
+    shape.alpha = 0.01;
+    this.mapDragLayer.addChild( shape );
+    return this;
+  };
+  MapLayerManager.prototype._offMapDragMode = function () {
+    this.mapDragLayer.removeAllChildren();
+    return this;
   };
 
   return MapLayerManager;

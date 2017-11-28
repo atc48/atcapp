@@ -2,19 +2,23 @@
   pkg.MapUserInputCommandSender = fac(_, __);
 })(atcapp, function (_, __) {
 
-  function MapUserInputCommandSender(uiCommand, keyObserver, zoomObserver, layerDragObserver) {
+  function MapUserInputCommandSender() {
+  };
 
-    this.init = function (stage) {
-      layerDragObserver.setup(stage, keyObserver, _onMapDragged);
-      zoomObserver.setup(keyObserver, _onMapZoomed);
-      return this;
-    };
-
-    function _onMapDragged(diffX, diffY) {
-      uiCommand.fire("mapMove", { moveX: diffX, moveY: diffY });
+  MapUserInputCommandSender.prototype.setup = function (
+    uiCommand, zoomObserver, layerDragObserver) {
+    
+    layerDragObserver.on("onDragged", _onMapDragged);
+    zoomObserver.on("onZoomed", _onMapZoomed);
+		    
+    function _onMapDragged(e) {
+      __.assert(_.isNumber(e.diffX) && !_.isNaN(e.diffX) &&
+		_.isNumber(e.diffY) && !_.isNaN(e.diffY));
+      uiCommand.fire("mapMove", { moveX: e.diffX, moveY: e.diffY });
     }
-    function _onMapZoomed(delta) {
-      uiCommand.fire("zoom", {delta: delta});
+    function _onMapZoomed(e) {
+      __.assert(_.isNumber(e.delta) && !_.isNaN(e.delta));
+      uiCommand.fire("zoom", {delta: e.delta});
     }
   }
 
