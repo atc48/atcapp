@@ -11,6 +11,7 @@ from canpos import Canpos
 
 
 FILE_ATS_ROUTES = "./data/JP-ENR-3.1-en-JP.html"
+FIX_AND_ROUTE_VAR_NAME = "atcapp.DATA_FIXES_AND_ROUTES"
 
 ROUTE_REG = r"(^|[^ABGRVW]+)[ABGRVW][0-9]+"
 FIX_SPECIAL_SIGN = "▲"
@@ -37,6 +38,9 @@ class Coordinate:
         self.north = self.wgs84_str_to_float(north)
         self.east  = self.wgs84_str_to_float(east)
         self.canpos = Canpos(self.east, self.north)
+
+    def wgs_exp(self):
+        return self.north_s + "N/" + self.east_s + "E"
 
     def __str__(self):
         return "<{}N{}E> ({}, {})".format(
@@ -81,8 +85,8 @@ class Fix:
     FIX     = 'FIX'
     VORDME  = 'VORDME'
     VORTAC  = 'VORTAC'
-    VOR     = 'VOR'
-    DME     = 'DME'
+    VOR     = 'VOR' # nop
+    DME     = 'DME' # nop
     CATEGORIES = [FIX, VORDME, VORTAC, VOR, DME]
     NAVAIDS_INFO_REG = r"([A-Z]+)" + r"\s+" + \
                        "({}|{}|{}|{})".format(VORDME, VORTAC, VOR, DME) + r"\s*" + \
@@ -145,6 +149,9 @@ class RouteRelation:
         assert not fix in self.fixes
         self.fixes.append(fix) # ! must keep the order of the fixes
 
+    def fix_codes(self):
+        return [fix.code for fix in self.fixes]
+
     def num_fixes(self):
         return len(self.fixes)
 
@@ -160,6 +167,9 @@ class FixRelation:
         assert isinstance(rte, Route)
         assert not rte in self.routes
         self.routes.append( rte )
+
+    def route_codes(self):
+        return [rte.code for rte in self.routes]
 
     def num_routes(self):
         return len(self.routes)
@@ -435,6 +445,67 @@ class HtmlParser:
 
         return parsed_objects
 
+
+class JsonMaker:
+    FIX_CAT_MAP = {
+        'FIX'    : 1,
+        'VORDME' : 2,
+        'VORTAC' : 3
+    }
+    BOOL_MAP = {
+        True : 1,
+        False: 0
+    }
+
+    def __init__(self, routes, fixes):
+        self.routes = routes
+        self.fixes  = fixes
+        self.result = {}
+        self.__generate()
+
+    def __generate(self):
+        dict_fixes = {
+            fix.code : self.__make_fix_val(fix)
+            for fix in self.fixes
+        }
+
+        dict_routes = {
+            rte.code  : self.__make_route_val(rte)
+            for rte in self.routes
+        }
+
+        self.result['fixes']  = dict_fixes
+        self.result['routes'] = dict_routes
+        self.result['grid_to_fix'] = [] #TODO
+        self.result['grid_to_rte'] = [] #TODO
+        
+    def __make_fix_val(self, fix):
+        assert isinstance(fix, Fix)
+        canpos = fix.coordinate.canpos.to_round(4)
+        route_codes = fix.relation().route_codes()
+        res = [
+            canpos.to_r(),
+            self.FIX_CAT_MAP[ fix.category ],
+            self.BOOL_MAP[ fix.is_compulsory ],
+            fix.pron,
+            self.BOOL_MAP[ fix.is_fir_boundary ],
+            fix.coordinate.wgs_exp() or 0,
+            route_codes
+        ]
+        return res
+
+    def __make_route_val(self, rte):
+        assert isinstance(rte, Route)
+        fix_codes = [code for code in rte.relation().fix_codes()]
+        res = [
+            fix_codes
+        ]
+        return res
+
+    def json(self):
+        return json.dumps(self.result, indent=2)
+        
+
 def _print_route_detail(route):
     _print(route)
     _print("  num_fixes: " + str(route.relation().num_fixes()))
@@ -474,6 +545,10 @@ def main():
 
     assert structer.result_info == \
         {'num_all_objs': 1120, 'num_coordinates': 521, 'num_removed_dup_fixes': 126, 'num_removed_dup_routes': 6, 'num_routes': 72, 'num_fixes': 395}
+
+    json_maker = JsonMaker(structer.routes, structer.fixes)
+    if not IS_DEBUG:
+        print(FIX_AND_ROUTE_VAR_NAME + " =\n" + json_maker.json())
 
 
 def _print(str):
