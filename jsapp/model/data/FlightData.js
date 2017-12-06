@@ -1,6 +1,6 @@
 (function (pkg, fac) {
-  pkg.FlightData = fac(_, __);
-})(atcapp, function (_, __) {
+  pkg.FlightData = fac(_, __, pkg);
+})(atcapp, function (_, __, app) {
 
   function FlightData(raw) {
     this._raw = raw;
@@ -19,16 +19,7 @@
      9"dep_code"
      10"dest_code"
    */
-  FlightData.updateKeys = function (keys) {
-    _.each(keys, __addGetter);
-
-    function __addGetter(key, i) {
-      __.assert(_.isString(key) && key.length > 0 && _.isNumber(i) && i >= 0);      
-      FlightData.prototype[key] = function () {
-	return this._raw[i];
-      };
-    }
-  };
+  FlightData.updateKeys = app.KlassUtil.make_updateKeys(FlightData);
 
   FlightData.prototype.isGround = function () {
     return !!this.ground_flag();
