@@ -16,6 +16,7 @@
       this.worldMapLayer  = new app.WorldMapLayer(),
       this.firLayer       = new app.FirLayer(),
       this.sectorBdyLayer = new app.SectorBdyLayer(),
+      this.navaidsLayer   = new app.NavaidsLayer(),
       this.flightLayerMan.layer,
       this.mapDragLayer   = new createjs.Container(),
       null
@@ -55,6 +56,7 @@
   MapLayerManager.prototype._onMapScaleChange = function (e) {
     var scale = e.scale;
     this.coordGridLayer.onScaleUpdated(scale);
+    this.navaidsLayer.onMapScaleChange(scale);
     this.flightLayerMan.onMapScaleChange(scale);
   }
 

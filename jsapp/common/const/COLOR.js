@@ -20,6 +20,12 @@ atcapp.COLOR = (function (){
     },
     FONT: "Verdana",
     FONT_COLOR: "#aaaaaa",
+    NAVAIDS: {
+      COLOR: "#4a4a4a",
+      FONT_SIZE : 12,
+      FONT_COLOR: "#666",
+      FONT: "10px Verdana"
+    },
     NOP: null
   };
 

@@ -17,6 +17,9 @@ atcapp.boot = function (canvasId) {
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
   var mapStatus = mapLayerMan.getMapStatus();
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender();
+  var navaidsInit = new atcapp.NavaidsInitializer();
+
+  navaidsInit.init(mapLayerMan.navaidsLayer.fixLayer, mapLayerMan.navaidsLayer.fixLayer);
 
   var mapDragPanelBtn = layerMan.toolLayer.instantPanel.getMapDragButtonDelegate();
   layerMan.toolLayer.setup( stageSizeMan.getStageSize() );
