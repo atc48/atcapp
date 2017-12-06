@@ -474,6 +474,8 @@ class JsonMaker:
             for rte in self.routes
         }
 
+        self.result['fixes_keys']  = self.fixes_keys
+        self.result['routes_keys'] = self.routes_keys
         self.result['fixes']  = dict_fixes
         self.result['routes'] = dict_routes
         self.result['grid_to_fix'] = [] #TODO
@@ -487,10 +489,19 @@ class JsonMaker:
             canpos.to_r(),
             self.FIX_CAT_MAP[ fix.category ],
             self.BOOL_MAP[ fix.is_compulsory ],
-            fix.pron,
+            fix.pron or 0,
             self.BOOL_MAP[ fix.is_fir_boundary ],
-            fix.coordinate.wgs_exp() or 0,
+            fix.coordinate.wgs_exp(),
             route_codes
+        ]
+        self.fixes_keys = [
+            'canpos_array',
+            'category_key',
+            'is_compulsory',
+            'pronounciation',
+            'is_fir_boundary',
+            'coord_exp',
+            'route_codes'
         ]
         return res
 
@@ -499,6 +510,9 @@ class JsonMaker:
         fix_codes = [code for code in rte.relation().fix_codes()]
         res = [
             fix_codes
+        ]
+        self.routes_keys = [
+            'fix_codes'
         ]
         return res
 

@@ -1,5 +1,17 @@
 atcapp.DATA_FIXES_AND_ROUTES =
 {
+  "fixes_keys": [
+    "canpos_array",
+    "category_key",
+    "is_compulsory",
+    "pronounciation",
+    "is_fir_boundary",
+    "coord_exp",
+    "route_codes"
+  ],
+  "routes_keys": [
+    "fix_codes"
+  ],
   "fixes": {
     "HCE": [
       [
@@ -23,7 +35,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "331135.56N/1385820.63E",
       [
@@ -56,7 +68,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332152.21N/1352629.45E",
       [
@@ -70,7 +82,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "331455.57N/1345950.00E",
       [
@@ -84,7 +96,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330343.30N/1341403.39E",
       [
@@ -98,7 +110,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325355.23N/1333359.40E",
       [
@@ -128,7 +140,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "320830.42N/1313529.33E",
       [
@@ -142,7 +154,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "315409.81N/1310255.20E",
       [
@@ -173,7 +185,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "312306.13N/1300640.56E",
       [
@@ -187,7 +199,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "311718.61N/1295752.97E",
       [
@@ -201,7 +213,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "304628.72N/1291204.16E",
       [
@@ -215,7 +227,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "295154.10N/1275013.71E",
       [
@@ -230,7 +242,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "293513.19N/1272752.85E",
       [
@@ -244,7 +256,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "285812.24N/1263445.48E",
       [
@@ -258,7 +270,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "283813.49N/1260753.34E",
       [
@@ -272,7 +284,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "273719.66N/1244313.87E",
       [
@@ -286,7 +298,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "270530.00N/1240000.00E",
       [
@@ -300,7 +312,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "454507.47N/1405416.05E",
       [
@@ -328,7 +340,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "450654.67N/1413100.14E",
       [
@@ -342,7 +354,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "450031.10N/1414708.08E",
       [
@@ -357,7 +369,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "334858.14N/1422051.70E",
       [
@@ -372,7 +384,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300014.16N/1430954.12E",
       [
@@ -386,7 +398,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "250016.00N/1442024.34E",
       [
@@ -400,7 +412,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1451148.00E",
       [
@@ -414,7 +426,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "331014.59N/1385726.94E",
       [
@@ -429,7 +441,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "323648.78N/1383843.10E",
       [
@@ -443,7 +455,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300013.67N/1371419.81E",
       [
@@ -458,7 +470,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "271614.58N/1355102.47E",
       [
@@ -472,7 +484,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "252951.17N/1345920.86E",
       [
@@ -487,7 +499,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1345648.00E",
       [
@@ -503,7 +515,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "344323.19N/1291359.84E",
       [
@@ -517,7 +529,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "335830.34N/1293904.60E",
       [
@@ -546,7 +558,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "323510.18N/1301410.77E",
       [
@@ -560,7 +572,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "320557.88N/1302535.21E",
       [
@@ -574,7 +586,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "313547.39N/1303213.88E",
       [
@@ -588,7 +600,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "311621.67N/1302341.91E",
       [
@@ -602,7 +614,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "310430.76N/1301807.83E",
       [
@@ -616,7 +628,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300013.16N/1294928.07E",
       [
@@ -630,7 +642,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "285919.53N/1292237.29E",
       [
@@ -644,7 +656,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "282654.72N/1290826.40E",
       [
@@ -658,7 +670,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "280923.83N/1290051.46E",
       [
@@ -690,7 +702,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "270010.11N/1281928.39E",
       [
@@ -704,7 +716,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "264016.98N/1280219.13E",
       [
@@ -734,7 +746,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "252610.20N/1271722.40E",
       [
@@ -748,7 +760,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "240715.23N/1264153.42E",
       [
@@ -763,7 +775,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "225440.37N/1260825.62E",
       [
@@ -777,7 +789,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1251600.00E",
       [
@@ -791,7 +803,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "323011.98N/1265752.79E",
       [
@@ -805,7 +817,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "321648.08N/1270222.79E",
       [
@@ -820,7 +832,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "311512.51N/1272252.76E",
       [
@@ -834,7 +846,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "301557.15N/1274224.95E",
       [
@@ -848,7 +860,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "293134.10N/1275757.29E",
       [
@@ -862,7 +874,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "290124.45N/1280918.67E",
       [
@@ -876,7 +888,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "274541.76N/1283516.80E",
       [
@@ -890,7 +902,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "481706.00N/1604030.00E",
       [
@@ -904,7 +916,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "445127.76N/1542500.04E",
       [
@@ -918,7 +930,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "410504.52N/1485632.61E",
       [
@@ -932,7 +944,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "381956.57N/1453107.25E",
       [
@@ -946,7 +958,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "372921.07N/1443238.67E",
       [
@@ -960,7 +972,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "370011.57N/1435946.88E",
       [
@@ -974,7 +986,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "354912.89N/1423348.50E",
       [
@@ -988,7 +1000,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "345253.46N/1405514.19E",
       [
@@ -1017,7 +1029,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325701.71N/1383928.33E",
       [
@@ -1031,7 +1043,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "312555.07N/1363913.83E",
       [
@@ -1046,7 +1058,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300731.48N/1352032.36E",
       [
@@ -1060,7 +1072,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "283501.96N/1334850.96E",
       [
@@ -1075,7 +1087,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "275250.18N/1330815.22E",
       [
@@ -1105,7 +1117,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "242120.31N/1300715.37E",
       [
@@ -1120,7 +1132,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "230015.74N/1290452.76E",
       [
@@ -1135,7 +1147,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1272500.00E",
       [
@@ -1165,7 +1177,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "322744.70N/1275128.78E",
       [
@@ -1179,7 +1191,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "322406.90N/1273451.60E",
       [
@@ -1193,7 +1205,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "321142.09N/1263916.92E",
       [
@@ -1223,7 +1235,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "334138.64N/1291652.47E",
       [
@@ -1237,7 +1249,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "333502.61N/1281857.26E",
       [
@@ -1251,7 +1263,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "331454.70N/1355252.75E",
       [
@@ -1265,7 +1277,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "324226.74N/1360654.14E",
       [
@@ -1279,7 +1291,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "322747.26N/1361310.48E",
       [
@@ -1293,7 +1305,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "322017.30N/1361621.89E",
       [
@@ -1308,7 +1320,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "250015.62N/1390931.73E",
       [
@@ -1322,7 +1334,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1403600.00E",
       [
@@ -1336,7 +1348,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "454500.00N/1415018.00E",
       [
@@ -1366,7 +1378,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "371845.35N/1324410.38E",
       [
@@ -1397,7 +1409,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "451155.93N/1434045.30E",
       [
@@ -1427,7 +1439,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "413900.00N/1364700.00E",
       [
@@ -1441,7 +1453,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "400009.62N/1372630.42E",
       [
@@ -1455,7 +1467,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "391409.98N/1374448.45E",
       [
@@ -1470,7 +1482,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "320013.70N/1455947.09E",
       [
@@ -1485,7 +1497,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300014.51N/1465105.14E",
       [
@@ -1499,7 +1511,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "250016.37N/1485029.22E",
       [
@@ -1513,7 +1525,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1501900.00E",
       [
@@ -1545,7 +1557,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "232105.84N/1241317.77E",
       [
@@ -1559,7 +1571,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "230015.53N/1235754.31E",
       [
@@ -1573,7 +1585,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "224751.19N/1234900.55E",
       [
@@ -1587,7 +1599,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1223300.00E",
       [
@@ -1601,7 +1613,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "300012.90N/1251153.55E",
       [
@@ -1615,7 +1627,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "293513.06N/1250129.64E",
       [
@@ -1629,7 +1641,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "281854.00N/1240000.00E",
       [
@@ -1659,7 +1671,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "341300.88N/1392936.75E",
       [
@@ -1673,7 +1685,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "324612.80N/1394313.91E",
       [
@@ -1687,7 +1699,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "310000.18N/1395913.45E",
       [
@@ -1701,7 +1713,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300003.09N/1402046.24E",
       [
@@ -1715,7 +1727,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "281858.56N/1411949.03E",
       [
@@ -1729,7 +1741,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "250015.82N/1420212.95E",
       [
@@ -1743,7 +1755,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1425924.00E",
       [
@@ -1757,7 +1769,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "320730.69N/1322346.46E",
       [
@@ -1771,7 +1783,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "315530.20N/1321230.51E",
       [
@@ -1785,7 +1797,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "313316.78N/1315147.21E",
       [
@@ -1799,7 +1811,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "311334.62N/1313336.57E",
       [
@@ -1813,7 +1825,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "310658.63N/1312733.19E",
       [
@@ -1827,7 +1839,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "304536.42N/1310803.50E",
       [
@@ -1856,7 +1868,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300032.33N/1303804.84E",
       [
@@ -1870,7 +1882,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "291758.83N/1301252.40E",
       [
@@ -1884,7 +1896,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "284357.05N/1295300.74E",
       [
@@ -1912,7 +1924,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "281109.84N/1292733.32E",
       [
@@ -1926,7 +1938,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "274918.96N/1290526.46E",
       [
@@ -1940,7 +1952,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "443900.00N/1451520.00E",
       [
@@ -1971,7 +1983,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "335412.60N/1420947.90E",
       [
@@ -1985,7 +1997,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332312.91N/1431447.66E",
       [
@@ -1999,7 +2011,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "300014.59N/1473746.94E",
       [
@@ -2013,7 +2025,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "250016.59N/1512310.62E",
       [
@@ -2027,7 +2039,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "222428.00N/1531126.00E",
       [
@@ -2041,7 +2053,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       1,
       "210000.00N/1540812.00E",
       [
@@ -2055,7 +2067,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "344719.17N/1291922.81E",
       [
@@ -2069,7 +2081,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "341544.87N/1294945.29E",
       [
@@ -2083,7 +2095,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "331639.96N/1302544.64E",
       [
@@ -2097,7 +2109,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "331433.97N/1302556.52E",
       [
@@ -2111,7 +2123,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330831.81N/1302632.06E",
       [
@@ -2125,7 +2137,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330332.20N/1302701.41E",
       [
@@ -2139,7 +2151,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325147.11N/1302815.66E",
       [
@@ -2154,7 +2166,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "323919.48N/1302925.48E",
       [
@@ -2168,7 +2180,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "322342.27N/1303053.71E",
       [
@@ -2182,7 +2194,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "321759.30N/1303115.73E",
       [
@@ -2196,7 +2208,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "311958.21N/1304312.03E",
       [
@@ -2210,7 +2222,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "310633.03N/1304812.92E",
       [
@@ -2224,7 +2236,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "304735.17N/1305515.40E",
       [
@@ -2238,7 +2250,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "302755.56N/1310541.55E",
       [
@@ -2252,7 +2264,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "301223.99N/1311722.39E",
       [
@@ -2266,7 +2278,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "300013.26N/1312627.87E",
       [
@@ -2280,7 +2292,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "293522.53N/1314453.86E",
       [
@@ -2294,7 +2306,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "292239.98N/1315525.83E",
       [
@@ -2309,7 +2321,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "264401.21N/1340227.33E",
       [
@@ -2324,7 +2336,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "210000.00N/1374918.00E",
       [
@@ -2338,7 +2350,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "462454.00N/1621836.00E",
       [
@@ -2352,7 +2364,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "425853.89N/1554008.40E",
       [
@@ -2366,7 +2378,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "390913.81N/1494931.81E",
       [
@@ -2380,7 +2392,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "235700.00N/1240000.00E",
       [
@@ -2394,7 +2406,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "445931.32N/1441658.34E",
       [
@@ -2423,7 +2435,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "354925.83N/1304325.23E",
       [
@@ -2437,7 +2449,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "344751.23N/1371705.45E",
       [
@@ -2469,7 +2481,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "351807.28N/1363736.54E",
       [
@@ -2499,7 +2511,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "353011.27N/1344121.95E",
       [
@@ -2527,7 +2539,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "353038.29N/1334210.40E",
       [
@@ -2555,7 +2567,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "353733.90N/1323440.85E",
       [
@@ -2569,7 +2581,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "362223.65N/1312541.94E",
       [
@@ -2583,7 +2595,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "433608.13N/1381447.47E",
       [
@@ -2597,7 +2609,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "400009.66N/1374954.29E",
       [
@@ -2611,7 +2623,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "385715.14N/1380315.55E",
       [
@@ -2625,7 +2637,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "384030.06N/1382120.30E",
       [
@@ -2639,7 +2651,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "380715.60N/1385631.32E",
       [
@@ -2688,7 +2700,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "363059.70N/1403857.51E",
       [
@@ -2702,7 +2714,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "361914.44N/1403217.02E",
       [
@@ -2716,7 +2728,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "402510.29N/1445945.93E",
       [
@@ -2731,7 +2743,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "391352.49N/1423158.92E",
       [
@@ -2761,7 +2773,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "380633.00N/1403622.01E",
       [
@@ -2775,7 +2787,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "380434.29N/1401745.80E",
       [
@@ -2789,7 +2801,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "494236.00N/1592048.00E",
       [
@@ -2803,7 +2815,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "461300.00N/1530012.01E",
       [
@@ -2817,7 +2829,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "422327.78N/1472832.74E",
       [
@@ -2831,7 +2843,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415457.90N/1465133.04E",
       [
@@ -2845,7 +2857,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "385422.71N/1431340.77E",
       [
@@ -2859,7 +2871,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "381913.86N/1422812.11E",
       [
@@ -2873,7 +2885,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "380021.13N/1420341.96E",
       [
@@ -2887,7 +2899,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "485942.00N/1600042.00E",
       [
@@ -2901,7 +2913,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "453151.37N/1534312.02E",
       [
@@ -2915,7 +2927,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "414422.15N/1481302.67E",
       [
@@ -2929,7 +2941,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "374859.19N/1433222.87E",
       [
@@ -2943,7 +2955,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "222244.39N/1305939.86E",
       [
@@ -2958,7 +2970,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "355336.00N/1435217.10E",
       [
@@ -2972,7 +2984,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "371150.88N/1453958.72E",
       [
@@ -2986,7 +2998,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "402528.88N/1493902.56E",
       [
@@ -3000,7 +3012,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "441000.00N/1550548.06E",
       [
@@ -3014,7 +3026,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "473302.61N/1612000.00E",
       [
@@ -3028,7 +3040,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       1,
       "245600.00N/1240000.00E",
       [
@@ -3042,7 +3054,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "451703.92N/1414757.93E",
       [
@@ -3056,7 +3068,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "451226.73N/1414747.16E",
       [
@@ -3070,7 +3082,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "434157.61N/1414344.51E",
       [
@@ -3084,7 +3096,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "432235.38N/1414303.96E",
       [
@@ -3098,7 +3110,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "432106.67N/1414259.79E",
       [
@@ -3113,7 +3125,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "430918.82N/1414221.62E",
       [
@@ -3162,7 +3174,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "432815.18N/1443214.49E",
       [
@@ -3193,7 +3205,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "430253.43N/1435433.83E",
       [
@@ -3207,7 +3219,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "430406.25N/1432936.24E",
       [
@@ -3222,7 +3234,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "430531.47N/1430024.88E",
       [
@@ -3236,7 +3248,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "430820.50N/1420204.10E",
       [
@@ -3266,7 +3278,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "425555.18N/1411312.60E",
       [
@@ -3280,7 +3292,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "423007.08N/1410431.00E",
       [
@@ -3311,7 +3323,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "450425.81N/1421941.47E",
       [
@@ -3325,7 +3337,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "440149.54N/1435635.47E",
       [
@@ -3339,7 +3351,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "433738.73N/1435710.93E",
       [
@@ -3353,7 +3365,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "425526.08N/1432231.07E",
       [
@@ -3383,7 +3395,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "425943.49N/1435448.76E",
       [
@@ -3397,7 +3409,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "425154.66N/1425543.63E",
       [
@@ -3411,7 +3423,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "424818.74N/1422754.65E",
       [
@@ -3425,7 +3437,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "424511.19N/1440740.69E",
       [
@@ -3440,7 +3452,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "424312.13N/1422837.78E",
       [
@@ -3454,7 +3466,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "434958.12N/1434523.20E",
       [
@@ -3468,7 +3480,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "432703.98N/1421700.93E",
       [
@@ -3482,7 +3494,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "440516.01N/1430426.84E",
       [
@@ -3496,7 +3508,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "440108.77N/1425822.82E",
       [
@@ -3524,7 +3536,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415719.68N/1395856.92E",
       [
@@ -3538,7 +3550,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415448.28N/1401124.45E",
       [
@@ -3552,7 +3564,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "394204.07N/1403305.58E",
       [
@@ -3567,7 +3579,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "401115.92N/1405701.37E",
       [
@@ -3596,7 +3608,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415757.98N/1411856.38E",
       [
@@ -3610,7 +3622,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415148.28N/1411535.61E",
       [
@@ -3624,7 +3636,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "414102.54N/1411021.49E",
       [
@@ -3638,7 +3650,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "411833.99N/1405915.62E",
       [
@@ -3667,7 +3679,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "402925.44N/1404004.97E",
       [
@@ -3681,7 +3693,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "401730.07N/1403817.94E",
       [
@@ -3695,7 +3707,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "390800.77N/1402756.17E",
       [
@@ -3725,7 +3737,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "362923.79N/1393946.44E",
       [
@@ -3739,7 +3751,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "362328.33N/1394156.28E",
       [
@@ -3767,7 +3779,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "344429.57N/1390040.10E",
       [
@@ -3795,7 +3807,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "344629.03N/1372758.30E",
       [
@@ -3824,7 +3836,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "333148.92N/1394844.58E",
       [
@@ -3838,7 +3850,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332250.44N/1394814.02E",
       [
@@ -3852,7 +3864,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "415507.29N/1414535.87E",
       [
@@ -3866,7 +3878,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "405226.72N/1415127.82E",
       [
@@ -3880,7 +3892,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "401550.87N/1415454.67E",
       [
@@ -3910,7 +3922,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "373155.90N/1403555.59E",
       [
@@ -3938,7 +3950,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "351001.60N/1362900.52E",
       [
@@ -3952,7 +3964,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "350657.59N/1361521.61E",
       [
@@ -3980,7 +3992,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "345550.20N/1352143.92E",
       [
@@ -3995,7 +4007,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "345130.62N/1345944.03E",
       [
@@ -4009,7 +4021,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "344734.41N/1343847.68E",
       [
@@ -4023,7 +4035,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "344517.65N/1342700.24E",
       [
@@ -4052,7 +4064,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "342817.50N/1332301.14E",
       [
@@ -4081,7 +4093,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340808.50N/1321609.94E",
       [
@@ -4095,7 +4107,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340446.04N/1320850.17E",
       [
@@ -4110,7 +4122,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340013.04N/1314112.84E",
       [
@@ -4152,7 +4164,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "334719.34N/1304712.88E",
       [
@@ -4180,7 +4192,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "360205.78N/1331430.44E",
       [
@@ -4194,7 +4206,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "351046.37N/1325153.70E",
       [
@@ -4208,7 +4220,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "345336.99N/1324955.39E",
       [
@@ -4222,7 +4234,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "420321.67N/1410527.55E",
       [
@@ -4236,7 +4248,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "405545.68N/1402636.82E",
       [
@@ -4250,7 +4262,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "400422.34N/1400316.11E",
       [
@@ -4264,7 +4276,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "383813.44N/1392421.51E",
       [
@@ -4278,7 +4290,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "382358.50N/1391831.08E",
       [
@@ -4292,7 +4304,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "380947.11N/1391217.05E",
       [
@@ -4306,7 +4318,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "373613.22N/1382849.19E",
       [
@@ -4320,7 +4332,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "371535.83N/1375304.71E",
       [
@@ -4335,7 +4347,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "371154.55N/1374610.35E",
       [
@@ -4349,7 +4361,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "370217.50N/1372932.53E",
       [
@@ -4363,7 +4375,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "364909.15N/1370753.52E",
       [
@@ -4377,7 +4389,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "364422.39N/1365925.55E",
       [
@@ -4391,7 +4403,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "363618.35N/1364512.98E",
       [
@@ -4421,7 +4433,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "410638.30N/1404501.60E",
       [
@@ -4435,7 +4447,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "410009.54N/1404414.25E",
       [
@@ -4449,7 +4461,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "395456.61N/1401926.80E",
       [
@@ -4478,7 +4490,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "391910.08N/1395933.76E",
       [
@@ -4492,7 +4504,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "384155.70N/1393512.06E",
       [
@@ -4506,7 +4518,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "382419.80N/1392354.30E",
       [
@@ -4520,7 +4532,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "372400.10N/1383916.78E",
       [
@@ -4534,7 +4546,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "371514.90N/1383208.58E",
       [
@@ -4548,7 +4560,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "362850.15N/1375432.88E",
       [
@@ -4563,7 +4575,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "352106.20N/1365857.86E",
       [
@@ -4577,7 +4589,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "391709.51N/1401401.06E",
       [
@@ -4591,7 +4603,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "385000.59N/1401748.16E",
       [
@@ -4622,7 +4634,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "393645.20N/1412818.24E",
       [
@@ -4636,7 +4648,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "390105.96N/1403340.77E",
       [
@@ -4650,7 +4662,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "424916.84N/1440846.59E",
       [
@@ -4664,7 +4676,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "423316.40N/1440423.57E",
       [
@@ -4678,7 +4690,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "413134.68N/1434805.07E",
       [
@@ -4692,7 +4704,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "404441.98N/1433548.30E",
       [
@@ -4706,7 +4718,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332804.16N/1351944.01E",
       [
@@ -4720,7 +4732,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332858.38N/1345950.00E",
       [
@@ -4734,7 +4746,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "333002.09N/1343555.24E",
       [
@@ -4748,7 +4760,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "333037.07N/1342234.31E",
       [
@@ -4794,7 +4806,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "341002.08N/1335233.07E",
       [
@@ -4808,7 +4820,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340224.51N/1332728.60E",
       [
@@ -4822,7 +4834,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "335826.17N/1331251.53E",
       [
@@ -4851,7 +4863,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "333646.76N/1320427.95E",
       [
@@ -4879,7 +4891,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330736.58N/1312932.11E",
       [
@@ -4894,7 +4906,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330058.11N/1311449.42E",
       [
@@ -4908,7 +4920,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325837.74N/1310934.05E",
       [
@@ -4922,7 +4934,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325158.26N/1305441.47E",
       [
@@ -4964,7 +4976,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325037.00N/1293746.89E",
       [
@@ -4978,7 +4990,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "324301.73N/1290247.66E",
       [
@@ -4992,7 +5004,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "355328.29N/1363803.40E",
       [
@@ -5006,7 +5018,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "354704.21N/1364056.98E",
       [
@@ -5020,7 +5032,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "353923.51N/1364424.15E",
       [
@@ -5034,7 +5046,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "341815.80N/1363519.24E",
       [
@@ -5048,7 +5060,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340546.03N/1362337.09E",
       [
@@ -5062,7 +5074,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "340053.91N/1335517.46E",
       [
@@ -5076,7 +5088,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "334905.07N/1334915.33E",
       [
@@ -5090,7 +5102,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "332022.21N/1333013.65E",
       [
@@ -5104,7 +5116,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "330547.45N/1331731.45E",
       [
@@ -5118,7 +5130,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "325253.07N/1312001.15E",
       [
@@ -5132,7 +5144,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "322813.04N/1310413.23E",
       [
@@ -5146,7 +5158,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "321145.37N/1305346.45E",
       [
@@ -5160,7 +5172,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "350700.56N/1351800.92E",
       [
@@ -5188,7 +5200,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "342628.54N/1352531.28E",
       [
@@ -5202,7 +5214,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "342218.42N/1352546.10E",
       [
@@ -5216,7 +5228,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "341817.59N/1352600.36E",
       [
@@ -5230,7 +5242,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "335800.89N/1352712.06E",
       [
@@ -5244,7 +5256,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "334250.65N/1330538.15E",
       [
@@ -5258,7 +5270,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "334049.70N/1331233.12E",
       [
@@ -5272,7 +5284,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "370604.90N/1375320.73E",
       [
@@ -5300,7 +5312,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "354010.53N/1380024.97E",
       [
@@ -5314,7 +5326,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "314329.56N/1351952.37E",
       [
@@ -5328,7 +5340,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "305910.73N/1341338.41E",
       [
@@ -5342,7 +5354,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       1,
-      "",
+      0,
       0,
       "293448.71N/1321224.35E",
       [
@@ -5356,7 +5368,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "283014.76N/1300839.09E",
       [
@@ -5370,7 +5382,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "275755.55N/1292440.49E",
       [
@@ -5384,7 +5396,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "273153.07N/1290553.48E",
       [
@@ -5398,7 +5410,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "275214.02N/1303052.02E",
       [
@@ -5412,7 +5424,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "282150.97N/1324502.30E",
       [
@@ -5426,7 +5438,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "260739.47N/1281709.81E",
       [
@@ -5440,7 +5452,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "260405.77N/1284436.58E",
       [
@@ -5454,7 +5466,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "255821.68N/1292724.47E",
       [
@@ -5468,7 +5480,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "255334.96N/1304240.05E",
       [
@@ -5482,7 +5494,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "255226.49N/1305915.08E",
       [
@@ -5496,7 +5508,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "255203.25N/1310446.65E",
       [
@@ -5510,7 +5522,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "262951.39N/1331627.05E",
       [
@@ -5524,7 +5536,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "244232.32N/1250554.80E",
       [
@@ -5538,7 +5550,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "243721.70N/1245115.01E",
       [
@@ -5552,7 +5564,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "243621.79N/1244825.94E",
       [
@@ -5566,7 +5578,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "242754.18N/1242527.08E",
       [
@@ -5594,7 +5606,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "255259.94N/1270615.82E",
       [
@@ -5608,7 +5620,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "254437.98N/1265227.01E",
       [
@@ -5622,7 +5634,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "253111.57N/1263020.88E",
       [
@@ -5636,7 +5648,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "251644.96N/1260632.88E",
       [
@@ -5650,7 +5662,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ],
       1,
       0,
-      "",
+      0,
       0,
       "250351.77N/1254529.43E",
       [
