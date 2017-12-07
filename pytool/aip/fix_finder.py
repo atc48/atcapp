@@ -7,46 +7,17 @@ from functools import reduce
 from bs4 import BeautifulSoup
 
 sys.path.append('../common/')
-from canpos import Canpos
+from canpos import Canpos, Coordinate
 
 FIX_FILE = "./data/JP-ENR-4.3-en-JP.html"
-COORDINATE_REG = r"([0-9\.]+)/?N([0-9\.]+)E"
-COORDINATE_DETAIL_REG = r"([0-9]+)([0-9]{2})([0-9]{2})\.([0-9]+)"
 FIX_CODE_SUBS = [
     [r"MINAMI\sDAITO",  "MINAMIDAITO"],
     [r"NORTH\sCHIDORI", "NORTHCHIDORI"]
 ]
 
-class Coordinate:
-    def __init__(self, north, east):
-        assert isinstance(north, str) and isinstance(east, str), "must_str"
-        self.north_s = north
-        self.east_s  = east
-        # 322747.26N/1361310.48E
-        self.north = self.wgs84_str_to_float(north)
-        self.east  = self.wgs84_str_to_float(east)
-        self.canpos = Canpos(self.east, self.north)
-
-    def wgs_exp(self):
-        return self.north_s + "N/" + self.east_s + "E"
-
-    def __str__(self):
-        return "<{}N{}E> ({}, {})".format(
-            self.north_s, self.east_s, self.canpos.north, self.canpos.east)
-
-    def __eq__(self, other):
-        if other is None or not isinstance(other, Coordinate):
-            return False
-        return self.north_s == other.north_s and \
-            self.east_s == other.east_s
-    
-    @staticmethod
-    def wgs84_str_to_float(s):
-        m = re.match(COORDINATE_DETAIL_REG, s)
-        deg, mins, secs, dot_secs = [float(m.group(i)) for i in [1,2,3,4]]
-        assert m, s
-        #_print("{} {} {} {} {}".format(m.group(0), deg, mins, secs, dot_secs))
-        return deg + mins / 60 + (secs + dot_secs * 0.01) / 3600
+RADIO_AID_FILE = "./data/JP-ENR-4.1-en-JP.html"
+RADIO_AID_SUBS = [
+]
 
 
 class Fix:
@@ -92,12 +63,14 @@ class Fix:
 
 class FixParser:
 
+    FILE = FIX_FILE
+
     def __init__(self):
         self.fixes = []
         self.unknown_codes = []
 
     def parse(self):
-        html_raw = open(FIX_FILE, 'r').read()
+        html_raw = open(self.FILE, 'r').read()
         soup = BeautifulSoup(html_raw, 'html.parser')
 
         tbody = soup.find('div', {'id': 'ENR-4.3'}).find(
@@ -131,7 +104,7 @@ class FixParser:
             # TODO: fetch navaids instead insert fix,
             return None
 
-        coordinate = self.parse_coordinate(coordinate_str)
+        coordinate = Coordinate.parse_coordinate(coordinate_str)
 
         fix = Fix(code, Fix.FIX).set_coordinate(coordinate)
         self.fixes.append( fix )
@@ -142,12 +115,7 @@ class FixParser:
         for r in FIX_CODE_SUBS:
             code = re.sub(r[0], r[1], code.strip())
         return code
-    
-    def parse_coordinate(self, str):
-        m = re.match(COORDINATE_REG, str)
-        assert m, str
-        coordinate = Coordinate(  m.group(0), m.group(1) )
-        return coordinate
+
 
 def main():
     fix_parser = FixParser()

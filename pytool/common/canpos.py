@@ -123,6 +123,52 @@ class WmapCanpos(Canpos):
         x = (east) * cls.MULT
         y = (north * -1 + 90) * cls.MULT * cls.SCALE_Y
         return [x, y]
+
+
+
+class Coordinate:
+
+    COORDINATE_REG = r"([0-9\.]+)/?N([0-9\.]+)E"
+    COORDINATE_DETAIL_REG = r"([0-9]+)([0-9]{2})([0-9]{2})\.([0-9]+)"
+    
+    def __init__(self, north, east):
+        assert isinstance(north, str) and isinstance(east, str), "must_str"
+        self.north_s = north
+        self.east_s  = east
+        # 322747.26N/1361310.48E
+        self.north = self.wgs84_str_to_float(north)
+        self.east  = self.wgs84_str_to_float(east)
+        self.canpos = Canpos(self.east, self.north)
+
+    def wgs_exp(self):
+        return self.north_s + "N/" + self.east_s + "E"
+
+    def __str__(self):
+        return "<{}N{}E> ({}, {})".format(
+            self.north_s, self.east_s, self.canpos.north, self.canpos.east)
+
+    def __eq__(self, other):
+        if other is None or not isinstance(other, Coordinate):
+            return False
+        return self.north_s == other.north_s and \
+            self.east_s == other.east_s
+    
+    @classmethod
+    def wgs84_str_to_float(cls, s):
+        m = re.match(cls.COORDINATE_DETAIL_REG, s)
+        deg, mins, secs, dot_secs = [float(m.group(i)) for i in [1,2,3,4]]
+        assert m, s
+        #_print("{} {} {} {} {}".format(m.group(0), deg, mins, secs, dot_secs))
+        return deg + mins / 60 + (secs + dot_secs * 0.01) / 3600
+
+    @classmethod
+    def parse_coordinate(cls, s):
+        assert isinstance(s, str), s
+        m = re.match(cls.COORDINATE_REG, s)
+        assert m, s
+        coordinate = Coordinate(  m.group(0), m.group(1) )
+        return coordinate
+
     
 if __name__ == "__main__":
     import random
