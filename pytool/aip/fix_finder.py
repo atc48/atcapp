@@ -71,8 +71,8 @@ class AbstractAipTableParser:
         self.__filepath = filepath
         self.__div_id   = div_id
         
-
     def parse(self):
+        assert not self._fixes, "can not call twice."
         html_raw = open(self.__filepath, 'r').read()
         soup = BeautifulSoup(html_raw, 'html.parser')
 
@@ -95,6 +95,7 @@ class AbstractAipTableParser:
             'num_fixes': len(self._fixes),
             'num_unknown': len(self._unknowns)
         }
+
         for fix in self._fixes:
             assert 1 == len([f for f in  self._fixes if fix == f])
 
@@ -110,6 +111,9 @@ class AbstractAipTableParser:
 
     def _after_parse(self):
         None
+
+    def fixes(self):
+        return self._fixes.copy()
 
 class RadioAidParser(AbstractAipTableParser):
     FILE = RADIO_AID_FILE
@@ -132,6 +136,9 @@ class RadioAidParser(AbstractAipTableParser):
         for dup in self.__dup_removed:
             selected = [f for f in self._fixes if f.code == dup.code][0]
             _print(str(selected) + " <= " + str(dup) )
+
+        assert not [fix for fix in self._fixes if fix.category == Fix.FIX]
+        assert not [fix for fix in self._fixes if not fix.pron]
 
         self.identify_info['num_dup'] = len(self.__dup_removed)
         
@@ -200,34 +207,45 @@ class FixParser(AbstractAipTableParser):
 
     FILE = FIX_FILE
 
-    def __init__(self):
+    def __init__(self, rdo_fix_finder):
         super().__init__(
             self.FILE,
             'ENR-4.3'
         )
+        self.rdo_fix_finder = rdo_fix_finder
+        self.__rdo_fixes = []
 
+    def _after_parse(self):
+        self.identify_info['num_rdo_fix'] = len(self.__rdo_fixes)
+        
     def _parse_tr(self, tr):
         tds = tr.find_all('td')
         assert len(tds) >= 2, "Unknown tds style." + str(tds)
 
         code, cdn_s = [ str(tds[i].get_text()).strip()
                                  for i in [0,1] ]
-        
+
         code = self.__filter_code(code)
         if not code.strip():
             self._unknowns.append( tds )
             _print("none-line:" + str(tds))
             return None
-        
         assert re.match(r"^[A-Z]+$", code), code
-        if len(code) != 5:
+
+        fix = Fix(code, Fix.FIX) if \
+              len(code) == 5 else None
+        if not fix:
+            fix = self.rdo_fix_finder.find_by_pron( code )
+            self.__rdo_fixes.append( fix )
+
+        if not fix:
             self._unknowns.append( code )
             # TODO: fetch navaids instead insert fix,
             return None
 
         coordinate = Coordinate.parse_coordinate(cdn_s)
-
-        fix = Fix(code, Fix.FIX).set_coordinate(coordinate)
+        fix.set_coordinate(coordinate)
+        
         self._fixes.append( fix )
 
         return fix
@@ -238,26 +256,65 @@ class FixParser(AbstractAipTableParser):
         return code
 
 
+class FixFinder:
 
-#TODO: make navaids finder and set it into fix finder
-#TODO: fix finder
+    def __init__(self, fixes=None):
+        self.__fixes = fixes
+        fixes and self.__init_map()
 
+    def init_by_aip(self):
+        assert self.__fixes is None
+        self.__fixes = self.__parse_fixes()
+        self.__init_map()
+        return self
 
+    def find_by_code(self, code):
+        assert isinstance(code, str) and self.__fixes
+        return code in self.__code_map and self.__code_map[code]
+
+    def find_by_pron(self, pron):
+        assert isinstance(pron, str) and self.__fixes
+        return pron in self.__pron_map and self.__pron_map[pron]
+
+    def __init_map(self):
+        self.__code_map = {}
+        self.__pron_map = {}
+        for fix in self.__fixes:
+            self.__code_map[ fix.code ] = fix
+            if fix.pron:
+                self.__pron_map[ fix.pron ] = fix
+
+    @classmethod
+    def __parse_fixes(cls):
+        return FixParser(
+            FixFinder(
+                RadioAidParser().parse().fixes()
+            )
+        ).parse().fixes()
 
 
 def main():
-    fix_parser = FixParser()
-    fix_parser.parse()
-    assert fix_parser.identify_info == {'num_fixes': 1972, 'num_unknown': 57}
-
-
     rdo_parser = RadioAidParser()
     rdo_parser.parse()
-    assert rdo_parser.identify_info == {'num_fixes': 129, 'num_unknown': 0, 'num_dup': 21}
+    assert rdo_parser.identify_info == \
+        {'num_fixes': 129, 'num_unknown': 0, 'num_dup': 21}
 
+    rdo_fix_finder = FixFinder(rdo_parser.fixes())
 
+    _print("==============================")
+
+    fix_parser = FixParser(rdo_fix_finder)
+    fix_parser.parse()
+    _print(fix_parser.identify_info)
+    assert fix_parser.identify_info == \
+        {'num_fixes': 2022, 'num_unknown': 7, 'num_rdo_fix': 56}
+
+    fix_finder = FixFinder().init_by_aip()
+    
 def _print(str):
     IS_DEBUG and print(str) or None
+
+IS_DEBUG = False
 
 if __name__ == '__main__':
     IS_DEBUG = "--debug" in sys.argv
