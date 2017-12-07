@@ -61,19 +61,20 @@ class Fix:
         return self
 
 
-class FixParser:
+class AbstractAipTableParser:
 
-    FILE = FIX_FILE
-
-    def __init__(self):
+    def __init__(self, filepath, div_id):
         self.fixes = []
         self.unknown_codes = []
+        self.__filepath = filepath
+        self.__div_id   = div_id
+        
 
     def parse(self):
-        html_raw = open(self.FILE, 'r').read()
+        html_raw = open(self.__filepath, 'r').read()
         soup = BeautifulSoup(html_raw, 'html.parser')
 
-        tbody = soup.find('div', {'id': 'ENR-4.3'}).find(
+        tbody = soup.find('div', {'id': self.__div_id}).find(
             'table', {'class': 'ENR-table'}).find('tbody')
         assert tbody, 'not main table-tbody exist'
 
@@ -84,7 +85,18 @@ class FixParser:
         for f in self.fixes: _print(f)
         for c in self.unknown_codes: _print(c)
 
-        return
+        return self
+
+
+class FixParser(AbstractAipTableParser):
+
+    FILE = FIX_FILE
+
+    def __init__(self):
+        super().__init__(
+            self.FILE,
+            'ENR-4.3'
+        )
 
     def parse_tr(self, tr):
         tds = tr.find_all('td')
