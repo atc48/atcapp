@@ -1,3 +1,14 @@
+"""
+Usage:
+  import sys
+  sys.path.append('./')
+  from fix_finder import FixFinder
+
+  fix_finder = FixFinder().init_by_aip()
+  fix = fix_finder.find_by_code("MQE")
+  print(fix)
+
+"""
 import sys
 import re
 import copy
@@ -96,8 +107,9 @@ class AbstractAipTableParser:
             'num_unknown': len(self._unknowns)
         }
 
-        for fix in self._fixes:
-            assert 1 == len([f for f in  self._fixes if fix == f])
+        if IS_DEBUG:
+            for fix in self._fixes:
+                assert 1 == len([f for f in  self._fixes if fix == f])
 
         self._after_parse()
 
@@ -137,11 +149,11 @@ class RadioAidParser(AbstractAipTableParser):
             selected = [f for f in self._fixes if f.code == dup.code][0]
             _print(str(selected) + " <= " + str(dup) )
 
-        assert not [fix for fix in self._fixes if fix.category == Fix.FIX]
-        assert not [fix for fix in self._fixes if not fix.pron]
+        if IS_DEBUG:
+            assert not [fix for fix in self._fixes if fix.category == Fix.FIX]
+            assert not [fix for fix in self._fixes if not fix.pron]
 
         self.identify_info['num_dup'] = len(self.__dup_removed)
-        
 
     def _parse_tr(self, tr):
         tds = tr.find_all('td')
