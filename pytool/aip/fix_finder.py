@@ -12,9 +12,7 @@ Usage:
 import sys
 import re
 import copy
-import json
-import math
-from functools import reduce
+import csv
 from bs4 import BeautifulSoup
 
 sys.path.append('../common/')
@@ -72,6 +70,12 @@ class Fix:
         assert isinstance(coordinate, Coordinate) and not self.coordinate
         self.coordinate = coordinate
         return self
+
+    def to_r(self):
+        return [self.code, self.category,
+                self.coordinate.wgs_exp(),
+                self.coordinate.north, self.coordinate.east,
+                self.pron]
 
 
 class AbstractAipTableParser:
@@ -288,6 +292,16 @@ class FixFinder:
         assert isinstance(pron, str) and self.__fixes
         return pron in self.__pron_map and self.__pron_map[pron]
 
+    def all_fixes(self):
+        assert self.__fixes
+        return self.__fixes
+
+    def category_fix_all(self):
+        return [fix for fix in self.all_fixes() if fix.category == Fix.FIX]
+
+    def category_rdo_all(self):
+        return [fix for fix in self.all_fixes() if not fix.category == Fix.FIX]
+
     def __init_map(self):
         self.__code_map = {}
         self.__pron_map = {}
@@ -304,6 +318,12 @@ class FixFinder:
             )
         ).parse().fixes()
 
+
+def print_csv(fixes):
+    writer = csv.writer(sys.stdout)
+    for fix in fixes:
+        writer.writerow(fix.to_r())
+    return True
 
 def main():
     rdo_parser = RadioAidParser()
@@ -329,5 +349,12 @@ def _print(str):
 IS_DEBUG = False
 
 if __name__ == '__main__':
+    if "--csv-all" in sys.argv:
+        print_csv( FixFinder().init_by_aip().all_fixes() ) and exit()
+    if "--csv-only-fix" in sys.argv:
+        print_csv( FixFinder().init_by_aip().category_fix_all() ) and exit()
+    if "--csv-only-rdo" in sys.argv:
+        print_csv( FixFinder().init_by_aip().category_rdo_all() ) and exit()
+
     IS_DEBUG = "--debug" in sys.argv
     main()
