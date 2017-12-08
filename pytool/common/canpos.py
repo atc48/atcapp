@@ -166,7 +166,7 @@ class Coordinate:
         assert isinstance(s, str), s
         m = re.match(cls.COORDINATE_REG, s)
         assert m, s
-        coordinate = Coordinate(  m.group(0), m.group(1) )
+        coordinate = Coordinate(  m.group(1), m.group(2) )
         return coordinate
 
     
