@@ -23,6 +23,9 @@ FIX_CODE_SUBS = [
     [r"MINAMI\sDAITO",  "MINAMIDAITO"],
     [r"NORTH\sCHIDORI", "NORTHCHIDORI"]
 ]
+RDO_COORDS_SUBS = [
+    [r"\*", ""]
+]
 
 RADIO_AID_FILE = "./data/JP-ENR-4.1-en-JP.html"
 RADIO_AID_SUBS = [
@@ -66,8 +69,9 @@ class Fix:
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def set_coordinate(self, coordinate):
-        assert isinstance(coordinate, Coordinate) and not self.coordinate
+    def set_coordinate(self, coordinate, opt_override=False):
+        assert isinstance(coordinate, Coordinate) and \
+            (opt_override or not self.coordinate)
         self.coordinate = coordinate
         return self
 
@@ -76,6 +80,14 @@ class Fix:
                 self.coordinate.wgs_exp(),
                 self.coordinate.north, self.coordinate.east,
                 self.pron]
+
+    @property
+    def relation(self):
+        return self.__relation
+
+    @relation.setter
+    def relation(self, rel):
+        self.__relation = rel
 
 
 class AbstractAipTableParser:
@@ -111,11 +123,11 @@ class AbstractAipTableParser:
             'num_unknown': len(self._unknowns)
         }
 
+        self._after_parse()
+
         if IS_DEBUG:
             for fix in self._fixes:
                 assert 1 == len([f for f in  self._fixes if fix == f])
-
-        self._after_parse()
 
         return self
 
@@ -175,6 +187,14 @@ class RadioAidParser(AbstractAipTableParser):
         assert re.match(r"^[A-Z]{2,3}$", code), code
 
         fix = Fix(code, category, name)
+
+        for sub_r in RDO_COORDS_SUBS:
+            cdn_s = re.sub(sub_r[0], sub_r[1], cdn_s)
+        coords = Coordinate.parse_coordinate(cdn_s)
+        fix.set_coordinate(coords)
+        # If this radio aid isn't found in FixParser, this fix with coordinates
+        # will be used the final FixFinder. (So must set coords here).
+
         self._fixes.append( fix )
 
         return fix
@@ -232,7 +252,14 @@ class FixParser(AbstractAipTableParser):
         self.__rdo_fixes = []
 
     def _after_parse(self):
+        origin_rdo_all = self.rdo_fix_finder.category_rdo_all()
+        not_referred_rdos = [fix for fix in origin_rdo_all
+                             if fix.code not in
+                             [f.code for f in self.__rdo_fixes]]
+        assert len(origin_rdo_all) == len(self.__rdo_fixes) + len(not_referred_rdos)
         self.identify_info['num_rdo_fix'] = len(self.__rdo_fixes)
+        self.identify_info['num_not_referred_rdos'] = len(not_referred_rdos)
+        self._fixes += not_referred_rdos
         
     def _parse_tr(self, tr):
         tds = tr.find_all('td')
@@ -252,7 +279,8 @@ class FixParser(AbstractAipTableParser):
               len(code) == 5 else None
         if not fix:
             fix = self.rdo_fix_finder.find_by_pron( code )
-            self.__rdo_fixes.append( fix )
+            if fix:
+                self.__rdo_fixes.append( fix )
 
         if not fix:
             self._unknowns.append( code )
@@ -260,7 +288,8 @@ class FixParser(AbstractAipTableParser):
             return None
 
         coordinate = Coordinate.parse_coordinate(cdn_s)
-        fix.set_coordinate(coordinate)
+        fix.set_coordinate(coordinate, True)
+        # about 2nd args here: overrides coordinates that found in RdoAidParser.
         
         self._fixes.append( fix )
 
@@ -286,11 +315,11 @@ class FixFinder:
 
     def find_by_code(self, code):
         assert isinstance(code, str) and self.__fixes
-        return code in self.__code_map and self.__code_map[code]
+        return code in self.__code_map and self.__code_map[code] or None
 
     def find_by_pron(self, pron):
         assert isinstance(pron, str) and self.__fixes
-        return pron in self.__pron_map and self.__pron_map[pron]
+        return pron in self.__pron_map and self.__pron_map[pron] or None
 
     def all_fixes(self):
         assert self.__fixes
@@ -337,9 +366,10 @@ def main():
 
     fix_parser = FixParser(rdo_fix_finder)
     fix_parser.parse()
+    
     _print(fix_parser.identify_info)
     assert fix_parser.identify_info == \
-        {'num_fixes': 2022, 'num_unknown': 7, 'num_rdo_fix': 56}
+        {'num_fixes': 2022, 'num_unknown': 7, 'num_rdo_fix': 50, 'num_not_referred_rdos': 79}
 
     fix_finder = FixFinder().init_by_aip()
     
