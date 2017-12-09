@@ -10,7 +10,8 @@
   var SIZE_MAP = {
     FIX: 8,
     VORDME: 6,
-    VORTAC: 6
+    VORTAC: 6,
+    NDB   : 6
   };
 
   var VISIBLE_MODE = {
@@ -77,7 +78,9 @@
     g.lineTo(- size / 2, verticalDiff);
     g.lineTo(0, - verticalDiff);
   };
-  Fix.prototype._draw_VORTAC = Fix.prototype._draw_VORDME = function (g) {
+  Fix.prototype._draw_VORTAC =
+    Fix.prototype._draw_VORDME =
+    Fix.prototype._draw_NDB = function (g) {
     var diff = this.iconSize / 2;
     g.moveTo(-diff, -diff);
     g.lineTo( diff, -diff);

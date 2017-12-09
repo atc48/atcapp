@@ -29,7 +29,8 @@
   var CATEGORY_MAP = {
     1: "FIX",
     2: "VORDME",
-    3: "VORTAC"
+    3: "VORTAC",
+    4: "NDB"
   };
 
   FixData.prototype.getCategory = function () {
