@@ -51,6 +51,8 @@ class Fix:
         else: assert len(code) == 3, self
         if pron: assert category != Fix.FIX, self
 
+        self.__relation = None
+
     def __str__(self):
         res = "<{}> ({})".format(self.code, self.category)
         if self.pron:
@@ -81,12 +83,12 @@ class Fix:
                 self.coordinate.north, self.coordinate.east,
                 self.pron]
 
-    @property
     def relation(self):
+        assert self.__relation
         return self.__relation
 
-    @relation.setter
-    def relation(self, rel):
+    def set_relation(self, rel):
+        assert not self.__relation
         self.__relation = rel
 
 

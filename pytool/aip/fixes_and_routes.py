@@ -2,15 +2,14 @@ import sys
 import re
 import copy
 import json
-import math
-from functools import reduce
 from bs4 import BeautifulSoup
 
-sys.path.append('../common/')
-from canpos import Canpos
+sys.path.append('./')
+from fix_finder import Coordinate, Fix, FixFinder
 
 
-FILE_ATS_ROUTES = "./data/JP-ENR-3.1-en-JP.html"
+FILE_UPPER_ATS_ROUTES = "./data/JP-ENR-3.1-en-JP.html"
+FILE_RNAV_ROUTES      = "./data/JP-ENR-3.3-en-JP.html"
 FIX_AND_ROUTE_VAR_NAME = "atcapp.DATA_FIXES_AND_ROUTES"
 
 ROUTE_REG = r"(^|[^ABGRVW]+)[ABGRVW][0-9]+"
@@ -20,46 +19,16 @@ FIX_SPECIAL_SIGN_ALT = "＜＋＞"
 FIX_NORMAL_SIGN_ALT  = "＜ー＞"
 FIX_SPECIAL_REG = FIX_SPECIAL_SIGN_ALT + r"[\s]*([\*A-Za-z\(\)\/\s]+)"
 FIX_NORMAL_REG  = FIX_NORMAL_SIGN_ALT + r"[\s]*([\*A-Za-z\(\)\/\s]+)"
-COORDINATE_REG = r"([0-9\.]+)/?N/?([0-9\.]+)E" # Some text have an error in AIP
-COORDINATE_DETAIL_REG = r"([0-9]+)([0-9]{2})([0-9]{2})\.([0-9]+)"
+RDO_AIDS_INFO_REG = r"([A-Z]+)" + r"\s+" + \
+                    "({}|{}|{}|{})".format("VORDME", "VORTAC", "VOR", "DME") + \
+                    r"\s*\(([A-Z]+)\)"
 
 REPLACE_STRINGS = [
     ["(TFE R216/25DME)", ""],
-    [" VOR(",  " VOR/DME("] # replace all VOR to VOR/DME (aip may have some miss)
+    [" VOR(",  " VORDME("], # replace all VOR to VOR/DME (aip may have some miss)
+    ["VOR/DME", "VORDME"]
 ]
 
-
-class Coordinate:
-    def __init__(self, north, east):
-        assert isinstance(north, str) and isinstance(east, str), "must_str"
-        self.north_s = north
-        self.east_s  = east
-        # 322747.26N/1361310.48E
-        self.north = self.wgs84_str_to_float(north)
-        self.east  = self.wgs84_str_to_float(east)
-        self.canpos = Canpos(self.east, self.north)
-
-    def wgs_exp(self):
-        return self.north_s + "N/" + self.east_s + "E"
-
-    def __str__(self):
-        return "<{}N{}E> ({}, {})".format(
-            self.north_s, self.east_s, self.canpos.north, self.canpos.east)
-
-    def __eq__(self, other):
-        if other is None or not isinstance(other, Coordinate):
-            return False
-        return self.north_s == other.north_s and \
-            self.east_s == other.east_s
-    
-    @staticmethod
-    def wgs84_str_to_float(s):
-        m = re.match(COORDINATE_DETAIL_REG, s)
-        assert m, s
-        deg, mins, secs, dot_secs = [float(m.group(i)) for i in [1,2,3,4]]
-        #_print("{} {} {} {} {}".format(m.group(0), deg, mins, secs, dot_secs))
-        return deg + mins / 60 + (secs + dot_secs * 0.01) / 3600
-    
 
 class Route:
     def __init__(self, code):
@@ -78,61 +47,6 @@ class Route:
     def __ne__(self, other):
         return not self.__eq__(other)
     
-    def relation(self):
-        return self.__relation
-   
-class Fix:
-    FIX     = 'FIX'
-    VORDME  = 'VORDME'
-    VORTAC  = 'VORTAC'
-    VOR     = 'VOR' # nop
-    DME     = 'DME' # nop
-    CATEGORIES = [FIX, VORDME, VORTAC, VOR, DME]
-    NAVAIDS_INFO_REG = r"([A-Z]+)" + r"\s+" + \
-                       "({}|{}|{}|{})".format(VORDME, VORTAC, VOR, DME) + r"\s*" + \
-                       r"\(([A-Z]+)\)"
-
-    def __init__(self, code, category, is_compulsory, pron=None, is_fir_boundary=False):
-        self.code = code.strip()
-        self.category  = category
-        self.is_compulsory = bool(is_compulsory) # is a Compulsory Reporting Point
-        self.pron = pron and pron.strip() or ""
-        self.is_fir_boundary = bool(is_fir_boundary)
-        self.coordinate = None
-        assert self.CATEGORIES.index(category) >= 0, self
-        if category == Fix.FIX: assert len(code) == 5, self
-        if pron: assert category != Fix.FIX, self
-
-        self.__relation = FixRelation(self) # optional var so not used in __eq__
-
-    def __str__(self):
-        res = "<{}> ({}:{})".format(self.code, self.category, self.crp_str())
-        if self.pron:
-            res = res + "(pron:" + self.pron + ")"
-        if self.is_fir_boundary:
-            res = res + "(FIR-BDY)"
-        if self.coordinate:
-            res = res + " => " + str(self.coordinate)
-        return res
-
-    def __eq__(self, other):
-        if other is None or not isinstance(other, Fix):
-            return False
-        return self.code == other.code and self.category == other.category and \
-            self.is_compulsory == other.is_compulsory and \
-            self.pron == other.pron and self.is_fir_boundary == other.is_fir_boundary and \
-            self.coordinate == other.coordinate
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-    
-    def crp_str(self): # (N)CRP: (Non) Complusory Reporting Point
-        return "CRP" if self.is_compulsory else "NCRP"
-
-    def set_coordinate(self, coordinate):
-        assert isinstance(coordinate, Coordinate) and not self.coordinate
-        self.coordinate = coordinate
-
     def relation(self):
         return self.__relation
 
@@ -162,7 +76,27 @@ class FixRelation:
         assert isinstance(fix, Fix)
         self.fix = fix
         self.routes = []
+        self.priority = 0
+
+    def up_priority_as_on_fir_boundary(self):
+        self.__update_priority( 3 )
+
+    def up_priority_as_an_compulsory_reporting_point(self):
+        self.__update_priority( 2 )
+
+    def up_priority_as_on_any_route(self):
+        self.__update_priority( 1 )
+
+    def __update_priority(self, priority):
+        if self.priority < priority:
+            self.priority = priority
         
+    def is_fir_boundary(self):
+        return self.priority >= 3
+
+    def is_compulsory(self):
+        return self.priority >= 2
+
     def append_belonging_to(self, rte):
         assert isinstance(rte, Route)
         assert not rte in self.routes
@@ -174,22 +108,26 @@ class FixRelation:
     def num_routes(self):
         return len(self.routes)
 
+    def __str__(self):
+        return "<Relation:" + self.fix.code + " priority=" + str(self.priority) + \
+                    ", routes=" + str(self.routes)
+
 
 class OneLineParser:
     REPLACE_MAP = REPLACE_STRINGS
     
-    def __init__(self, text):
+    def __init__(self, text, fix_finder):
         self.text = re.sub(r'\s+', ' ', text.strip())
         self.__last_idx = -1
         self.parsed_objects = []
         for repmap in self.REPLACE_MAP:
             self.text = self.text.replace(repmap[0], repmap[1])
+        self.fix_finder = fix_finder
 
     def parse_all(self):
         parsed = [
             self.fetch_route(),
-            self.fetch_fix(),
-            self.fetch_coorinate()
+            self.fetch_fix()
         ]
         parsed = [x for x in parsed if x is not None]
         if len(parsed) == 0:
@@ -212,40 +150,37 @@ class OneLineParser:
             return None
         
         raw = matched.group(1)
-        is_special = bool(re.search(FIX_SPECIAL_REG, matched.group()))
+        is_compulsory = bool(re.search(FIX_SPECIAL_REG, matched.group()))
 
-        fix = self.__make_fix(raw.strip(), is_special)
-        assert fix
+        code, category, is_fir_boundary, pron = \
+            self.__get_fix_code_and_attr( raw.strip() )
+        fix = self.fix_finder.find_by_code( code )
+        assert fix and fix.category == category and (not pron or pron == fix.pron)
 
+        if is_compulsory:
+            fix.relation().up_priority_as_an_compulsory_reporting_point()
+        if is_fir_boundary:
+            fix.relation().up_priority_as_on_fir_boundary()
+        
         return fix, matched
 
-    def __make_fix(self, info, is_compulsory):
-        if  info[0] == '*': info = info[1:]
-        if info[-1] == '*': info = info[:-1]
-            
-        if len(info) == 5 and not re.search(r'\(\)\\', info):
-            return Fix(info, Fix.FIX, is_compulsory)
+    # returns [code, category, is_fir_boundary, pronounciation]
+    def __get_fix_code_and_attr(self, text):
+        if text[0]  == '*': text = text[1:]
+        if text[-1] == '*': text = text[:-1]
 
-        matched = re.match(r"^([A-Z]+)\s*\(FIR Boundary\)$", info)
+        if len(text) == 5 and not re.search(r'\(\)\\', text):
+            return [text, Fix.FIX, False, None]
+
+        matched = re.match(r"^([A-Z]+)\s*\(FIR Boundary\)$", text)
         if matched and len(matched.group(1)) == 5:
-            return Fix(matched.group(1), Fix.FIX, is_compulsory, None, True)
+            return [matched.group(1), Fix.FIX, True, None]
 
-        info = info.replace("VOR/DME", Fix.VORDME)
-        matched = re.search(Fix.NAVAIDS_INFO_REG, info)
-
+        matched = re.search(RDO_AIDS_INFO_REG, text)
         if matched:
-            return Fix(matched.group(3), matched.group(2), is_compulsory, matched.group(1))
+            return [matched.group(3), matched.group(2), False, matched.group(1)]
 
-        assert False, "Unknown Fix type: " + self.text
-
-    def fetch_coorinate(self):
-        matched = re.search(COORDINATE_REG, self.text)
-        if not matched:
-            return None
-        north = matched.group(1)
-        east  = matched.group(2)
-        coord = Coordinate(north, east)
-        return coord, matched
+        assert False, "Unknown Fix:" + self.text
 
     def has_any_fetched(self):
         return self.__last_idx > -1
@@ -269,28 +204,11 @@ class FixRouteStructurizer:
         self.__objs      = parsed_objects.copy()
         self.result_info = { 'num_all_objs' : len(self.objs_origin) }
 
-        self.__fold_coordinates_to_fix()
         self.__fold_dup_fixes_to_one()
         self.__fold_continuous_route_to_one()
         self.__make_relations()
 
         #for o in self.__objs: _print(o)
-
-    def __fold_coordinates_to_fix(self):
-        i = 0
-        while i < len(self.__objs):
-            fix = self.__objs[i]
-            i += 1
-            if not isinstance(fix, Fix): continue
-            coord = self.__objs.pop(i)
-            assert isinstance(coord, Coordinate), \
-                "must Coordinate after Fix.\n" + str(fix) + "\n" + str(coord)
-            fix.set_coordinate( coord )
-        origin_coord_count = len([o for o in self.objs_origin
-                                  if isinstance(o, Coordinate)])
-        assert len(self.__objs) == len(self.objs_origin) - origin_coord_count
-        assert not [o for o in self.__objs if isinstance(o, Coordinate)]
-        self.result_info["num_coordinates"] = origin_coord_count
 
     def __fold_dup_fixes_to_one(self):
         before_objs_size = len(self.__objs)
@@ -364,8 +282,9 @@ class FixRouteStructurizer:
         assert len(self.__objs) == 0 and \
             origin_objs_size == (len(self.routes) + len(self.fixes))
 
-        self.remove_dups(self.routes)
-        self.remove_dups(self.fixes)
+        assert not self.remove_dups(self.routes)
+        self.result_info["num_removed_dup_fixes"] = \
+                                    len(self.remove_dups(self.fixes))
         assert origin_objs_size == (len(self.routes) + len(self.fixes) + self.result_info["num_removed_dup_fixes"])
 
         self.result_info['num_routes'] = len(self.routes)
@@ -375,6 +294,21 @@ class FixRouteStructurizer:
         assert isinstance(route, Route) and isinstance(fix, Fix)
         route.relation().append_fix( fix ) # append order is important
         fix.relation().append_belonging_to( route ) # has no no order.
+        fix.relation().up_priority_as_on_any_route()
+
+
+    def supply_additional_fixes_if_not_exists(self, fixes_additional):
+        assert not "num_supplied_fixes" in self.result_info.keys(), \
+            "only once suppliable"            
+        num_added = 0
+        for add_fix in fixes_additional:
+            assert isinstance(add_fix, Fix), add_fix
+            exists = [1 for fix in self.fixes if fix.code == add_fix.code]
+            if not exists:
+                self.fixes.append( add_fix )
+                _print( add_fix.relation() )
+                num_added += 1
+        self.result_info["num_supplied_fixes"] = num_added
 
     @staticmethod
     def remove_dups(arr):
@@ -393,16 +327,18 @@ class FixRouteStructurizer:
 
     
 class HtmlParser:
-    @classmethod
-    def parse_text(cls, text):
-        parser = OneLineParser(text)
+
+    def __init__(self, fix_finder):
+        self.fix_finder = fix_finder
+
+    def parse_text(self, text):
+        parser = OneLineParser(text, self.fix_finder)
         parser.parse_all()
         if not parser.has_any_fetched():
             return None
         return parser.parsed_objects
 
-    @classmethod
-    def parse_td(cls, td):
+    def parse_td(self, td):
         td_raw = str(td)
         td_raw = re.sub(r'<br[ \/]*>', ' ', td_raw)
         td_raw = re.sub(r'[\t\n\r]', ' ', td_raw)
@@ -413,10 +349,9 @@ class HtmlParser:
         text = re.sub(r'\s+', ' ', text.strip())
         if not text:
             return None
-        return cls.parse_text(text)
+        return self.parse_text(text)
 
-    @classmethod
-    def parse_tbody(cls, tbody):
+    def parse_tbody(self, tbody):
         parsed_objects = []
         trs = tbody.find_all('tr')
         for tr in trs:
@@ -424,22 +359,21 @@ class HtmlParser:
             if not tds:
                 continue
             else:
-                new_parsed = cls.parse_td(tds[0])
+                new_parsed = self.parse_td(tds[0])
                 if new_parsed:
                     parsed_objects += new_parsed
         return parsed_objects
 
-    @classmethod
-    def parse(cls, html_raw):
+    def parse(self, html_raw, div_id):
         soup = BeautifulSoup(html_raw, 'html.parser')
-        main_div = soup.find('div', {'id': 'ENR-3.1'})
+        main_div = soup.find('div', {'id': div_id})
         assert main_div, 'not main div exist'
         tables = main_div.find_all('table')
         tbodies = [table.find('tbody') for i, table in enumerate( tables )]
 
         parsed_objects = []
         for tbody in tbodies:
-            parsed = cls.parse_tbody(tbody)
+            parsed = self.parse_tbody(tbody)
             if parsed:
                 parsed_objects += parsed
 
@@ -450,7 +384,8 @@ class JsonMaker:
     FIX_CAT_MAP = {
         'FIX'    : 1,
         'VORDME' : 2,
-        'VORTAC' : 3
+        'VORTAC' : 3,
+        'NDB'    : 4
     }
     BOOL_MAP = {
         True : 1,
@@ -488,9 +423,9 @@ class JsonMaker:
         res = [
             canpos.to_r(),
             self.FIX_CAT_MAP[ fix.category ],
-            self.BOOL_MAP[ fix.is_compulsory ],
+            self.BOOL_MAP[ fix.relation().is_compulsory() ],
             fix.pron or 0,
-            self.BOOL_MAP[ fix.is_fir_boundary ],
+            self.BOOL_MAP[ fix.relation().is_fir_boundary() ],
             fix.coordinate.wgs_exp(),
             route_codes
         ]
@@ -529,15 +464,6 @@ def _print_route_detail(route):
         ))
     
 def test():
-    # MQE: 395156.30N/1415703.84E
-    # https://www.motohasi.net/GPS/PosConv.php
-    # 39.86563888/141.95106666
-    for r in [ ["395156.30",   39.86563888],
-               ["1415703.84", 141.95106666] ]:
-        checkee = Coordinate.wgs84_str_to_float(r[0])
-        answer = r[1]
-        assert abs(checkee - answer) <= 0.1 ** 8
-
     r = [0,1,2,3, 0,1,2,3, 0,1,2,3,4,5]
     origin_size = len(r)
     removed = FixRouteStructurizer.remove_dups(r)
@@ -545,11 +471,12 @@ def test():
     assert removed == [0, 0, 1, 1, 2, 2, 3, 3]
     assert len(r) + len(removed) == origin_size
 
-def main():
-    test()
-    html_raw = open(FILE_ATS_ROUTES, 'r').read()
-    parsed_objects = HtmlParser.parse(html_raw)
+def parse_file(file_path, div_id, fix_finder, assertion_result_info):
+    html_raw = open(file_path, 'r').read()
+    parsed_objects = HtmlParser(fix_finder).parse(html_raw, div_id)
     structer = FixRouteStructurizer(parsed_objects)
+
+    structer.supply_additional_fixes_if_not_exists(fix_finder.all_fixes())
 
     for route in structer.routes:
         _print_route_detail( route )
@@ -557,8 +484,20 @@ def main():
     _print(structer.result_info)
     _print(len(parsed_objects))
 
-    assert structer.result_info == \
-        {'num_all_objs': 1120, 'num_coordinates': 521, 'num_removed_dup_fixes': 126, 'num_removed_dup_routes': 6, 'num_routes': 72, 'num_fixes': 395}
+    if assertion_result_info:
+        assert structer.result_info == assertion_result_info, structer.result_info
+
+    return structer
+   
+def main():
+    fix_finder = FixFinder().init_by_aip()
+    for fix in fix_finder.all_fixes():
+        fix.set_relation( FixRelation(fix) )
+
+    structer = parse_file(FILE_UPPER_ATS_ROUTES, 'ENR-3.1', fix_finder, \
+        {'num_all_objs': 599, 'num_removed_dup_fixes': 126, 'num_removed_dup_routes': 6, 'num_routes': 72, 'num_fixes': 395, 'num_supplied_fixes': 1706})
+
+    #structer = parse_file(FILE_RNAV_ROUTES, 'ENR-3.3', None)
 
     json_maker = JsonMaker(structer.routes, structer.fixes)
     if not IS_DEBUG:
