@@ -169,8 +169,8 @@ class Coordinate:
         coordinate = Coordinate(  m.group(1), m.group(2) )
         return coordinate
 
-    
-if __name__ == "__main__":
+
+def test():
     import random
     for i in range(0, 1000):
         if i % 100 == 0:
@@ -180,4 +180,18 @@ if __name__ == "__main__":
         e2, n2 = Canpos.canpos2coord(c.x, c.y)
         assert round(e) == round(e2) and round(n) == round(n2), \
             "{}, {}, {}, {}".format(e, e2, n, n2)
-    print("ok!")
+    
+    # MQE: 395156.30N/1415703.84E
+    # https://www.motohasi.net/GPS/PosConv.php
+    # 39.86563888/141.95106666
+    for r in [ ["395156.30",   39.86563888],
+               ["1415703.84", 141.95106666] ]:
+        checkee = Coordinate.wgs84_str_to_float(r[0])
+        answer = r[1]
+        assert abs(checkee - answer) <= 0.1 ** 8
+    print("MQE ok!")
+
+    print("test(): ok!")
+
+if __name__ == "__main__":
+    test()
