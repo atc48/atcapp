@@ -76,7 +76,7 @@ class FixRelation:
         assert isinstance(fix, Fix)
         self.fix = fix
         self.routes = []
-        self.priority = 0
+        self.priority = -1 if Fix.category.NDB else 0
 
     def up_priority_as_on_fir_boundary(self):
         self.__update_priority( 3 )
@@ -423,6 +423,7 @@ class JsonMaker:
         res = [
             canpos.to_r(),
             self.FIX_CAT_MAP[ fix.category ],
+            fix.relation().priority,
             self.BOOL_MAP[ fix.relation().is_compulsory() ],
             fix.pron or 0,
             self.BOOL_MAP[ fix.relation().is_fir_boundary() ],
@@ -432,6 +433,7 @@ class JsonMaker:
         self.fixes_keys = [
             'canpos_array',
             'category_key',
+            'priority',
             'is_compulsory',
             'pronounciation',
             'is_fir_boundary',

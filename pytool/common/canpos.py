@@ -155,6 +155,8 @@ class Coordinate:
     
     @classmethod
     def wgs84_str_to_float(cls, s):
+        if not re.search(r"\.", s):
+            s += ".00"
         m = re.match(cls.COORDINATE_DETAIL_REG, s)
         deg, mins, secs, dot_secs = [float(m.group(i)) for i in [1,2,3,4]]
         assert m, s
