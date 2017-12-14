@@ -4,6 +4,9 @@ import copy
 import json
 from bs4 import BeautifulSoup
 
+sys.path.append('./../common/')
+from util import KeyMapMaker
+
 sys.path.append('./')
 from fix_finder import Coordinate, Fix, FixFinder
 
@@ -72,6 +75,8 @@ class RouteRelation:
 
 class FixRelation:
 
+    PRIORITY_VALS = list(range(-1, 4))
+
     def __init__(self, fix):
         assert isinstance(fix, Fix)
         self.fix = fix
@@ -88,6 +93,7 @@ class FixRelation:
         self.__update_priority( 1 )
 
     def __update_priority(self, priority):
+        assert priority in self.PRIORITY_VALS, priority
         if self.priority < priority:
             self.priority = priority
         
@@ -413,7 +419,7 @@ class JsonMaker:
         self.result['routes_keys'] = self.routes_keys
         self.result['fixes']  = dict_fixes
         self.result['routes'] = dict_routes
-        self.result['grid_to_fix'] = [] #TODO
+        self.result['fix_map'] = self.__make_fix_priority_and_grid_num_map()
         self.result['grid_to_rte'] = [] #TODO
         
     def __make_fix_val(self, fix):
@@ -452,6 +458,16 @@ class JsonMaker:
             'fix_codes'
         ]
         return res
+
+    def __make_fix_priority_and_grid_num_map(self):
+        get_priority = lambda fix: fix.relation().priority
+        get_grid_num = lambda fix: fix.coordinate.canpos.get_grid_num()
+        filter_obj = lambda fix: fix.code
+        
+        maker = KeyMapMaker(self.fixes, get_priority, get_grid_num, filter_obj)
+        fix_map = maker.make()
+        
+        return fix_map
 
     def json(self):
         return json.dumps(self.result, indent=2)

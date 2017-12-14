@@ -1,8 +1,11 @@
 import re
+import math
 
 class Canpos:
     MULT = 1.0
     SCALE_Y = 111 / 91;
+    GRID_UNIT_SIZE = 10
+    X_GRID_MAX = 360 / GRID_UNIT_SIZE
 
     def __init__(self, east, north):
         assert self.iscoord(east, north), "({}, {})".format(east, north)
@@ -18,6 +21,11 @@ class Canpos:
             return self
         self.x, self.y = [round(a, r) for a in [self.x, self.y]]
         return self
+
+    def get_grid_num(self):
+        x_grid = math.floor(self.x / self.GRID_UNIT_SIZE)
+        y_grid = math.floor(self.y / self.GRID_UNIT_SIZE)
+        return math.floor(x_grid + y_grid * self.X_GRID_MAX)
 
     def to_round(self, r):
         c = self.dup()
@@ -143,6 +151,9 @@ class Coordinate:
     def wgs_exp(self):
         return self.north_s + "N/" + self.east_s + "E"
 
+    def get_grid_num(self):
+        return self.canpos.grid_num()
+
     def __str__(self):
         return "<{}N{}E> ({}, {})".format(
             self.north_s, self.east_s, self.canpos.north, self.canpos.east)
@@ -172,6 +183,7 @@ class Coordinate:
         return coordinate
 
 
+
 def test():
     import random
     for i in range(0, 1000):
@@ -193,7 +205,15 @@ def test():
         assert abs(checkee - answer) <= 0.1 ** 8
     print("MQE ok!")
 
-    print("test(): ok!")
+    # Check grid_num
+    canpos = Canpos(141.95106666, 39.86563888)
+    assert canpos.grid_num() == 230
+    for r in [[160, 50, 196],
+              [170, 60, 233]]:
+        rr = Canpos.coord2canpos(r[0], r[1])
+        canpos = Canpos(rr[0], rr[1])
+        assert canpos.grid_num() == r[2], canpos.grid_num()
+
 
 if __name__ == "__main__":
     test()
