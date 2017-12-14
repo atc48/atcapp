@@ -76,7 +76,7 @@ class FixRelation:
         assert isinstance(fix, Fix)
         self.fix = fix
         self.routes = []
-        self.priority = -1 if Fix.category.NDB else 0
+        self.priority = -1 if fix.category == Fix.NDB else 0
 
     def up_priority_as_on_fir_boundary(self):
         self.__update_priority( 3 )

@@ -27508,7 +27508,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         76.7374
       ],
       4,
-      0,
+      -1,
       0,
       "CHICHIJIMA",
       0,
@@ -27599,7 +27599,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         60.3178
       ],
       4,
-      0,
+      -1,
       0,
       "HACHINOHE",
       0,
@@ -27677,7 +27677,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         79.5632
       ],
       4,
-      0,
+      -1,
       0,
       "IWOTO",
       0,
@@ -27716,7 +27716,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         71.5323
       ],
       4,
-      0,
+      -1,
       0,
       "KANOYA",
       0,
@@ -27742,7 +27742,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         68.3358
       ],
       4,
-      0,
+      -1,
       0,
       "KOMATSUSHIMA",
       0,
@@ -27846,7 +27846,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         80.1507
       ],
       4,
-      0,
+      -1,
       0,
       "MINAMITORISHIMA",
       0,
@@ -27924,7 +27924,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         65.2737
       ],
       4,
-      0,
+      -1,
       0,
       "NIKKO",
       0,
@@ -27976,7 +27976,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         59.4745
       ],
       4,
-      0,
+      -1,
       0,
       "OMINATO",
       0,
@@ -28002,7 +28002,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         69.5986
       ],
       4,
-      0,
+      -1,
       0,
       "OMURA",
       0,
@@ -28041,7 +28041,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         68.2498
       ],
       4,
-      0,
+      -1,
       0,
       "OZUKI",
       0,
@@ -28158,7 +28158,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
         68.1515
       ],
       4,
-      0,
+      -1,
       0,
       "TOKUSHIMA",
       0,
