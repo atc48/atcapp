@@ -13,12 +13,15 @@
     VORTAC: 6,
     NDB   : 6
   };
+  var USE_CACHE = false;
 
   var VISIBLE_MODE = {
-    NON: new _VisibleMode().none(),
-    MIN: new _VisibleMode(0, 0, 0),
-    MID: new _VisibleMode(1, 0, 1),
-    MAX: new _VisibleMode(1, 1, 1)
+    NON:  new _VisibleMode(4, 4),
+    MIN:  new _VisibleMode(3, 4),
+    MID:  new _VisibleMode(2, 3),
+    MAX:  new _VisibleMode(1, 2),
+    MEGA: new _VisibleMode(0, 1),
+    GIGA: new _VisibleMode(0, 0)
   }
   Fix.VISIBLE_MODE = VISIBLE_MODE;
 
@@ -36,10 +39,13 @@
     this.isCompulsory = !!this.data.is_compulsory();
     this.isFirBdy     = !!this.data.is_fir_boundary();
     this.iconSize = SIZE_MAP[ this.category ];
+    this.priority = this.data.priority();
 
     this._drawIcon();
     this._drawLabel();
 
+    USE_CACHE && this.cache(-20, -8, 40, 26);
+	
     var canpos = data.getCanpos();
     this.x = canpos.x;
     this.y = canpos.y;
@@ -50,7 +56,6 @@
     var g = this.icon.graphics;
     g.beginStroke( COLOR.COLOR );
     g.setStrokeStyle(STROKE);
-      
     
     if (this.data.is_compulsory()){
       g.beginFill( COLOR.COLOR );
@@ -92,30 +97,27 @@
   Fix.prototype.changeVisibleMode = function (visibleMode) {
     this.icon.visible  = visibleMode.iconVisible(this);
     this.label.visible = visibleMode.labelVisible(this);
+    this.visible = this.icon.visible;
+    USE_CACHE && this.updateCache();    
   };
 
 
   Fix.getDefaultVisibleModeByScale = function (scale) {
+    if (500 < scale) { return VISIBLE_MODE.GIGA; }
+    if (140 < scale) { return VISIBLE_MODE.MEGA; }
     if (80 < scale) { return VISIBLE_MODE.MAX; }
     if (40 < scale) { return VISIBLE_MODE.MID; }
     if (20 < scale) { return VISIBLE_MODE.MIN; }
     return VISIBLE_MODE.NON;
   }
 
-  function _VisibleMode(_forceIcon, _forceLabel, _labelAvailable) {
+  function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {
     this.iconVisible  = function (fix) {
-      return _forceIcon || fix.isCompulsory;
+      return fix.priority >= _iconPermitPriority;
     };
     this.labelVisible = function (fix) {
-      return _forceLabel ||
-	_labelAvailable && (fix.isCompulsory || fix.isFirBdy);
+      return fix.priority >= _labelPermitPriority;
     }
-    
-    this.none = function () {
-      this.iconVisible  = function () { return false; };
-      this.labelVisible = function () { return false; };
-      return this;
-    };
   }
 
 

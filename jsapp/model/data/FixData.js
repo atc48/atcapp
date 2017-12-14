@@ -10,6 +10,7 @@
   /**
     "canpos_array",
     "category_key",
+    "priority",
     "is_compulsory",
     "pronounciation",
     "is_fir_boundary",
