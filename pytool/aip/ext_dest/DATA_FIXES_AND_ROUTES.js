@@ -29055,7 +29055,7 @@ atcapp.DATA_FIXES_AND_ROUTES =
       ]
     ]
   },
-  "fix_map": {
+  "priority_grid_map": {
     "2": {
       "229": [
         "HCE",

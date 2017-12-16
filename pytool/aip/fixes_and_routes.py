@@ -419,7 +419,7 @@ class JsonMaker:
         self.result['routes_keys'] = self.routes_keys
         self.result['fixes']  = dict_fixes
         self.result['routes'] = dict_routes
-        self.result['fix_map'] = self.__make_fix_priority_and_grid_num_map()
+        self.result['priority_grid_map'] = self.__make_fix_priority_and_grid_num_map()
         self.result['grid_to_rte'] = [] #TODO
         
     def __make_fix_val(self, fix):
