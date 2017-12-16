@@ -61,16 +61,16 @@
   // dispatches ""
 
   MapStatus.prototype.getGridMap = function (opt_unitSize) {
-    var unitSizeKey = opt_unitSize || "default";
-    if (this._gridMaps[unitSizeKey]) {
-      return this._gridMaps[unitSizeKey];
+    var cacheKey = opt_unitSize || "default";
+    if (this._gridMaps[cacheKey]) {
+      return this._gridMaps[cacheKey];
     }
     var leftTop  = this.mapCoordConverter.stageToCanpos(0, 0).normalize();
     var rightBtm = this.mapCoordConverter.stageToCanpos(
       this.stageSize.curWidth, this.stageSize.curHeight).normalize();
 
-    this._gridMaps[unitSizeKey] = new app.GridMap(leftTop, rightBtm, opt_unitSize);
-    return this._gridMaps[unitSizeKey];
+    this._gridMaps[cacheKey] = new app.GridMap(leftTop, rightBtm, opt_unitSize);
+    return this._gridMaps[cacheKey];
   };
 
   MapStatus.prototype.getAroundGridMap = function (opt_frameUnitSize) {
