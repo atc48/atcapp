@@ -26,6 +26,7 @@
    */
   function MapStatus() {
     this.Dispatcher_constructor();
+    this._gridMaps = {};
   }
 
   MapStatus.prototype.setup = function (mapCoordConverter, stageSize) {
@@ -59,16 +60,17 @@
   // dispatches "move"  => {}
   // dispatches ""
 
-  MapStatus.prototype.getGridMap = function () {
-    if (this._gridMap) {
-      return this._gridMap;
+  MapStatus.prototype.getGridMap = function (opt_unitSize) {
+    var unitSizeKey = opt_unitSize || "default";
+    if (this._gridMaps[unitSizeKey]) {
+      return this._gridMaps[unitSizeKey];
     }
     var leftTop  = this.mapCoordConverter.stageToCanpos(0, 0).normalize();
     var rightBtm = this.mapCoordConverter.stageToCanpos(
       this.stageSize.curWidth, this.stageSize.curHeight).normalize();
 
-    this._gridMap = new app.GridMap(leftTop, rightBtm);
-    return this._gridMap;
+    this._gridMaps[unitSizeKey] = new app.GridMap(leftTop, rightBtm, opt_unitSize);
+    return this._gridMaps[unitSizeKey];
   };
 
   MapStatus.prototype.getAroundGridMap = function (opt_frameUnitSize) {
@@ -86,7 +88,7 @@
     if (e.type == "MapStatus.scale") {
       this.scale = e.scale;
     }
-    this._gridMap = null;
+    this._gridMaps = {};
     this.fire("change", {});
     this._onMapChangeProlongDefer.on();
 

@@ -4,8 +4,7 @@ import math
 class Canpos:
     MULT = 1.0
     SCALE_Y = 111 / 91;
-    GRID_UNIT_SIZE = 10
-    X_GRID_MAX = 360 / GRID_UNIT_SIZE
+    DEFAULT_GRID_UNIT_SIZE = 10
 
     def __init__(self, east, north):
         assert self.iscoord(east, north), "({}, {})".format(east, north)
@@ -22,10 +21,12 @@ class Canpos:
         self.x, self.y = [round(a, r) for a in [self.x, self.y]]
         return self
 
-    def get_grid_num(self):
-        x_grid = math.floor(self.x / self.GRID_UNIT_SIZE)
-        y_grid = math.floor(self.y / self.GRID_UNIT_SIZE)
-        return math.floor(x_grid + y_grid * self.X_GRID_MAX)
+    def get_grid_num(self, grid_unit_size=DEFAULT_GRID_UNIT_SIZE):
+        x_grid_max = 360 / grid_unit_size
+        
+        x_grid = math.floor(self.x / grid_unit_size)
+        y_grid = math.floor(self.y / grid_unit_size)
+        return math.floor(x_grid + y_grid * x_grid_max)
 
     def to_round(self, r):
         c = self.dup()

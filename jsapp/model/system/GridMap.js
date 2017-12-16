@@ -3,25 +3,25 @@
 })(atcapp, function (_, __, app) {
 
   var DEBUG = false;
-
-  var UNIT_SIZE = 10;
-  var BIG_UNIT_SIZE = 10 * 3;
+  
+  var DEFAULT_UNIT_SIZE = 10;
   var X_MAX = 360;
   var Y_MAX = 180;
   var COORD_SIZE = X_MAX * Y_MAX;
-
-  var __calc    = new _GridCalc(UNIT_SIZE);
-  var __bigCalc = new _GridCalc(BIG_UNIT_SIZE);
 
   /**
    * @arg leftTop  canpos
    * @arg rightBtm canpos
    */
-  function GridMap(leftTop, rightBtm) {
+  function GridMap(leftTop, rightBtm, opt_unitSize) {
     __.assert(_.isObject(leftTop) && _.isObject(rightBtm));
     leftTop.assertNumber(); rightBtm.assertNumber();
     this.leftTop  = leftTop.normalize();
     this.rightBtm = rightBtm.normalize();
+    
+    this.unitSize = opt_unitSize || DEFAULT_UNIT_SIZE;
+    __.assert(_.isNumber(this.unitSize) && this.unitSize > 0);
+    this.calc     = new _GridCalc(this.unitSize);
   }
 
   GridMap.prototype.equals = function (other) {
@@ -35,12 +35,9 @@
   }
 
   GridMap.prototype.getGrids = function (opt_yield) {
-    return this._getGrids("_grids", __calc, opt_yield);
+    return this._getGrids("_grids", this.calc, opt_yield);
   };
 
-  GridMap.prototype.getBigGrids = function (opt_yield) {
-    return this._getGrids("_bigGrids", __bigCalc, opt_yield);
-  };
 
   GridMap.prototype._getGrids = function (key, calc, opt_fn) {
     __.assert(_.isString(key) && _.isObject(calc) && (!opt_fn || _.isFunction(opt_fn)));
@@ -75,12 +72,12 @@
     }
 
     var leftTop = new app.Canpos(
-      this.leftTop.x - UNIT_SIZE * frameSize,
-      this.leftTop.y - UNIT_SIZE * frameSize
+      this.leftTop.x - this.unitSize * frameSize,
+      this.leftTop.y - this.unitSize * frameSize
     ).normalize();
     var rightBtm = new app.Canpos(
-      this.rightBtm.x + UNIT_SIZE * frameSize,
-      this.rightBtm.y + UNIT_SIZE * frameSize
+      this.rightBtm.x + this.unitSize * frameSize,
+      this.rightBtm.y + this.unitSize * frameSize
     ).normalize();
     setResult( new GridMap(leftTop, rightBtm) );
 
@@ -99,27 +96,27 @@
 
   GridMap.prototype.getDoubleUnitSizeGridMap = function () {
     if (this._doubleOne) { return this._doubleOne; }
-    var unitSize = this.getGridUnitSize();
+    var unitBounds = this.getGridUnitBounds();
     var leftTop = new app.Canpos(
-      this.leftTop.x - UNIT_SIZE * unitSize.width,
-      this.leftTop.y - UNIT_SIZE * unitSize.height
+      this.leftTop.x - this.unitSize * unitBounds.width,
+      this.leftTop.y - this.unitSize * unitBounds.height
     ).normalize();
     var rightBtm = new app.Canpos(
-      this.rightBtm.x + UNIT_SIZE * unitSize.width,
-      this.rightBtm.y + UNIT_SIZE * unitSize.height
+      this.rightBtm.x + this.unitSize * unitBounds.width,
+      this.rightBtm.y + this.unitSize * unitBounds.height
     ).normalize();
     
     this._doubleOne = new GridMap(leftTop, rightBtm);
     return this._doubleOne;
   };
 
-  GridMap.prototype.getGridUnitSize = function () {
-    if (this._gridUnitSize) { return this._gridUnitSize; }
-    this._gridUnitSize = {
-      width:  Math.ceil((this.rightBtm.x - this.leftTop.x) / UNIT_SIZE) ,
-      height: Math.ceil((this.rightBtm.y - this.leftTop.y) / UNIT_SIZE)
+  GridMap.prototype.getGridUnitBounds = function () {
+    if (this._gridUnitBounds) { return this._gridUnitBounds; }
+    this._gridUnitBounds = {
+      width:  Math.ceil((this.rightBtm.x - this.leftTop.x) / this.unitSize) ,
+      height: Math.ceil((this.rightBtm.y - this.leftTop.y) / this.unitSize)
     };
-    return this._gridUnitSize;
+    return this._gridUnitBounds;
   };
 
   GridMap.prototype.getCanposBounds = function () {
@@ -131,24 +128,17 @@
   GridMap.prototype.getRoundedCanposBounds = function () {
     if (this._roundedCanposBounds) { return this._roundedCanposBounds; }
     var grids = this.getGrids();
-    var gridTop  = GridMap.gridToCanpos(_.first(grids));
-    var gridLast = GridMap.gridToCanpos(_.last(grids));
+    var gridTop  = GridMap.gridToCanpos(_.first(grids), this.unitSize);
+    var gridLast = GridMap.gridToCanpos(_.last(grids),  this.unitSize);
     var rect = gridTop.getRectangle( gridLast );
     this._roundedCanposBounds = rect;
     return rect;
   };
 
-  GridMap.gridNumOf = function (e, n) {
-    return __calc.getGrid(e, n);
-  };
-
-  GridMap.bigGridNumOf = function (e, n) {
-    return __bigCalc.getGrid(e, n);
-  };
-
-  GridMap.gridToCanpos = function (n) {
-    var y = Math.floor(n / 36) * UNIT_SIZE;
-    var x = Math.floor(n % 36) * UNIT_SIZE;
+  GridMap.gridToCanpos = function (n, opt_unitSize) {
+    var unitSize = opt_unitSize || DEFAULT_UNIT_SIZE;
+    var y = Math.floor(n / 36) * unitSize;
+    var x = Math.floor(n % 36) * unitSize;
     return new app.Canpos(x, y);
   };
 
@@ -190,26 +180,31 @@
 
   function __test() {
     var i,j,x,y,n;
+    var calc;
 
+    
     n = 0;
+    calc = new _GridCalc(10);
     for(j=0; j<18; j++) {
       for(i=0; i<36; i++) {
 	x = i*10; y = j*10;
-	__.assert(n == GridMap.gridNumOf(x, y));
+	__.assert(n == calc.getGrid(x, y));
 	n++;
       }
     }
-    __log("test: __calc ok.");
-    
+    __log("test: _GridCalc ok.");
+
+
     n = 0;
+    calc = new _GridCalc(10*3);
     for(j=0; j<18/3; j++) {
       for(i=0; i<36/3; i++) {
 	x = i*10*3; y = j*10*3;
-	__.assert(n == GridMap.bigGridNumOf(x, y));
+	__.assert(n == calc.getGrid(x, y));
 	n++;
       }
     }
-    __log("test: __bigCalc ok.");
+    __log("test: _GridCalc ok.");
 
     var gridMap, grids, aroundGrids;
     gridMap = new GridMap(
@@ -223,7 +218,11 @@
     assertArrEq(aroundGrids, _.range(18*36));
     __log("test: GridMap.getGrids ok.");
 
-    grids = gridMap.getBigGrids();
+    grids = new GridMap(
+      new app.Canpos(0, 0),
+      new app.Canpos(360 - 0.1, 180 - 0.1),
+      10 * 3
+    ).getGrids();
     __log(grids);
     assertArrEq(grids, _.range((18/3) * (36/3)));
     __log("test: GridMap.getBigGrids ok.");
@@ -276,6 +275,8 @@
     var canpos = GridMap.gridToCanpos(196);
     __.assert(canpos.x == 160);
     __.assert(canpos.y == 50);
+
+    __log("GridMap.__test: All Tests Succeeded.");
     
     function __log(msg) {
       __.log(msg);
