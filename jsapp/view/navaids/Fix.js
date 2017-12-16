@@ -65,13 +65,15 @@
   };
 
   Fix.prototype._drawLabel = function () {
-    this.label = new createjs.Text(this.code, COLOR.FONT, COLOR.FONT_COLOR);
+    this.label = new app.CacheableText(this.code, COLOR.FONT, COLOR.FONT_COLOR);
+    this.label.scaleX = this.label.scaleY = COLOR.FONT_SCALE;
+
     var bounds = this.label.getBounds();
-    
+    this.label.x = - bounds.width * this.label.scaleX / 2;    
     this.label.y = (this.iconSize / 2);
-    if (bounds) {
-      this.label.x = - bounds.width / 2;
-    }
+
+    this.label.doCache();
+
     this.addChild(this.label);
   };
 
