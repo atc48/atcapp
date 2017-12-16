@@ -32,6 +32,8 @@ REPLACE_STRINGS = [
     ["VOR/DME", "VORDME"]
 ]
 
+GRID_NUM_UNIT_SIZE = 3 # default Canpos: 10
+
 
 class Route:
     def __init__(self, code):
@@ -421,6 +423,7 @@ class JsonMaker:
         self.result['routes'] = dict_routes
         self.result['priority_grid_map'] = self.__make_fix_priority_and_grid_num_map()
         self.result['grid_to_rte'] = [] #TODO
+        self.result['grid_map_unit_size'] = GRID_NUM_UNIT_SIZE;
         
     def __make_fix_val(self, fix):
         assert isinstance(fix, Fix)
@@ -461,7 +464,7 @@ class JsonMaker:
 
     def __make_fix_priority_and_grid_num_map(self):
         get_priority = lambda fix: fix.relation().priority
-        get_grid_num = lambda fix: fix.coordinate.canpos.get_grid_num()
+        get_grid_num = lambda fix: fix.coordinate.canpos.get_grid_num(GRID_NUM_UNIT_SIZE)
         filter_obj = lambda fix: fix.code
         
         maker = KeyMapMaker(self.fixes, get_priority, get_grid_num, filter_obj)

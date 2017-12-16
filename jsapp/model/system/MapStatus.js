@@ -5,6 +5,9 @@
   createjs.extend(MapStatus, app.Dispatcher);
   createjs.promote(MapStatus, "Dispatcher");
 
+  var CHANGE_DELAY     = 500;
+  var CHANGE_DELAY_MAX = 1000;
+  
   var GRID_CHANGE_DELAY     = 1000;
   var GRID_CHANGE_DELAY_MAX = 1000 * 3;
   var GRID_CHANGE_PROLONG_DEFER_DELAY = 400;
@@ -37,6 +40,10 @@
 
     this.scale = 1;
 
+    this._changeDefer = new app.Deferer(
+      function () {
+	self.fire("change_defer");
+      }, CHANGE_DELAY, CHANGE_DELAY_MAX);
     var onMapChangedFn = _.bind(this._onMapChanged, this);
     this.on("scale", onMapChangedFn);
     this.on("move",  onMapChangedFn);
@@ -90,6 +97,7 @@
     }
     this._gridMaps = {};
     this.fire("change", {});
+    this._changeDefer.on();
     this._onMapChangeProlongDefer.on();
 
     this._onGridChangeDefer.on();

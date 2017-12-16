@@ -16,12 +16,14 @@
     this._setupFixes();
 
     this.mapStatus = mapStatus;
-    this.lastMapStatusSet = null;
-    mapStatus.on("gridChanged_prolong", _.bind(this._onGridChanged, this));
+    this.lastMapStatusSet = {};
+    mapStatus.on("change_defer", _.bind(this._onGridChanged, this));
   };
 
   p._setupFixes = function () {
     app.FixData.updateKeys( DATA["fixes_keys"] );
+    this.gridMapUnitSize = DATA["grid_map_unit_size"];
+    __.assert(_.isNumber(this.gridMapUnitSize));
 
     // fixMap
     var fixMap = {};
@@ -48,13 +50,20 @@
     this.priorityGridMap = priorityGridMap;
   };
 
+  function __gridsAlmostEquals(a, b) {
+    if (!a && !b) { return true; }
+    if (!a || !b) { return false; }
+    return a.length == b.length && _.first(a) == _.first(a) && _.last(a) == _.last(b);
+  }
+
   p._onGridChanged = function (e) {
     var scale = this.mapStatus.getScale();
-    var grids = this.mapStatus.getGridMap().getGrids();
+    var grids = this.mapStatus.getGridMap(this.gridMapUnitSize).getGrids();
     var fixVisibleMode = app.Fix.getDefaultVisibleModeByScale(scale);
 
     var mapStatusSet = {grids: grids, fixVisibleMode: fixVisibleMode};
-    if (mapStatusSet == this.lastMapStatusSet) {
+    if (mapStatusSet.fixVisibleMode == this.lastMapStatusSet.fixVisibleMode &&
+	__gridsAlmostEquals(mapStatusSet.grids, this.lastMapStatusSet.grids) ){
       return;
     }
     this.lastMapStatusSet = mapStatusSet;
