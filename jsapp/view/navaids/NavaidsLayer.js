@@ -12,6 +12,23 @@
     this.addChild( this.fixLayer   = new app.CoordinatedLayer() );
   }
 
+  NavaidsLayer.prototype.init = function (fixDistributor, mapStatus) {
+    var self = this;
+    var fixLayer = this.fixLayer;
+    this.fixDistributor = fixDistributor;
+    fixDistributor.addHandler(onFixesChangeStart, onFixesChangeEach, onFixesChangeEnd);
+
+    function onFixesChangeStart() {
+      fixLayer.removeAllChildren();
+    }
+    function onFixesChangeEach(fix) {
+      fixLayer.addChild( fix );
+    }
+    function onFixesChangeEnd(fixes) {
+      //console.log(fixes.length);
+    }
+  };
+
   NavaidsLayer.prototype.onMapScaleChange = function (scale) {
     var fixVisibleMode = app.Fix.getDefaultVisibleModeByScale(scale);
     this.fixLayer.__updateChildrenReciprocalScale(scale, forEachFix);

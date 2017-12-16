@@ -101,6 +101,9 @@
     USE_CACHE && this.updateCache();    
   };
 
+  Fix.prototype.onLayerScaleUpdated = function (scale) {
+    this.scaleX = this.scaleY = 1.0 / scale;
+  };
 
   Fix.getDefaultVisibleModeByScale = function (scale) {
     if (500 < scale) { return VISIBLE_MODE.GIGA; }
@@ -110,7 +113,7 @@
     if (20 < scale) { return VISIBLE_MODE.MIN; }
     return VISIBLE_MODE.NON;
   }
-
+  
   function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {
     this.iconVisible  = function (fix) {
       return fix.priority >= _iconPermitPriority;
@@ -118,8 +121,22 @@
     this.labelVisible = function (fix) {
       return fix.priority >= _labelPermitPriority;
     }
+    this.visibleMinimumPriority = function () {
+      return _iconPermitPriority;
+    };
+    this.visiblePriorities = function () {
+      return _.range(
+	_iconPermitPriority,
+	_VisibleMode.maxPriority + 1
+      );
+    };
   }
 
+  _VisibleMode.priorities = _.map(VISIBLE_MODE, function (mode) {
+    return mode.visibleMinimumPriority();
+  });
+  _VisibleMode.minPriority = _.min(_VisibleMode.priorities);
+  _VisibleMode.maxPriority = _.max(_VisibleMode.priorities);
 
   return Fix;
 });
