@@ -1,5 +1,6 @@
 import math
 
+
 class KeyMapMaker:
 
     def __init__(self, objs, get_key, get_inner_key=None, filter_obj=lambda x:x):
@@ -42,18 +43,45 @@ class KeyMapMaker:
         res[ key ][ inkey ].append( obj_filtered )
 
 
-def test():
+class DictionaryMapMaker:
+    END_CHAR = "$"
+
+    def __init__(self):
+        None
+
+    def make(self, codes):
+        res = {}
+        for code in codes:
+            maptop = res
+            for char in code:
+                assert not char == self.END_CHAR
+                if not char in maptop:
+                    maptop[char] = {}
+                maptop = maptop[char]
+            maptop[self.END_CHAR] = 0
+        return res
+        
+
+def test_KeyMapMaker():
     objs = [1,2,3,4,5,1,2,3,44]
     gmap = KeyMapMaker(objs, lambda x:x).make()
     assert gmap == {1: [1,1], 2: [2,2], 3: [3,3], 4: [4], 5: [5], 44: [44]}, gmap
 
     objs = [1,2,3,4,5,6,7,8,44,48,88]
     gmap = KeyMapMaker(objs, lambda x:math.floor(x/10), lambda x:x%4).make()
-    assert gmap == {0:{1:[1,5],2:[2,6],3:[3,7],0:[4,8]}, 4:{0:[44,48]}, 8:{0:[88]}}, \
-        gmap
-    
-    print("test(): ok!")
+    assert gmap == {0:{1:[1,5],2:[2,6],3:[3,7],0:[4,8]}, 4:{0:[44,48]}, 8:{0:[88]}}, gmap
+        
+    print("test_KeyMapMaker(): ok!")
+
+
+def test_DictionaryMapMaker():
+    codes = ["YOMI", "YAMI", "YAMINO"]
+    dictmap = DictionaryMapMaker().make(codes)
+    assert dictmap == {'Y':{'O':{'M':{'I':{'$':0}}},'A':{'M':{'I':{'$':0,'N':{'O':{'$':0}}}}}}}
+
+    print("test_DictionaryMapMaker(): ok!")
 
 
 if __name__ == "__main__":
-    test()
+    test_KeyMapMaker()
+    test_DictionaryMapMaker()
