@@ -26,8 +26,8 @@
     __.assert(_.isNumber(this.gridMapUnitSize));
 
     // fixMap
-    var fixMap = {};
-    _.each(DATA[ "fixes" ], function (obj, code) {
+    var fixMap = DATA[ "fixes" ];
+    _.each(fixMap, function (obj, code) {
       var fix = new app.Fix( new app.FixData(obj, code) );
       fixMap[code] = fix;
     });
