@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 
 sys.path.append('./../common/')
-from util import KeyMapMaker
+from util import KeyMapMaker, DictionaryMapMaker
 
 sys.path.append('./')
 from fix_finder import Coordinate, Fix, FixFinder
@@ -424,7 +424,8 @@ class JsonMaker:
         self.result['priority_grid_map'] = self.__make_fix_priority_and_grid_num_map()
         self.result['grid_to_rte'] = [] #TODO
         self.result['grid_map_unit_size'] = GRID_NUM_UNIT_SIZE;
-        
+        self.result['fix_codes_dict_map'] = DictionaryMapMaker().make([fix.code for fix in self.fixes])
+
     def __make_fix_val(self, fix):
         assert isinstance(fix, Fix)
         canpos = fix.coordinate.canpos.to_round(4)
