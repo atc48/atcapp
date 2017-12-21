@@ -1,5 +1,7 @@
-atcapp.boot = function (canvasId) {
+atcapp.boot = function (canvasId, fixSearchId) {
   var $stage = $("#" + canvasId);
+  var $fixSearch = $('#' + fixSearchId);
+  
   var stage = new createjs.Stage(canvasId);
   var fpsManager = new atcapp.FpsManager(stage);
 
@@ -18,7 +20,11 @@ atcapp.boot = function (canvasId) {
   var mapStatus = mapLayerMan.getMapStatus();
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender();
   var fixDistributor = new atcapp.FixDistributor();
+  var codeFinder = new atcapp.CodeFinder();
 
+  var externalInit = new atcapp.ExternalInitializer($fixSearch);
+
+  externalInit.init(codeFinder);
   fixDistributor.init( mapStatus );
 
   mapLayerMan.navaidsLayer.init( fixDistributor, mapStatus );
@@ -50,7 +56,7 @@ atcapp.boot = function (canvasId) {
 
   fpsManager.setup(stage, uiCommand);
   flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, stageSize);
-  
+
   // DEBUG
   var circle = new atcapp.Circle();
   circle.x = 100;
@@ -63,7 +69,7 @@ atcapp.boot = function (canvasId) {
    */
   var mapFix = new atcapp.MapFixCommandSender(uiCommand);
   mapFix.scaleMinBounds(20, 18).centerCoordination(137.5, 37.5).fix();
-  
+
   stage.enableMouseOver();
   stage.update();
 
