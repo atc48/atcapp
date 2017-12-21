@@ -6,8 +6,9 @@
     this.fixSearchBox = new app.CodeSearchBox( $fixSearch );
   }
 
-  ExternalInitializer.prototype.init = function (codeFinder) {
-    this.searchBoxMan = new app.SearchBoxManager(this.fixSearchBox, codeFinder);
+  ExternalInitializer.prototype.init = function (codeFinder, mapItemCommand) {
+    this.searchBoxMan = new app.SearchBoxManager(
+      this.fixSearchBox, codeFinder, mapItemCommand);
   };
 
   return ExternalInitializer;

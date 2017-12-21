@@ -2,7 +2,7 @@
   pkg.CodeSearchBox = factory(createjs, pkg, _);
 })(atcapp, function(createjs, app, _) {
 
-  var IGNORE_CHARS = /[^A-Za-z0-9]/
+  var IGNORE_CHARS    = /[^A-Za-z0-9]/;
 
   function CodeSearchBox($root, delegate) {
     this.$input = $root.find('input');
@@ -10,12 +10,13 @@
   }
 
   CodeSearchBox.prototype.init = function (delegate) {
-    __.assert(_.isObject(delegate) && _.isFunction(delegate["findCompletionCodes"]) &&
-	      _.isFunction(delegate["onWordsUpdated"]) );
-    
+    __.assertDelegatable(delegate, ["findCompletionCodes", "onWordsUpdated", "filterWords"]);
+
     this.completion = new _CompletionBox( this.$completion );
     this.$input.on("keyup",    _.bind(this._onKeyUp, this));
     this.delegate = delegate;
+
+    return this;
   };
 
   CodeSearchBox.prototype._onKeyUp = function (e) {
@@ -51,18 +52,12 @@
   };
 
   CodeSearchBox.prototype._updateWords = function (words) {
-    words = __filterWords( words );
+    words = this.delegate.filterWords( words );
     if (_.isEqual(this.lastWords, words)) {
       return;
     }
     this.lastWords = words;
     this.delegate.onWordsUpdated( words );
-  }
-
-  function __filterWords( words ){
-    words = _.map(words, function (w) { return w.replace(IGNORE_CHARS, "").toUpperCase(); });
-    words = _.reject(words, function (w) { return !w; });
-    return words;
   }
 
   CodeSearchBox.prototype._toUpperCase = function () {

@@ -6,6 +6,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var fpsManager = new atcapp.FpsManager(stage);
 
   var uiCommand = new atcapp.UICommand();
+  var mapItemCommand = new atcapp.MapItemCommand();
+
   var keyObserver = new atcapp.KeyboardObserver( $(window) );
   var zoomObserver = new atcapp.ZoomObserver($stage);
   var layerDragObserver = new atcapp.LayerDragObserver();
@@ -24,8 +26,12 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   var externalInit = new atcapp.ExternalInitializer($fixSearch);
 
-  externalInit.init(codeFinder);
+  externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
+
+  mapItemCommand.on("activate", function (codes) {
+    __.log(codes);
+  });
 
   mapLayerMan.navaidsLayer.init( fixDistributor, mapStatus );
 

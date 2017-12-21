@@ -21,5 +21,11 @@ var __ = {
     if (console && console.log) {
       console.log(msg);
     }
+  },
+  assertDelegatable(obj, fnKeys, opt_message) {
+    __.assert(_.isObject(obj) && _.isArray(fnKeys), opt_message);
+    _.each(fnKeys, function (key) {
+      __.assert(_.isFunction(obj[key]), opt_message);
+    });
   }
 };
