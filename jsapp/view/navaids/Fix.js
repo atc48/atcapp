@@ -2,6 +2,8 @@
   pkg.Fix = fac(_, __, createjs, pkg);
 })(atcapp, function (_, __, createjs, app) {
 
+  //TODO: implement single-hover-POPUP and set it to this.
+  
   createjs.extend(Fix, app.ExContainer);
   createjs.promote(Fix, "ExContainer");
   
@@ -13,7 +15,6 @@
     VORTAC: 6,
     NDB   : 6
   };
-  var USE_CACHE = false;
 
   var VISIBLE_MODE = {
     NON:  new _VisibleMode(4, 4),
@@ -31,6 +32,8 @@
     "VORTAC": 1
   }
 
+  var USER_STATUS_OPT = {defaultColor:COLOR.COLOR};
+
   function Fix(data) {
     this.ExContainer_constructor();
     this.data = data;
@@ -38,57 +41,120 @@
     this.category = this.data.getCategory();
     this.isCompulsory = !!this.data.is_compulsory();
     this.isFirBdy     = !!this.data.is_fir_boundary();
-    this.iconSize = SIZE_MAP[ this.category ];
     this.priority = this.data.priority();
+
+    this.cursor = "pointer";
+    this._visibleMode = VISIBLE_MODE.NON;
+
+    this.userStatus = new app.FixUserStatus(this, USER_STATUS_OPT);
+    this.userStatus.on("up", this._onUserStatusUpdated);
+
+    this.addEventListener("mouseover", this._onOver);
+    this.addEventListener("mouseout",  this._onOut);
 
     this._drawIcon();
     this._drawLabel();
 
-    USE_CACHE && this.cache(-20, -8, 40, 26);
-	
     var canpos = data.getCanpos();
     this.x = canpos.x;
     this.y = canpos.y;
   }
 
-  Fix.prototype._drawIcon = function () {
-    this.icon = new createjs.Shape();
-    var g = this.icon.graphics;
-    g.beginStroke( COLOR.COLOR );
-    g.setStrokeStyle(STROKE);
-    
-    if (this.data.is_compulsory()){
-      g.beginFill( COLOR.COLOR );
+  Fix.prototype._onOver = function (e) {
+    var self = e.currentTarget;
+    if (!self.userStatus.isHover()) {
+      self._outUserStatus = self.userStatus.getStateKey();
     }
-    this[ "_draw_" + this.category ](g);
+    self.userStatus.update( "HOVER" );
+  };
+
+  Fix.prototype._onOut = function (e) {
+    var self = e.currentTarget;
+    self.userStatus.update( self._outUserStatus );
+  };
+
+  Fix.prototype._onUserStatusUpdated = function (e) {
+    var self = e.target;
+    self._updateView();
+  };
+
+  Fix.prototype._updateView = function () {
+    this._drawIcon();
+    this._drawLabel();
+    this._drawBG();
+    this.changeVisibleMode( this._visibleMode );
+    this.scaleX = this.scaleY = this._normalScale;
+  }
+
+  Fix.prototype._drawIcon = function () {
+    var color = this.userStatus.getColor();
+
+    if (this.icon) {
+      this.removeChild( this.icon );
+    }
+    this.icon = new createjs.Shape();
+
+    var g = this.icon.graphics;
+    g.clear();
+    g.beginStroke( color );
+    g.setStrokeStyle(STROKE);
+
+    if (this.data.is_compulsory()){
+      g.beginFill( color );
+    }
+    Fix[ "__draw_" + this.category ](g, this._getSize() );
+
     this.addChild( this.icon );
   };
 
   Fix.prototype._drawLabel = function () {
-    this.label = new app.CacheableText(this.code, COLOR.FONT, COLOR.FONT_COLOR);
+    if (this.label) {
+      this.removeChild( this.label );
+    }
+
+    this.label = new app.CacheableText(
+      this.code, COLOR.FONT, this.userStatus.getColor());
     this.label.scaleX = this.label.scaleY = COLOR.FONT_SCALE;
 
     var bounds = this.label.getBounds();
-    this.label.x = - bounds.width * this.label.scaleX / 2;    
-    this.label.y = (this.iconSize / 2);
+    this.label.x = - bounds.width * this.label.scaleX / 2;
+    this.label.y = (SIZE_MAP[ this.category ] / 2);
 
     this.label.doCache();
 
     this.addChild(this.label);
   };
 
-  Fix.prototype._draw_FIX = function (g) {
-    var size = this.iconSize;
+  Fix.prototype._drawBG = function () {
+    var size = this._getSize();
+    var circleSize = size * (this.userStatus.isEasyHit() ? 2 : 1.2);
+    var bg = new createjs.Shape();
+    bg.graphics.clear().beginFill("#ff0000").drawCircle(0,0, circleSize);
+    if (this._visibleMode.labelVisible(this)) {
+      var bounds = this.label.getBounds();
+      bg.graphics.beginFill("#0000ff").drawRect(
+	this.label.x-4, this.label.y-4, bounds.width+8, bounds.height+8);
+    }
+    bg.alpha = 0.2;
+    this.hitArea = bg;
+  };
+
+  Fix.prototype._getSize = function () {
+    return SIZE_MAP[ this.category ];
+  };
+
+  Fix.__draw_FIX = function (g, iconSize) {
+    var size = iconSize;
     var verticalDiff = size * (1.73/2) / 2;
     g.moveTo(0, - verticalDiff);
     g.lineTo(  size / 2, verticalDiff);
     g.lineTo(- size / 2, verticalDiff);
     g.lineTo(0, - verticalDiff);
   };
-  Fix.prototype._draw_VORTAC =
-    Fix.prototype._draw_VORDME =
-    Fix.prototype._draw_NDB = function (g) {
-    var diff = this.iconSize / 2;
+  Fix.__draw_VORTAC =
+    Fix.__draw_VORDME =
+    Fix.__draw_NDB = function (g, iconSize) {
+    var diff = iconSize / 2;
     g.moveTo(-diff, -diff);
     g.lineTo( diff, -diff);
     g.lineTo( diff,  diff);
@@ -100,11 +166,12 @@
     this.icon.visible  = visibleMode.iconVisible(this);
     this.label.visible = visibleMode.labelVisible(this);
     this.visible = this.icon.visible;
-    USE_CACHE && this.updateCache();    
+    this._visibleMode = visibleMode;
   };
 
   Fix.prototype.onLayerScaleUpdated = function (scale) {
-    this.scaleX = this.scaleY = 1.0 / scale;
+    this._normalScale = 1.0 / scale;
+    this._updateView();
   };
 
   Fix.getDefaultVisibleModeByScale = function (scale) {
@@ -118,9 +185,15 @@
   
   function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {
     this.iconVisible  = function (fix) {
+      if (fix.userStatus.isFullVisible()) {
+	return true;
+      }
       return fix.priority >= _iconPermitPriority;
     };
     this.labelVisible = function (fix) {
+      if (fix.userStatus.isFullVisible()) {
+	return true;
+      }
       return fix.priority >= _labelPermitPriority;
     }
     this.visibleMinimumPriority = function () {

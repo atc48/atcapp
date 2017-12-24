@@ -1,4 +1,12 @@
 atcapp.COLOR = (function (){
+  var MAP_USER_STATE_COLOR = {
+    DEFAULT:  "#fafafa",
+    ACTIVE:   "#fcfcfc",
+    HILIGHT:  "skyblue",
+    HOVER:    "#fefefe",
+    SELECTED: "#ffffff"
+  };
+
   var C = {
     BACKGROUND: "#242424",
     NORMAL: "#ffffff",
@@ -22,7 +30,6 @@ atcapp.COLOR = (function (){
     FONT_COLOR: "#aaaaaa",
     NAVAIDS: {
       COLOR: "#666",
-      FONT_COLOR: "#999",
       FONT: "12px Verdana",
       FONT_SCALE: 0.9
     },
@@ -34,6 +41,8 @@ atcapp.COLOR = (function (){
     COLOR: C.FONT_COLOR,
     LINE_COLOR: "#aaaaaa"
   };
+
+  C.MAP_USER_STATE_COLOR = MAP_USER_STATE_COLOR;
 
   return C;
 })();
