@@ -7,6 +7,8 @@ atcapp.COLOR = (function (){
     SELECTED: "#ffffff"
   };
 
+  var _FONT = "Arial";
+
   var C = {
     BACKGROUND: "#242424",
     NORMAL: "#ffffff",
@@ -26,12 +28,14 @@ atcapp.COLOR = (function (){
       DEACTIVE: "#B0C4DE",
       HIGHLIGHT: "red"
     },
-    FONT: "Verdana",
+    FONT: _FONT,
     FONT_COLOR: "#aaaaaa",
+    FONT_SIZE: "14px",
+    TEXT_FONT: "14px " + _FONT,
     NAVAIDS: {
       COLOR: "#666",
-      FONT: "12px Verdana",
-      FONT_SCALE: 0.9
+      FONT: "11px " + _FONT,
+      FONT_SCALE: 1.0
     },
     NOP: null
   };
