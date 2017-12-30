@@ -37,6 +37,10 @@ atcapp.COLOR = (function (){
       FONT: "11px " + _FONT,
       FONT_SCALE: 1.0
     },
+    TOOLTIP: {
+      FONT_LABEL: "14px " + _FONT,
+      FONT_DESCR: "13px " + _FONT
+    },
     NOP: null
   };
 

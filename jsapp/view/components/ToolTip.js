@@ -4,104 +4,46 @@
 
   createjs.extend(ToolTip, app.ExContainer);
 
-  var PADDING = {
-    left: 6, right: 7,
-    top : 4, bottom: 6
-  };
-  var FRAME_THICK = 1.0;
-  var FRAME_COLOR = "#ffffff"  
-  var BACK_COLOR = "#333";
-  var BACK_ALPHA = 0.6;
 
   function ToolTip() {
     this.ExContainer_constructor();
 
-    var wrapper = new createjs.Container();
-    var mask, frame, back, label;
+    var content = new app.ToolTipContent();
+    var mask, frame, back, label, descr;
     var self = this;
 
     var showAnimeQ = app.AnimateQueue.newMaker({
       onStart: function () {
-	wrapper.removeAllChildren();
-
-	label = self._makeLabel();
-	var bounds = self._getFrameBounds(label);
-	mask  = self._makeMask(bounds);
-	frame = self._makeFrame(bounds);
-	back  = self._makeFrameBack(bounds);
-
-	mask.scaleX = mask.scaleY = 0;
-	label.visible = false;
-	
-	wrapper.mask = mask;
-	wrapper.addChild( back, frame, label );	
+	content.clear();
+	content.init(self._labelText, self._descrText);
+	content.animate_0();
       }
     }).enq(function () {
-      mask.scaleX += (1.0 - mask.scaleX) / 1.2;
-      mask.scaleY = mask.scaleX;
-      return mask.scaleY < 1.0 - 0.1;
+      return content.animate_1();
     }).enq(function () {
-      mask.scaleX = mask.scaleY = 1.0;
-      back.visible = true;
+      return content.animate_2();
     }).enq(function () {
-      label.visible = true;
-      return true;
+      return content.animate_3();
     }).make();
-
       
-    // DEBUG CODE
-    setInterval(function () {
-      showAnimeQ.start();
-    }, 3000);
-    this.x = this.y = 200;
+    this.addChild( content );
+    this.showAnimeQ = showAnimeQ;
 
-    this.addChild( wrapper );
+    // DEBUG CODE
+    this.x = this.y = 200;
+    setInterval(function () {
+      self.setContent("ADNAP", "FIX\n11111N99999E");
+    }, 3000);
   }
 
-  ToolTip.prototype._makeMask = function (bounds) {
-    var mask = new createjs.Shape();
-    mask.graphics
-      .beginFill("#ff0000")
-      .drawRect(-4, -4, bounds.width + 8, bounds.height + 8);
-    return mask;
+  var p = ToolTip.prototype;
+
+  p.setContent = function (label, descr) {
+    this._labelText = label;
+    this._descrText = descr;
+
+    this.showAnimeQ.start();
   };
 
-  ToolTip.prototype._makeFrame = function (bounds) {
-    var frame = new createjs.Shape();
-    frame.graphics
-      .setStrokeStyle(FRAME_THICK)
-      .beginStroke(FRAME_COLOR)
-      .drawRect(0, 0, bounds.width, bounds.height);
-    return frame;
-  };
-
-  ToolTip.prototype._makeFrameBack = function (bounds) {
-    var back = new createjs.Shape();
-    back.graphics
-      .setStrokeStyle(0.5)
-      .beginFill(BACK_COLOR)
-      .drawRect(0, 0, bounds.width, bounds.height);
-    back.alpha = BACK_ALPHA;
-    return back
-  };  
-
-  ToolTip.prototype._makeLabel = function () {
-    var font = app.COLOR.TEXT_FONT, color = app.COLOR.FONT_COLOR;
-    var label = new createjs.Text("hello world", font, color);
-    label.text = "HELLO WORLD\nARE YOU SURE";
-    label.x = PADDING.left;
-    label.y = PADDING.top;
-    return label;
-  };
-
-  ToolTip.prototype._getFrameBounds = function (label) {
-    var labelBounds = label.getBounds();
-    return new createjs.Rectangle(
-      0, 0,
-      labelBounds.width  + PADDING.left + PADDING.right,
-      labelBounds.height + PADDING.top  + PADDING.bottom
-    );
-  };
-  
   return createjs.promote(ToolTip, "ExContainer");
 });
