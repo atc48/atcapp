@@ -24,18 +24,18 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var mapStatus = mapLayerMan.getMapStatus();
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender();
   var fixDistributor = new atcapp.FixDistributor();
+  var fixMap = new atcapp.FixMap();
   var codeFinder = new atcapp.CodeFinder();
   var toolTip = new atcapp.ToolTip();
   var toolTipMan = new atcapp.ToolTipManager();
 
   var externalInit = new atcapp.ExternalInitializer($fixSearch);
+  var mapItemHilighter = new atcapp.MapItemHilighter();
+  // All the external classes must be initialized in ExternalInitializer.
 
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
-
-  mapItemCommand.on("activate", function (codes) {
-    __.log(codes);
-  });
+  fixMap.init( fixDistributor.getFixMapObject() );
 
   mapLayerMan.navaidsLayer.init( fixDistributor, mapStatus );
 
@@ -43,6 +43,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
   layerMan.toolLayer.setup( stageSizeMan.getStageSize() );
   layerDragObserver.setupUiBtn( mapDragPanelBtn );
   zoomObserver.setupUiBtn( mapDragPanelBtn );
+
+  mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor);
 
   mapStatus.on("change", function () {
     //__.log("change");

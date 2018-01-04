@@ -6,6 +6,7 @@
 
   function FixUserStatus(target, opt) {
     this.ViewItemUserStatus_constructor(target, opt);
+    this.fix = target;
   }
 
   FixUserStatus.prototype.isEasyHit = function () {

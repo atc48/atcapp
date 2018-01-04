@@ -201,6 +201,10 @@
       this.data.getCategoryExp() + " " + this.data.coord_exp() +
       (this.isCompulsory && " (CRP)" || "");
   };
+
+  Fix.prototype.getUserStatus = function () {
+    return this.userStatus;
+  };
   
   function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {
     this.iconVisible  = function (fix) {
