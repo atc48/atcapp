@@ -1,11 +1,16 @@
 (function (pkg, factory) {
-  pkg.Dispatcher = factory(__);
-})(atcapp, function (__) {
+  pkg.Dispatcher = factory(_, __);
+})(atcapp, function (_, __) {
 
   var NONAME_TYPE = "noNameType";
   
-  var Dispatcher = function () {
+  var Dispatcher = function (opt) {
+    opt = opt || {};
     this.__listeners = new Array();
+    this.__isValidType = function (type) {
+      if (!opt.types) { return true; }
+      return _.contains(opt.types, type);
+    }
   };
   Dispatcher.prototype.addEventListener =
     Dispatcher.prototype.on =
@@ -15,6 +20,7 @@
 	type = NONAME_TYPE;
       }
       __.assert(typeof type === 'string' && typeof eventHandler === 'function');
+      __.assert(this.__isValidType(type));
       var listener = {
 	type:         type,
 	eventHandler: eventHandler

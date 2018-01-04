@@ -37,6 +37,7 @@
     this.descr = descr;
     this._mask = mask;
     this.back  = back;
+    this.bounds = bounds;
   };
 
   p._makeMask = function (bounds) {
@@ -138,16 +139,21 @@
   p.animate_2 = function () {
     this._mask.scaleX = this._mask.scaleY = 1.0;
     this.back.visible = true;
+    this.label.visible = this.descr.visible = true;    
     return 0;
   };
 
   p.animate_3 = function () {
-    this.label.visible = this.descr.visible = true;
     return 0;
   }
 
   p.clear = function () {
     this.removeAllChildren();
+  };
+
+  p.getBounds = function () {
+    __.assert(this.bounds, "haven't started yet");
+    return this.bounds;
   };
   
   return createjs.promote(ToolTipContent, "Container");

@@ -43,5 +43,13 @@
     return this.category;
   };
 
+  FixData.prototype.getCategoryExp = function () {
+    var category = this.getCategory();
+    if (category == "VORDME") {
+      return "VOR/DME";
+    }
+    return category;
+  };
+
   return FixData;
 });

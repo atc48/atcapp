@@ -7,6 +7,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   var uiCommand = new atcapp.UICommand();
   var mapItemCommand = new atcapp.MapItemCommand();
+  var toolTipCommand = new atcapp.ToolTipCommand();
 
   var keyObserver = new atcapp.KeyboardObserver( $(window) );
   var zoomObserver = new atcapp.ZoomObserver($stage);
@@ -16,6 +17,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   var stageSizeMan = new atcapp.StageSizeManager(stage);
   var stageSize = stageSizeMan.getStageSize();
+  var stageMouse = new atcapp.StageMouse(stage);
   var flightLayerMan = new atcapp.FlightLayerManager();
   var mapLayerMan = new atcapp.MapLayerManager(stageSize, uiCommand, flightLayerMan, layerDragObserver);
   var layerMan = new atcapp.StageLayerManager(stage, stageSize, mapLayerMan);
@@ -23,6 +25,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var mapUserInputCommandSender = new atcapp.MapUserInputCommandSender();
   var fixDistributor = new atcapp.FixDistributor();
   var codeFinder = new atcapp.CodeFinder();
+  var toolTip = new atcapp.ToolTip();
+  var toolTipMan = new atcapp.ToolTipManager();
 
   var externalInit = new atcapp.ExternalInitializer($fixSearch);
 
@@ -49,6 +53,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
   });
 
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
+  atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
 
   mapUserInputCommandSender.setup(uiCommand, zoomObserver, layerDragObserver);
   layerDragObserver.setup(
@@ -62,6 +67,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   fpsManager.setup(stage, uiCommand);
   flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, stageSize);
+  toolTipMan.setup(toolTip, toolTipCommand, layerMan.toolTipLayer,
+		   stageSize, stageMouse);
 
   // DEBUG
   var circle = new atcapp.Circle();

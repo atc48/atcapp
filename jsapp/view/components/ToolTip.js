@@ -25,15 +25,19 @@
     }).enq(function () {
       return content.animate_3();
     }).make();
-      
+
     this.addChild( content );
     this.showAnimeQ = showAnimeQ;
+    this.content = content;
+    this.isToolTipMouseOver = false;
 
-    // DEBUG CODE
-    this.x = this.y = 200;
-    setInterval(function () {
-      self.setContent("ADNAP", "FIX\n11111N99999E");
-    }, 3000);
+    // content hover
+    this.addEventListener("mouseover", function () {
+      self.isToolTipMouseOver = true;
+    });
+    this.addEventListener("mouseout", function () {
+      self.isToolTipMouseOver = false;
+    });
   }
 
   var p = ToolTip.prototype;
@@ -43,6 +47,10 @@
     this._descrText = descr;
 
     this.showAnimeQ.start();
+  };
+
+  p.getBounds = function () {
+    return this.content.getBounds();
   };
 
   return createjs.promote(ToolTip, "ExContainer");

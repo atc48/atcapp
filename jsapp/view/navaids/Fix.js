@@ -2,10 +2,7 @@
   pkg.Fix = fac(_, __, createjs, pkg);
 })(atcapp, function (_, __, createjs, app) {
 
-  //TODO: implement single-hover-POPUP and set it to this.
-  
   createjs.extend(Fix, app.ExContainer);
-  createjs.promote(Fix, "ExContainer");
   
   var COLOR = app.COLOR.NAVAIDS;
   var STROKE = 1;
@@ -35,7 +32,7 @@
   var USER_STATUS_OPT = {defaultColor:COLOR.COLOR};
 
   function Fix(data) {
-    this.ExContainer_constructor();
+    this.ExContainer_constructor({hover: 1});
     this.data = data;
     this.code = data.code;
     this.category = this.data.getCategory();
@@ -182,6 +179,28 @@
     if (20 < scale) { return VISIBLE_MODE.MIN; }
     return VISIBLE_MODE.NON;
   }
+
+  Fix.prototype.override__getToolTipEvent = function () {
+    var pron = this.data.pronounciation() || null;
+    var categoryExp = this.data.getCategoryExp();
+
+    var msg = "";
+    if (pron) {
+      msg += pron;
+    }
+    if (categoryExp != "FIX") {
+      msg += "\n" + categoryExp;
+    }
+
+    return new app.ToolTipEvent.createWithText(
+      this, this.code, msg).setOpt("distance", {top: 12, bottom: 24})
+  };
+
+  Fix.prototype.override__hoverMsg = function (e) {
+    return this.code + ": " + (this.data.pronounciation() || "") + " " +
+      this.data.getCategoryExp() + " " + this.data.coord_exp() +
+      (this.isCompulsory && " (CRP)" || "");
+  };
   
   function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {
     this.iconVisible  = function (fix) {
@@ -213,5 +232,5 @@
   _VisibleMode.minPriority = _.min(_VisibleMode.priorities);
   _VisibleMode.maxPriority = _.max(_VisibleMode.priorities);
 
-  return Fix;
+  return createjs.promote(Fix, "ExContainer");
 });
