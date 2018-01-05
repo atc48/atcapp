@@ -30,8 +30,16 @@
   }
 
   var USER_STATUS_OPT = {defaultColor:COLOR.COLOR};
+  var __mapStatus;
+
+  Fix.prepareCommon = function (mapStatus) {
+    __.assert(mapStatus);
+    __mapStatus = mapStatus;
+    Fix.hasPrepared = true;
+  };
 
   function Fix(data) {
+    __.assert(Fix.hasPrepared, "has not prepared common.");
     this.ExContainer_constructor({hover: 1});
     this.data = data;
     this.code = data.code;
@@ -80,8 +88,12 @@
     this._drawLabel();
     this._drawBG();
     this.changeVisibleMode( this._visibleMode );
-    this.scaleX = this.scaleY = this._normalScale;
-  }
+    this._updateScale();
+  };
+
+  Fix.prototype._updateScale = function () {
+    this.scaleX = this.scaleY = 1.0 / __mapStatus.getScale();
+  };
 
   Fix.prototype._drawIcon = function () {
     var color = this.userStatus.getColor();
@@ -167,8 +179,7 @@
   };
 
   Fix.prototype.onLayerScaleUpdated = function (scale) {
-    this._normalScale = 1.0 / scale;
-    this._updateView();
+    this._updateScale();
   };
 
   Fix.getDefaultVisibleModeByScale = function (scale) {

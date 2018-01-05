@@ -14,6 +14,7 @@
   var p = FixDistributor.prototype;
 
   p.init = function (mapStatus) {
+    __.assert(app.Fix.hasPrepared);
     this._setupFixes();
 
     this.mapStatus = mapStatus;

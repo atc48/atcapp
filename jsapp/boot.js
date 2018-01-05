@@ -33,6 +33,9 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var mapItemHilighter = new atcapp.MapItemHilighter();
   // All the external classes must be initialized in ExternalInitializer.
 
+  /** prepare common **/
+  atcapp.Fix.prepareCommon(mapStatus);
+
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
   fixMap.init( fixDistributor.getFixMapObject() );
