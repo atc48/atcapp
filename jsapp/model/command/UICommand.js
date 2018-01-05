@@ -3,10 +3,11 @@
 })(atcapp, function ($, app) {
 
   createjs.extend(UICommand, app.Dispatcher);
-  createjs.promote(UICommand, "Dispatcher");
+
+  var TYPES = ["mapMove", "zoom", "mapFix"];
   
   function UICommand() {
-    this.Dispatcher_constructor();
+    this.Dispatcher_constructor({types: TYPES});
     // TODO: aspect something.
   }
 
@@ -16,5 +17,5 @@
    *     uiCommand.fore("mapZoom", 100);
    */
   
-  return UICommand;
+  return createjs.promote(UICommand, "Dispatcher");
 });

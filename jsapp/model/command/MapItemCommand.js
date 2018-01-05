@@ -8,15 +8,10 @@
   var WORD_REMOVE_REG = /[^A-Za-z0-9].*/;
   
   function MapItemCommand() {
-    this.Dispatcher_constructor();
+    this.Dispatcher_constructor({types: TYPES});
 
     this._lastActivatedCodes = []
   }
-
-  MapItemCommand.prototype.on = function (type, fn) {
-    __.assert(_.contains(TYPES, type) && _.isFunction(fn));
-    this.Dispatcher_on(type, fn);
-  };
 
   MapItemCommand.prototype.fire = function (type, obj) {
     __.assert(_.contains(TYPES, type));
