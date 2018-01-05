@@ -1,6 +1,10 @@
 atcapp.boot = function (canvasId, fixSearchId) {
   var $stage = $("#" + canvasId);
   var $fixSearch = $('#' + fixSearchId);
+
+  /**
+   * Initiate Instances
+   */
   
   var stage = new createjs.Stage(canvasId);
   var fpsManager = new atcapp.FpsManager(stage);
@@ -28,13 +32,26 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var codeFinder = new atcapp.CodeFinder();
   var toolTip = new atcapp.ToolTip();
   var toolTipMan = new atcapp.ToolTipManager();
+  var mapRegionLocator = new atcapp.MapRegionLocator();
+  var mapRegionLocatorCalculator = new atcapp.MapRegionLocatorCalculator();
+  var mapRegionLocatorAnimator = new atcapp.MapRegionLocatorAnimator();
 
+  /**
+   * External
+   */
+  // All the external classes must be initialized in ExternalInitializer.
   var externalInit = new atcapp.ExternalInitializer($fixSearch);
   var mapItemHilighter = new atcapp.MapItemHilighter();
-  // All the external classes must be initialized in ExternalInitializer.
 
-  /** prepare common **/
+  /**
+   * Prepare Common
+   **/
+
   atcapp.Fix.prepareCommon(mapStatus);
+
+  /**
+   * Init
+   **/
 
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
@@ -49,14 +66,6 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor);
 
-  mapStatus.on("change", function () {
-    //__.log("change");
-  });
-  mapStatus.on("gridChanged", function (e) {
-    //__.log(e.diff.get());
-    //__.log(e.gridMap.getGrids().length);
-  });
-
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
   atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
 
@@ -65,23 +74,15 @@ atcapp.boot = function (canvasId, fixSearchId) {
     mapLayerMan.getMapDraggableLayer(), keyObserver, mapDragPanelBtn);
   zoomObserver.setup(keyObserver);
 
-  stageSize.on("resize", function () {
-    //__.log("resize: " + stage.canvas.width + ", " + stage.canvas.height );
-    //__.log("        " + stageSize.curWidth + ", " + stageSize.curHeight );
-  });
-
   fpsManager.setup(stage, uiCommand);
   flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, stageSize);
   toolTipMan.setup(toolTip, toolTipCommand, layerMan.toolTipLayer,
 		   stageSize, stageMouse);
 
-  // DEBUG
-  var circle = new atcapp.Circle();
-  circle.x = 100;
-  circle.y = 100;
-  stage.addChild(circle);
-  // DEBUG
-
+  mapRegionLocator.init( mapRegionLocatorCalculator, mapRegionLocatorAnimator );
+  mapRegionLocatorCalculator.init( mapStatus );
+  mapRegionLocatorAnimator.init( uiCommand );
+  
   /**
    * Initial Setting
    */
