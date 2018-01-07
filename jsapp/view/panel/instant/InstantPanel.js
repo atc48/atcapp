@@ -7,7 +7,7 @@
 
   var BTN_SIZE = 40;
   var WIDTH = BTN_SIZE, HEIGHT = BTN_SIZE;
-  var MARGIN_X = 16, MARGIN_Y = 8;
+  var MARGIN_X = 20, MARGIN_Y = 16;
 
   function InstantPanel() {
     this.super_constructor();
