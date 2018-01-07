@@ -72,16 +72,28 @@
     if (this._gridMaps[cacheKey]) {
       return this._gridMaps[cacheKey];
     }
-    var leftTop  = this.mapCoordConverter.stageToCanpos(0, 0).normalize();
-    var rightBtm = this.mapCoordConverter.stageToCanpos(
-      this.stageSize.curWidth, this.stageSize.curHeight).normalize();
 
-    this._gridMaps[cacheKey] = new app.GridMap(leftTop, rightBtm, opt_unitSize);
+    var canposRect = this.getCanposRectangle();
+
+    this._gridMaps[cacheKey] = new app.GridMap(
+      canposRect.getLeftTopCanpos(), canposRect.getRightBtmCanpos(), opt_unitSize);
     return this._gridMaps[cacheKey];
   };
 
   MapStatus.prototype.getAroundGridMap = function (opt_frameUnitSize) {
     return this.getGridMap().getAroundGridMap(opt_frameUnitSize);
+  };
+
+  MapStatus.prototype.getCanposRectangle = function () {
+    var leftTop  = this.mapCoordConverter.stageToCanpos(0, 0).normalize();
+    var rightBtm = this.mapCoordConverter.stageToCanpos(
+      this.stageSize.curWidth, this.stageSize.curHeight).normalize();
+    var rect = new app.ExRectangle({
+      x: leftTop.x,
+      y: leftTop.y,
+      width: rightBtm.x - leftTop.x,
+      height: rightBtm.y - leftTop.y});
+    return rect;
   };
 
   MapStatus.prototype.getScale = function () {

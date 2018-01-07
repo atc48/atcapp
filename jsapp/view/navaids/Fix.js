@@ -61,6 +61,7 @@
     this._drawLabel();
 
     var canpos = data.getCanpos();
+    this.canpos = canpos;
     this.x = canpos.x;
     this.y = canpos.y;
   }
@@ -215,6 +216,10 @@
 
   Fix.prototype.getUserStatus = function () {
     return this.userStatus;
+  };
+
+  Fix.prototype.getCanpos = function () {
+    return this.canpos;
   };
   
   function _VisibleMode(_iconPermitPriority, _labelPermitPriority) {

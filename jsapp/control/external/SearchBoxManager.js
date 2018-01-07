@@ -14,8 +14,8 @@
       var codes = codeFinder.findFixCodes( lastWord );
       return codes;
     };
-    this.onWordsUpdated = function ( codes ) {
-      mapItemCommand.fire("activate", codes);
+    this.onWordsUpdated = function ( codes, opt ) {
+      mapItemCommand.fire("activate", codes, opt);
     };
     this.filterWords = function ( codes ) {
       return app.MapItemCommand.filterCodes(codes);

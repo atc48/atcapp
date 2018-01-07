@@ -35,13 +35,13 @@ atcapp.boot = function (canvasId, fixSearchId) {
   var mapRegionLocator = new atcapp.MapRegionLocator();
   var mapRegionLocatorCalculator = new atcapp.MapRegionLocatorCalculator();
   var mapRegionLocatorAnimator = new atcapp.MapRegionLocatorAnimator();
+  var mapItemHilighter = new atcapp.MapItemHilighter();
 
   /**
    * External
    */
   // All the external classes must be initialized in ExternalInitializer.
-  var externalInit = new atcapp.ExternalInitializer($fixSearch);
-  var mapItemHilighter = new atcapp.MapItemHilighter();
+  var externalInit = new atcapp.ExternalInitializer($stage, $fixSearch);
 
   /**
    * Prepare Common
@@ -64,7 +64,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
   layerDragObserver.setupUiBtn( mapDragPanelBtn );
   zoomObserver.setupUiBtn( mapDragPanelBtn );
 
-  mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor);
+  mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor, mapRegionLocator);
 
   atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
   atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
@@ -81,7 +81,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   mapRegionLocator.init( mapRegionLocatorCalculator, mapRegionLocatorAnimator );
   mapRegionLocatorCalculator.init( mapStatus );
-  mapRegionLocatorAnimator.init( uiCommand );
+  mapRegionLocatorAnimator.init( uiCommand, mapStatus );
   
   /**
    * Initial Setting

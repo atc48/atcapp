@@ -7,11 +7,12 @@
 
   var p = MapItemHilighter.prototype;
 
-  p.init = function (mapItemCommand, fixMap, fixDistributor) {
+  p.init = function (mapItemCommand, fixMap, fixDistributor, mapRegionLocator) {
     mapItemCommand.on("activate", _.bind(this._onCommandActivated, this));
 
     this.fixMap = fixMap;
     this.fixDistributor = fixDistributor;
+    this.mapRegionLocator = mapRegionLocator;
   }
 
   p._onCommandActivated = function (codes) {
@@ -32,6 +33,9 @@
 
     // refresh view
     this.fixDistributor.refresh();
+
+    // change the map scale and center
+    this.mapRegionLocator.locate(items);
 
     this.lastItems = items;
   };
