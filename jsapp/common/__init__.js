@@ -22,7 +22,7 @@ var __ = {
       console.log(msg);
     }
   },
-  assertDelegatable(obj, fnKeys, opt_message) {
+  assertDelegatable: function (obj, fnKeys, opt_message) {
     __.assert(_.isObject(obj) && _.isArray(fnKeys), opt_message);
     _.each(fnKeys, function (key) {
       __.assert(_.isFunction(obj[key]), opt_message);
