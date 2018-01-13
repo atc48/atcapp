@@ -24,10 +24,10 @@
     var g = this.graphics;
     g.clear()
       .beginFill( color )
-      .moveTo( -WING, -NOSE )
-      .lineTo(  WING, -NOSE )
-      .lineTo(     0,  NOSE )
-      .lineTo( -WING, -NOSE );
+      .moveTo(     0, -NOSE )
+      .lineTo(  WING,  NOSE )
+      .lineTo( -WING,  NOSE )
+      .lineTo(     0, -NOSE );
   }
 
   TargetSymbol.prototype.highlight = function () {
