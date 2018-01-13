@@ -24,7 +24,8 @@
     flights = _.filter(flights, function (f) {
       f.setState("low");
       var gPos = f.localToGlobal(0, 0);
-      return gPos.x > 0 && gPos.y > 0 &&
+      return f.isDataBlockAvailable() &&
+	gPos.x > 0 && gPos.y > 0 &&
 	gPos.x < stageSize.curWidth && gPos.y < stageSize.curHeight;
     });
 

@@ -84,6 +84,10 @@
     // ISSUE: "high" ?
   };
 
+  Flight.prototype.isDataBlockAvailable = function () {
+    return this.visible;
+  };
+
   Flight.prototype.getDataBlockStagePos = function () {
     var pos = this.dataBlock.getForcePos();
     var space = this._isDataBlockFix ? this : this.dataBlock; // I don't know why we should do this?

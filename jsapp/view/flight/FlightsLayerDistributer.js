@@ -28,7 +28,8 @@
       var flight = pool.moveToMainLayer( cs );
       flight.updateData( data );
       if (data.isGround()) {
-	console.log("FlightsLayerDistributor: isGround=" + data);
+	flight.visible = false;
+	// DEBUG
       }
       flight.updateScale( scale );
     });
