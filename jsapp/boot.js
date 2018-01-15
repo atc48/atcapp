@@ -8,12 +8,13 @@ atcapp.boot = function (canvasId, fixSearchId) {
   
   var stage = new createjs.Stage(canvasId);
   var fpsManager = new atcapp.FpsManager(stage);
+  var canvasFocusObserver = new atcapp.CanvasFocusObserver(canvasId);
 
   var uiCommand = new atcapp.UICommand();
   var mapItemCommand = new atcapp.MapItemCommand();
   var toolTipCommand = new atcapp.ToolTipCommand();
 
-  var keyObserver = new atcapp.KeyboardObserver( $(window) );
+  var keyObserver = new atcapp.KeyboardObserver();
   var zoomObserver = new atcapp.ZoomObserver($stage);
   var layerDragObserver = new atcapp.LayerDragObserver();
 
@@ -48,6 +49,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
    **/
 
   atcapp.Fix.prepareCommon(mapStatus);
+  atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
+  atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
 
   /**
    * Init
@@ -56,6 +59,7 @@ atcapp.boot = function (canvasId, fixSearchId) {
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
   fixMap.init( fixDistributor.getFixMapObject() );
+  keyObserver.init( canvasFocusObserver );
 
   mapLayerMan.navaidsLayer.init( fixDistributor, mapStatus );
 
@@ -65,9 +69,6 @@ atcapp.boot = function (canvasId, fixSearchId) {
   zoomObserver.setupUiBtn( mapDragPanelBtn );
 
   mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor, mapRegionLocator);
-
-  atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
-  atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
 
   mapUserInputCommandSender.setup(uiCommand, zoomObserver, layerDragObserver);
   layerDragObserver.setup(
