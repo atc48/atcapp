@@ -1,4 +1,6 @@
-atcapp.boot = function (canvasId, fixSearchId) {
+atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
+  atcapp.Debugger.init( $('#' + debuggerId) ).log("coming into the atcapp...");
+
   var $stage = $("#" + canvasId);
   var $fixSearch = $('#' + fixSearchId);
 
@@ -92,6 +94,8 @@ atcapp.boot = function (canvasId, fixSearchId) {
 
   stage.enableMouseOver();
   stage.update();
+
+  __.debug("boot finished.");
 
   return {
     flightDataProvider: flightDataProvider
