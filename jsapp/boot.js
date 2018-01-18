@@ -130,7 +130,6 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
   });
 
   return {
-    // you can call `atc.flightDataProvider.update(*)`.
-    flightDataProvider: flightDataProvider
+    // add some objects as an external interface if need.
   };
 };
