@@ -1,5 +1,19 @@
 atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
+
   atcapp.Debugger.init( $('#' + debuggerId) ).log("getting into the app...");
+
+  var stage = new createjs.Stage(canvasId);
+  var stageSizeMan = new atcapp.StageSizeManager(stage);
+
+  _.delay(function () {
+    atcapp._boot(canvasId, fixSearchId, stage, stageSizeMan);
+    atcapp._boot = null;
+  }, 0);
+
+};
+
+atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
+  __.debug("booting...");
 
   var $stage = $("#" + canvasId);
   var $fixSearch = $('#' + fixSearchId);
@@ -7,8 +21,9 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   /**
    * Initiate Instances
    */
-  
-  var stage = new createjs.Stage(canvasId);
+
+  var urlConfig = new atcapp.UrlConfig();
+
   var fpsManager = new atcapp.FpsManager(stage);
   var canvasFocusObserver = new atcapp.CanvasFocusObserver(canvasId);
 
@@ -22,7 +37,6 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
 
   var flightDataProvider = new atcapp.FlightDataProvider();
 
-  var stageSizeMan = new atcapp.StageSizeManager(stage);
   var stageSize = stageSizeMan.getStageSize();
   var stageMouse = new atcapp.StageMouse(stage);
   var flightLayerMan = new atcapp.FlightLayerManager();
@@ -39,6 +53,8 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   var mapRegionLocatorCalculator = new atcapp.MapRegionLocatorCalculator();
   var mapRegionLocatorAnimator = new atcapp.MapRegionLocatorAnimator();
   var mapItemHilighter = new atcapp.MapItemHilighter();
+
+  var flightsApi = new atcapp.FlightsApi();
 
   /**
    * External
@@ -57,6 +73,8 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   /**
    * Init
    **/
+
+  urlConfig.init();
 
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
@@ -85,6 +103,8 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   mapRegionLocator.init( mapRegionLocatorCalculator, mapRegionLocatorAnimator );
   mapRegionLocatorCalculator.init( mapStatus );
   mapRegionLocatorAnimator.init( uiCommand, mapStatus );
+
+  flightsApi.init(urlConfig);
   
   /**
    * Initial Setting
@@ -97,7 +117,20 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
 
   __.debug("boot finished, welcome to the ATC48.");
 
+  /**
+   * Start Delayed Processes
+   */
+  __.debug("flights loding...");
+  flightsApi.load(function (data) {
+    __.debug("flights load succeeded.");
+    flightDataProvider.update(data);
+    __.debug("flights update finished.");
+  }, function (errorReason) {
+    __.debug("flights load failed: reason=" + errorReason);
+  });
+
   return {
+    // you can call `atc.flightDataProvider.update(*)`.
     flightDataProvider: flightDataProvider
   };
-}
+};

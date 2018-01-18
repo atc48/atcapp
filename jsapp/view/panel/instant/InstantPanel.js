@@ -19,6 +19,8 @@
 
     this._appendButton( this.mapDragBtn = new app.MapDragButton(BTN_SIZE) );
 
+    this._onResize();
+
     stageSize.on("resize", _.bind(this._onResize, this));
   };
   

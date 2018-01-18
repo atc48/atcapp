@@ -29,7 +29,7 @@
     if (this.flightDataList.length <= 0) {
       return this;
     }
-    
+
     this.fire({flightDataList: this.flightDataList,
 	       gridToIdsMap: this.gridToIdsMap});
     return this;
