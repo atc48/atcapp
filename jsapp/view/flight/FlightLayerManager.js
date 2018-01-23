@@ -14,7 +14,8 @@
     this.mapScale = 1;
   }
 
-  FlightLayerManager.prototype.setup = function (flightDataProvider, mapStatus, layerDragObserver, stageSize) {
+  FlightLayerManager.prototype.setup = function (flightDataProvider, mapStatus, layerDragObserver,
+						 flightViewCoordinator) {
     this.flightDataProvider = flightDataProvider;
     this.mapStatus = mapStatus;
     
@@ -23,7 +24,7 @@
     this.cacheControl = new app.FlightLayerCacheControl(
       this.layer, this.mainLayer, this.backLayer, this.mapStatus);
 
-    this.viewCoordinator = new app.FlightViewCoordinator(this.mapStatus, stageSize);
+    this.viewCoordinator = flightViewCoordinator;
 
     mapStatus.on("gridChanged_prolong", _.bind(this._onGridChanged, this));
     mapStatus.on("changed_prolong", _.bind(this._onMapChangedProlong, this));
