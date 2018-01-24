@@ -13,7 +13,7 @@
     this.mapStatus = mapStatus;
     this.stageSize = stageSize;
 
-    this.blockTickReg = new app.TickRegister(this._onTick, this);
+    this.blockTicker = new app.TickHandler(this._onTick, this);
     this.blockPositioner = new app.DataBlockPositioner();    
   };
 
@@ -38,13 +38,13 @@
     }
 
     this.blockPositioner.init(flights);
-    this.blockTickReg.start();
+    this.blockTicker.start();
   };
 
   p._onTick = function () {
     this.blockPositioner.process();
     if (this.blockPositioner.hasFinished()) {
-      this.blockTickReg.stop();
+      this.blockTicker.stop();
     }
   };
 

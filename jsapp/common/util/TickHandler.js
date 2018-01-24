@@ -1,15 +1,15 @@
 (function (pkg, fac) {
-  pkg.TickRegister = fac(_, __, createjs);
+  pkg.TickHandler = fac(_, __, createjs);
 })(atcapp, function (_, __, createjs) {
 
-  function TickRegister(fn, thisArg) {
+  function TickHandler(fn, thisArg) {
     __.assert(_.isFunction(fn) && _.isObject(thisArg));
 
     this.listener = _.bind(fn, thisArg);
     this.isRunning = false;
   }
 
-  var p = TickRegister.prototype;
+  var p = TickHandler.prototype;
 
   p.start = function () {
     if (this.isRunning) { return; }
@@ -29,6 +29,6 @@
     return this.isRunning;
   };
 
-  return TickRegister;
+  return TickHandler;
   
 });
