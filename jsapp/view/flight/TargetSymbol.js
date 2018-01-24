@@ -2,19 +2,16 @@
   pkg.TargetSymbol = fac(createjs, pkg);
 })(atcapp, function (createjs, app) {
 
-  //createjs.extend(TargetSymbol, createjs.Bitmap);
-  createjs.extend(TargetSymbol, createjs.Shape);//createjs.Bitmap);
+  createjs.extend(TargetSymbol, createjs.Shape);
   createjs.promote(TargetSymbol, "super");
 
   var WING = 4;
   var NOSE = 8;
   var C = app.COLOR.SIMBOL;
-  var TRI = app.IMG.TRIANGLE;
   var USE_CACHE = true;
 
   function TargetSymbol() {
     this.super_constructor();
-    //this.super_constructor( TRI );
     this._draw( C.NORMAL );
     USE_CACHE && this.cache(-WING, -NOSE, WING * 2, NOSE * 2);
     this.alpha = C.ALPHA;

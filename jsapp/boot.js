@@ -6,10 +6,19 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   var stageSizeMan = new atcapp.StageSizeManager(stage);
 
   _.delay(function () {
-    atcapp._boot(canvasId, fixSearchId, stage, stageSizeMan);
-    atcapp._boot = null;
+    __.debug("assets preloading...");
+    atcapp.Assets.getInstance().preload(onPreloadFinish);
   }, 0);
 
+  function onPreloadFinish() {
+    __.debug("assets preload finished.");
+    gotoBoot();
+  }
+
+  function gotoBoot() {
+    atcapp._boot(canvasId, fixSearchId, stage, stageSizeMan);
+    atcapp._boot = null;
+  }
 };
 
 atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {

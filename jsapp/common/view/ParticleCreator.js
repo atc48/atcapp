@@ -14,8 +14,7 @@
 
   function __mkEmitter(size, pos, color, colorVar) {
     if (!__baseImg) {
-      __baseImg = new Image();
-      __baseImg.src = app.IMG.PARTICLE_();
+      __baseImg = app.Assets.getImage("PARTICLE");
     }
     
     var emitter = new createjs.ParticleEmitter(__baseImg);

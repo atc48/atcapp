@@ -9,10 +9,21 @@
   var ACTIVE_ALPHA   = 1.0;
   var CLICK_DIFF_Y   = 2;
   
-  function CircleButton(imgPath, opt) {
+  function CircleButton(img, opt) {
     opt = opt || {};
     this.ExContainer_constructor();
-    this.addChild( this.bm = new createjs.Bitmap(imgPath) );
+    this.bm = (function () {
+      var bmp = new createjs.Bitmap();
+      if (_.isObject(img)) {
+	bmp.image = img;
+      } else if (_.isString(img)) {
+	bmp.src = img;
+      } else {
+	__.assert(0, "unknown img arg. img=" + img);
+      }
+      return bmp;
+    })();
+    this.addChild( this.bm );
     this.cursor = "pointer";
     this.center = new createjs.Point(20, 20);
 
