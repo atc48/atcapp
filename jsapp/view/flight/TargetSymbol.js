@@ -8,7 +8,7 @@
   var WING = 4;
   var NOSE = 8;
   var C = app.COLOR.SIMBOL;
-  var USE_CACHE = true;
+  var USE_CACHE = false;
 
   function TargetSymbol() {
     this.super_constructor();
