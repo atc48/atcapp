@@ -1,8 +1,9 @@
 (function (pkg, fac) {
-  pkg.DebugWatch = fac();
-})(atcapp, function () {
+  pkg.DebugWatch = fac(_, __);
+})(atcapp, function (_, __) {
 
-  function DebugWatch() {
+  function DebugWatch(opt) {
+    this.opt = opt || {};
     this.reset();
   }
 
@@ -41,6 +42,60 @@
     }
     return this._timeStacked;
   };
+
+  p.getMsg = function () {
+    return "[" + this.opt.prefix + "] " + this.elapsed();
+  };
+
+  p.showDebug = function () {
+    var msg = this.getMsg();
+    __.debug(msg);
+    return msg;
+  };
+
+
+  DebugWatch.Multi = (function () {
+
+    var DEFAULT_NUM = 10;
+
+    function _Multi(prefix, opt_num) {
+      prefix = (prefix || "") + "_";
+      var num = opt_num || DEFAULT_NUM;
+      __.assert(_.isString(prefix) && _.isNumber(num));
+      this.watches = init(num, {prefix:prefix}, this);
+    }
+
+    function init(num, opt, self) {
+      var i = 0, watches = [];
+      for (i=1; i<=num; i++) {
+	watches.push( initWatch(i, opt, self) );
+      }
+      return watches;
+    }
+
+    function initWatch(n, opt, self) {
+      var opt = _.clone(opt);
+      opt.prefix = (opt.prefix || "") + n;
+      var watch = new DebugWatch(opt);
+      _.each(_.functions(DebugWatch.prototype), function (fnName) {
+	self[fnName + n] = _.bind(watch[fnName], watch);
+      });
+      return watch;
+    }
+
+    _Multi.prototype.showDebug = function () {
+      var res = "";
+      _.each(this.watches, function (watch) {
+	if (watch._timeStacked > 0) {
+	  res += watch.showDebug() + "\n";
+	}
+      });
+      return res;
+    };
+
+    return _Multi;
+  })();
+
 
   return DebugWatch;
 });
