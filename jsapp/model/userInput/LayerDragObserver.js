@@ -25,8 +25,12 @@
     mapDragPanelBtn.on("active",   _onMapModeUpdated);
     mapDragPanelBtn.on("deactive", _onMapModeUpdated);
 
+    function isDragging() {
+      return _lastPos;
+    }
+
     function onStart(e) {
-      if (_lastPos) { reset(); }
+      if (isDragging()) { reset(); }
       if (!keyObserver.isMetaKeyDown && !self.btn.getIsActive()) { return; }
 
       e.preventDefault();
@@ -41,6 +45,7 @@
       _lastPos = curPos;
     }
     function onFinish(e) {
+      if (!isDragging()) { return; }
       reset();
       self.fire("end");
     }
@@ -58,6 +63,9 @@
       if (isMapMode) {
 	self.fire("onMapDragMode");
       } else {
+	if (isDragging()) {
+	  onFinish();
+	}
 	self.fire("offMapDragMode");
       }
     }
