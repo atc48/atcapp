@@ -14,7 +14,7 @@
     this.stageSize = stageSize;
 
     this.blockTicker = new app.TickHandler(this._onTick, this);
-    this.blockPositioner = new app.DataBlockPositioner();    
+    this.blockCdntor = new app.DataBlockCoordinator();
   };
 
   p.coordinate = function (activeFlights) {
@@ -37,13 +37,13 @@
       return;
     }
 
-    this.blockPositioner.init(flights);
+    this.blockCdntor.init(flights);
     this.blockTicker.start();
   };
 
   p._onTick = function () {
-    this.blockPositioner.process();
-    if (this.blockPositioner.hasFinished()) {
+    this.blockCdntor.process();
+    if (this.blockCdntor.hasFinished()) {
       this.blockTicker.stop();
     }
   };

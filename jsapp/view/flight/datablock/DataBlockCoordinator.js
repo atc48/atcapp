@@ -1,5 +1,5 @@
 (function (pkg, fac) {
-  pkg.DataBlockPositioner = fac(_, __, atcapp);
+  pkg.DataBlockCoordinator = fac(_, __, atcapp);
 })(atcapp, function (_, __, app) {
 
   var DATA_BLOCK_FORCE_COEF = 1.5 * 10000;
@@ -7,10 +7,10 @@
   var FORCE_X_MULT = 3;
   
 
-  function DataBlockPositioner(){
+  function DataBlockCoordinator(){
   }
 
-  var p = DataBlockPositioner.prototype;
+  var p = DataBlockCoordinator.prototype;
 
   p.init = function (flights) {
     var flts = _.map(flights, function (flight) {
@@ -118,5 +118,5 @@
   };
 
 
-  return DataBlockPositioner;
+  return DataBlockCoordinator;
 });
