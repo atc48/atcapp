@@ -77,7 +77,7 @@
 
   DataBlock.prototype.updateForcePos = function (cx, cy) { //center-x,y
     var distance = Math.sqrt( Math.pow(cx, 2) + Math.pow(cy, 2) );
-    var ratio = DISTANCE / distance; //Math.min(DISTANCE / distance, 1);
+    var ratio = Math.min(DISTANCE / distance, 1);
     this.setCenterPos(cx * ratio, cy * ratio);
   };
 

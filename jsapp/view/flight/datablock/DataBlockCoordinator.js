@@ -48,8 +48,7 @@
   };
   
   _FlightWrapper.prototype.addForceWith = function (flt) {
-    var addForce = __physicsStrategy.forceByOtherWithCenter(
-      this._flightPt, this._pos, flt._pos);
+    var addForce = __physicsStrategy.forceByOtherWithCenter(this._pos, flt._pos);
     this._force.x += addForce.x;
     this._force.y += addForce.y;
   };

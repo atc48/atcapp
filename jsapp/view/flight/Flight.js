@@ -57,6 +57,7 @@
     if (this.unixTime == data.unix_time()) {
       return;
     }
+    this.callsign = data.callsign();
     this.unixTime = data.unix_time();
     this.x = data.x();
     this.y = data.y();
