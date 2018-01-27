@@ -5,7 +5,7 @@
   var DATA_BLOCK_FORCE_COEF = 1.5 * 10000;
   var FORCE_X_MULT = 1;
 
-  var IS_DEBUG = true;
+  var IS_DEBUG = false;
 
   function DataBlockPhysicsStrategy() {
   }
