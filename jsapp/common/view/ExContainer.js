@@ -41,6 +41,10 @@
     __toolTipMsger.hide();
   }
 
+  ExContainer.prototype.getGlobalPt = function () {
+    return this.localToGlobal(0, 0);
+  };
+
   /**
    * Global Messenger
    */
