@@ -46,6 +46,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
 
   var flightDataProvider = new atcapp.FlightDataProvider();
 
+  var statusBar = atcapp.StatusBar.getInstance();
   var stageSize = stageSizeMan.getStageSize();
   var stageMouse = new atcapp.StageMouse(stage);
   var flightLayerMan = new atcapp.FlightLayerManager();
@@ -77,7 +78,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
    **/
 
   atcapp.Fix.prepareCommon(mapStatus);
-  atcapp.ExContainer.setHoverMessenger( atcapp.StatusBar.getInstance() );
+  atcapp.ExContainer.setHoverMessenger( statusBar );
   atcapp.ExContainer.setupToolTipMessenger( toolTipCommand );
 
   /**
@@ -94,7 +95,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
   mapLayerMan.navaidsLayer.init( fixDistributor, mapStatus );
 
   var mapDragPanelBtn = layerMan.toolLayer.instantPanel.getMapDragButtonDelegate();
-  layerMan.toolLayer.setup( stageSize );
+  layerMan.toolLayer.setup( stageSize, statusBar );
   layerDragObserver.setupUiBtn( mapDragPanelBtn );
   zoomObserver.setupUiBtn( mapDragPanelBtn );
 
