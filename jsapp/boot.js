@@ -32,6 +32,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
    */
 
   var urlConfig = new atcapp.UrlConfig();
+  var browserConfig = new atcapp.BrowserConfig();
 
   var fpsManager = new atcapp.FpsManager(stage);
   var canvasFocusObserver = new atcapp.CanvasFocusObserver(canvasId);
@@ -104,7 +105,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
   mapUserInputCommandSender.setup(uiCommand, zoomObserver, layerDragObserver);
   layerDragObserver.setup(
     mapLayerMan.getMapDraggableLayer(), keyObserver, mapDragPanelBtn);
-  zoomObserver.setup(keyObserver);
+  zoomObserver.setup(keyObserver, browserConfig.getScrollDeltaFilter(), browserConfig.getMouseWheelEventName());
 
   fpsManager.setup(stage, uiCommand);
   flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, flightViewCoordinator);
