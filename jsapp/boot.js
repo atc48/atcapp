@@ -26,6 +26,7 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
 
   var $stage = $("#" + canvasId);
   var $fixSearch = $('#' + fixSearchId);
+  var $window = $(window);
 
   /**
    * Initiate Instances
@@ -44,6 +45,17 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
   var keyObserver = new atcapp.KeyboardObserver();
   var zoomObserver = new atcapp.ZoomObserver($stage);
   var layerDragObserver = new atcapp.LayerDragObserver();
+  var touchDragObserver = new atcapp.TouchDeviceDragObserver($stage, $window);
+  var touchZoomObserver = new atcapp.TouchDeviceZoomObserver($stage, $window);
+
+  touchDragObserver.on("drag", function (e) {
+    //e.preventDefault();
+    //__.log(e);
+  });
+  touchZoomObserver.on("zoom", function (e) {
+    //e.preventDefault();
+    //__.log(e);
+  });
 
   var flightDataProvider = new atcapp.FlightDataProvider();
 
