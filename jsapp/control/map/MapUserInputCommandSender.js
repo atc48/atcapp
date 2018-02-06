@@ -17,9 +17,25 @@
       uiCommand.fire("mapMove", { moveX: e.diffX, moveY: e.diffY });
     }
     function _onMapZoomed(e) {
-      __.assert(_.isNumber(e.delta) && !_.isNaN(e.delta));
-      uiCommand.fire("zoom", {delta: e.delta});
+      var event = (function () {
+	if (__isValidNum(e.delta)) {
+	  return {delta: e.delta};
+	}
+	if (__isValidNum(e.scale)) {
+	  return {scale: e.scale};
+	}
+	if (__isValidNum(e.scaleMult)) {
+	  return {scaleMult: e.scaleMult};
+	}
+	__.assert(false, "invalid event. e=" + event);
+      })();
+      event["type"] = "zoom";
+      uiCommand.fire("zoom", event);
     }
+  }
+
+  function __isValidNum(n) {
+    return _.isNumber(n) && !_.isNaN(n);
   }
 
   return MapUserInputCommandSender;

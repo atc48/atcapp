@@ -33,8 +33,8 @@
     var scale = __evtToScale(jqEvt);
     if (!scale) { this.curScale = null; return; }
 
-    var scaleDiff = scale - this.curScale;
-    var event = __makeEvent("zoom", jqEvt, scaleDiff);
+    var scaleMult = scale / this.curScale;
+    var event = __makeEvent("zoom", jqEvt, scaleMult);
 
     this.curScale = scale;
     this.fire("zoom", event);
@@ -48,11 +48,10 @@
     return jqEvt.originalEvent.scale || null;
   };
 
-  function __makeEvent(evtName, jqEvt, scaleDiff) {
+  function __makeEvent(evtName, jqEvt, scaleMult) {
     return {
       type: evtName,
-      scaleDiff: scaleDiff,
-      diff: scaleDiff,
+      scaleMult: scaleMult,
       preventDefault: function () {
 	jqEvt.preventDefault();
       }

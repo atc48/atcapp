@@ -42,20 +42,18 @@
       // Scroll UP   : delta < 0
       // Scroll DOWN : delta > 0
     })();
-    this._fireOnZoomed(this.scrollDeltaFilter(delta));
+    this._fireOnZoomed({delta: this.scrollDeltaFilter(delta)});
   };
 
   p._onTouchZoom = function (e) {
     e.preventDefault();
-    var delta = e.scaleDiff;
-    this._fireOnZoomed(delta);
+    this._fireOnZoomed({scaleMult: e.scaleMult});
   };
 
-  p._fireOnZoomed = function (delta) {
-    this.fire("onZoomed", {
-      type: "onZoomed",
-      delta: delta
-    });
+  p._fireOnZoomed = function (evt) {
+    this.fire("onZoomed", _.extend(evt, {
+      type: "onZoomed"
+    }));
   };
 
 

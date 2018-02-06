@@ -20,8 +20,11 @@
     this.uiCommand.on("mapFix",  _.bind(_onMapFix, this));
     
     function _onZoomInput(e) {
-      var nextScale = e.scale ? e.scale :
-	  this.container.scaleX * (1.0 + ZOOM_MULT * (e.delta > 0 ? 1 : -1))
+      var nextScale = e.scale && e.scale ||
+	  e.scaleMult && e.scaleMult * this.container.scaleX ||
+	  this.container.scaleX * (1.0 + ZOOM_MULT * (e.delta >= 0 ? 1 : -1)) ||
+	  null;
+      if (!nextScale) { return; }
       this._updateScaleWithStationaryCenter(nextScale);
     }
     function _onMapMove(e) {

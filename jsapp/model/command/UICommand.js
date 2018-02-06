@@ -17,7 +17,7 @@
 
   p.fire = function (type, e) {
     if (type == "zoom") {
-      __.assert(_.isNumber(e.delta) || _.isNumber(e.scale));
+      __.assert(_.isNumber(e.delta) || _.isNumber(e.scale) || _.isNumber(e.scaleMult));
     }
     if (type == "mapFix") {
       __.assert(e.scale || e.scaleMinBounds || e.scaleMaxBounds || e.canpos);
