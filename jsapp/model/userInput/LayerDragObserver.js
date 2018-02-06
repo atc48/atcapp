@@ -7,23 +7,31 @@
 
   function LayerDragObserver() {
     this.Dispatcher_constructor();
-    this.btn = {getIsActive: _.noop};
+    this.mapModeBtn = {getIsActive: _.noop};
   }
 
-  LayerDragObserver.prototype.setup = function (container, keyObserver, mapDragPanelBtn) {
-    __.assert(container && _.isObject(keyObserver));
-    __.assert(_.isFunction(mapDragPanelBtn.on) && _.isFunction(mapDragPanelBtn.off) &&
-	      _.isFunction(mapDragPanelBtn.getIsActive));
+  var p = LayerDragObserver.prototype;
 
+  p.setup = function (container, keyObserver, mapModeBtn, touchDragObserver) {
+    __.assert(container && _.isObject(keyObserver) && _.isFunction(mapModeBtn.on) && _.isFunction(mapModeBtn.off) && _.isFunction(mapModeBtn.getIsActive) && touchDragObserver);
+
+    this.keyObserver = keyObserver;
+    this.mapModeBtn = mapModeBtn;
+
+    this._setupMouseDrag(container);
+    this._setupTouchDeviceDrag(touchDragObserver);
+  };
+
+  p._setupMouseDrag = function (container) {
     var self = this;
     var _lastPos = null;
     container.addEventListener("mousedown", onStart);
 
     var _lastMapMode = false;
-    keyObserver.on("onMetaKey",    _onMapModeUpdated);
-    keyObserver.on("offMetaKey",   _onMapModeUpdated);
-    mapDragPanelBtn.on("active",   _onMapModeUpdated);
-    mapDragPanelBtn.on("deactive", _onMapModeUpdated);
+    this.keyObserver.on("onMetaKey",    _onMapModeUpdated);
+    this.keyObserver.on("offMetaKey",   _onMapModeUpdated);
+    this.mapModeBtn.on("active",   _onMapModeUpdated);
+    this.mapModeBtn.on("deactive", _onMapModeUpdated);
 
     function isDragging() {
       return _lastPos;
@@ -31,7 +39,7 @@
 
     function onStart(e) {
       if (isDragging()) { reset(); }
-      if (!keyObserver.isMetaKeyDown && !self.btn.getIsActive()) { return; }
+      if (!self._isMapMode()) { return; }
 
       e.preventDefault();
       _lastPos = { x: e.stageX, y: e.stageY };
@@ -41,7 +49,7 @@
     }
     function onMove(e) {
       var curPos = { x: e.stageX, y: e.stageY };
-      self.fire("onDragged", {diffX: curPos.x - _lastPos.x, diffY: curPos.y - _lastPos.y} );
+      self._fireDraggedEvent(curPos.x - _lastPos.x, curPos.y - _lastPos.y);
       _lastPos = curPos;
     }
     function onFinish(e) {
@@ -56,7 +64,7 @@
     }
 
     function _onMapModeUpdated() {
-      var isMapMode = keyObserver.getIsMetaKeyDown() || mapDragPanelBtn.getIsActive();
+      var isMapMode = self._isMapMode();
       if (isMapMode == _lastMapMode) { return; }
       _lastMapMode = isMapMode;
 
@@ -69,11 +77,35 @@
 	self.fire("offMapDragMode");
       }
     }
-  }
+  };
 
-  LayerDragObserver.prototype.setupUiBtn = function (btn) {
-    __.assert(_.isFunction(btn.getIsActive));
-    this.btn = btn;
+  p._setupTouchDeviceDrag = function (touchDragObserver) {
+
+    var self = this;
+    touchDragObserver.on("drag", _onTouchDrag);
+
+    function _onTouchDrag(e) {
+      if (!self._isMapMode()) { return; }
+      if (!e.isSingleTouch) { return; }
+
+      e.preventDefault();
+      self._fireDraggedEvent(e.moveX, e.moveY);
+    }
+    
+  };
+
+  p._fireDraggedEvent = function (diffX, diffY) {
+    // Listeners have no need to also listen "start", "end" event.
+    // Those events are independent from "onDragged" event.
+    this.fire("onDragged", {
+      type:  "onDragged",
+      diffX: diffX,
+      diffY: diffY
+    });
+  };
+
+  p._isMapMode = function () {
+    return this.keyObserver.getIsMetaKeyDown() || this.mapModeBtn.getIsActive();
   };
 
   return LayerDragObserver;

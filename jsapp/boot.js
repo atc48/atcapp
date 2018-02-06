@@ -109,15 +109,13 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
 
   var mapDragPanelBtn = layerMan.toolLayer.instantPanel.getMapDragButtonDelegate();
   layerMan.toolLayer.setup( stageSize, statusBar );
-  layerDragObserver.setupUiBtn( mapDragPanelBtn );
-  zoomObserver.setupUiBtn( mapDragPanelBtn );
 
   mapItemHilighter.init(mapItemCommand, fixMap, fixDistributor, mapRegionLocator);
 
   mapUserInputCommandSender.setup(uiCommand, zoomObserver, layerDragObserver);
   layerDragObserver.setup(
-    mapLayerMan.getMapDraggableLayer(), keyObserver, mapDragPanelBtn);
-  zoomObserver.setup(keyObserver, browserConfig.getScrollDeltaFilter(), browserConfig.getMouseWheelEventName());
+    mapLayerMan.getMapDraggableLayer(), keyObserver, mapDragPanelBtn, touchDragObserver);
+  zoomObserver.setup(keyObserver, mapDragPanelBtn, browserConfig.getScrollDeltaFilter(), browserConfig.getMouseWheelEventName(), touchZoomObserver);
 
   fpsManager.setup(stage, uiCommand);
   flightLayerMan.setup(flightDataProvider, mapStatus, layerDragObserver, flightViewCoordinator);
