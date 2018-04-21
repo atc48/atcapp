@@ -2,13 +2,13 @@
   pkg.Debugger = fac(__);
 })(atcapp, function (__) {
 
-  var __$area = $();
+  var __$area = $("<div />");
   var __timeZero = Date.now();
 
   function Debugger() {}
 
   Debugger.init = function ($textarea) {
-    __$area = $textarea;
+    __$area = $textarea[0] && $textarea || __$area;
     Debugger.clear();
     Debugger.hasInit = true;
     return Debugger;
