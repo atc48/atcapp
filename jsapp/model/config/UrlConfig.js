@@ -4,21 +4,29 @@
 
   var PRODUCTION_HOST = "atc48.com";
 
-  function UrlConfig() {}
+  function UrlConfig(appOpt) {
+    __.assert(_.isObject(appOpt));
+    this._initHost( appOpt.host().getOr( location.href.split('/')[2] ));
+    this._apiUrlHref = this._href + "/api";
+    this._assetsDirPath = appOpt.assetsDirPath().getOr("/atcapp/img/");
+  };
 
   var p = UrlConfig.prototype;
 
-  p.init = function (opt_host) {
-    var host = opt_host || location.href.split('/')[2];
+  p._initHost = function (host) {
+    __.assert(_.isString(host));
     if (host == "") {
       host = PRODUCTION_HOST; // when local boot
     }
-    var href = "http://" + host;
-
-    this._apiUrlHref = href + "/api";
+    this._host = host;
+    this._href = "http://" + host
 
     return this;
   }
+
+  p.getAssetsDirPath = function () {
+    return this._assetsDirPath;
+  };
 
   p.getApiUrl = function (apiName) {
     __.assert(_.isString(apiName) && apiName.indexOf("/") !== 0);

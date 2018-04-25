@@ -1,0 +1,67 @@
+#atcapp-outer {
+  background-color: #242424;
+}
+
+#atcapp {
+  background-color: #242424;
+  z-index: 1;
+}
+
+#atcapp-external {
+  z-index: 2;
+  background-color: #242424;
+  position: relative;
+  height: 0;
+}
+
+#atcapp-external .search-tool {
+  position: absolute;
+  top: -58px;
+  right: 80px;
+  width: 80px;
+}
+
+#atcapp-external .search-tool .completion {
+  z-index: 1;
+  position: absolute;
+  height: 42px;
+  width: 100%;
+  top: -41px;
+  border-top: 1px dotted #ddd;
+  border-bottom: 1px dotted #ccc;
+  border-left: 4px solid #ccc;
+  padding-top: 6px;
+  padding-left: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#atcapp-external .search-tool .completion code {
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#atcapp-external .search-tool .completion code:hover {
+  border-color: #3498DB;
+  color: #3498DB;
+}
+
+#atcapp-external .search-tool .input-outer {
+  z-index: 2;
+  position: relative;
+  margin: 0;
+}
+
+#atcapp-external .search-tool input {
+  margin-bottom: 0;
+  height: 32px;
+}
+
+.debugger {
+  display: block;
+  line-height: 18px;
+  font-size: 12px;
+  width: 80%;
+  height: 80px;
+  overflow: scroll;
+}

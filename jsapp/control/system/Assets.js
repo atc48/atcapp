@@ -22,7 +22,29 @@
 
   var p = Assets.prototype;
 
-  p.preload = function (onCompleteFn) {
+  p.preload = function (onCompleteFn, opt_pathTo64Map) {
+    if (opt_pathTo64Map) {
+      this.loader = new _Base64Loader(opt_pathTo64Map);
+    } else {
+      this.loader = new _AssetsLoader();
+    }
+    
+    this.loader.preload(onCompleteFn);
+    return this;
+  };
+
+  p.getImage = function  (id) {
+    var img = this.loader.getImage(id);
+    __.assert(img, "invalid image id. id=" + id);
+    return img;
+  };
+
+  function _AssetsLoader() {
+  }
+
+  var pLoader = _AssetsLoader.prototype;
+
+  pLoader.preload = function (onCompleteFn) {
     var queue = new createjs.LoadQueue(true);
     var manifest = app.IMG.getPreloadManifest();
 
@@ -53,11 +75,33 @@
     }
   };
 
-  p.getImage = function (id) {
+  pLoader.getImage = function (id) {
     __.assert(this.hasPreloadCompleted, " preload has not completed");
-    var img = this.imageMap[ id ];
-    __.assert(img, "invalid image id. id=" + id);
-    return img;
+    return this.imageMap[ id ];
+  };
+
+  function _Base64Loader(pathTo64Map) {
+    __.assert(_.isObject(pathTo64Map));
+    this.pathTo64Map = pathTo64Map;
+  }
+
+  var bLoader = _Base64Loader.prototype;
+
+  bLoader.preload = function (onCompleteFn) {
+    var pathTo64Map = this.pathTo64Map;
+    var imageMap = {};
+    app.IMG.forEachIdSrc(function (id, src) {
+      var data64 = pathTo64Map[ src ];
+      var imgObj = document.createElement("IMG");
+      imgObj.setAttribute('src', data64);
+      imageMap[ id ] = imgObj;
+    });
+    this.imageMap = imageMap;
+    _.defer(onCompleteFn);
+  };
+
+  bLoader.getImage = function (id) {
+    return this.imageMap[id];
   };
 
   return Assets;

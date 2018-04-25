@@ -1,13 +1,19 @@
-atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
+atcapp.boot = function (canvasId, fixSearchId, debuggerId, opt_appOptRaw) {
 
   atcapp.Debugger.init( $('#' + debuggerId) ).log("getting into the app...");
 
   var stage = new createjs.Stage(canvasId);
   var stageSizeMan = new atcapp.StageSizeManager(stage);
+  var appOpt = new atcapp.AppOption(opt_appOptRaw);
+  var urlConfig = new atcapp.UrlConfig(appOpt);
 
   _.delay(function () {
     __.debug("assets preloading...");
-    atcapp.Assets.getInstance().preload(onPreloadFinish);
+    atcapp.IMG.setup( urlConfig.getAssetsDirPath() );
+    atcapp.Assets.getInstance().preload(
+      onPreloadFinish,
+      appOpt.assetsPathToBase64Map().getOrNull()
+    );
   }, 0);
 
   function onPreloadFinish() {
@@ -16,12 +22,12 @@ atcapp.boot = function (canvasId, fixSearchId, debuggerId) {
   }
 
   function gotoBoot() {
-    atcapp._boot(canvasId, fixSearchId, stage, stageSizeMan);
+    atcapp._boot(canvasId, fixSearchId, stage, stageSizeMan, appOpt, urlConfig);
     atcapp._boot = null;
   }
 };
 
-atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
+atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan, appOpt, urlConfig) {
   __.debug("booting...");
 
   var $stage = $("#" + canvasId);
@@ -32,7 +38,6 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
    * Initiate Instances
    */
 
-  var urlConfig = new atcapp.UrlConfig();
   var browserConfig = new atcapp.BrowserConfig();
 
   var fpsManager = new atcapp.FpsManager(stage);
@@ -97,8 +102,6 @@ atcapp._boot = function (canvasId, fixSearchId, stage, stageSizeMan) {
   /**
    * Init
    **/
-
-  urlConfig.init();
 
   externalInit.init(codeFinder, mapItemCommand);
   fixDistributor.init( mapStatus );
