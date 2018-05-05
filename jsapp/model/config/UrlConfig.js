@@ -9,6 +9,7 @@
     this._initHost( appOpt.host().getOr( location.href.split('/')[2] ));
     this._apiUrlHref = this._href + "/api";
     this._assetsDirPath = appOpt.assetsDirPath().getOr("/atcapp/img/");
+    this.appOpt = appOpt;
   };
 
   var p = UrlConfig.prototype;
@@ -30,6 +31,10 @@
 
   p.getApiUrl = function (apiName) {
     __.assert(_.isString(apiName) && apiName.indexOf("/") !== 0);
+
+    if (apiName == "flights" && this.appOpt.flightsApiPath().getOrNull()) {
+      return this.appOpt.flightsApiPath().get();
+    }
 
     return this._apiUrlHref + "/" + apiName;
   };

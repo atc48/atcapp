@@ -21,6 +21,12 @@
     return __orWrap( this.opt.assets_base64_map );
   };
 
+  // Usage: if:   appOpt.flightsApiPath().getOrNull()
+  //        then: appOpt.flightsApiPath().get()
+  p.flightsApiPath = function () {
+    return __orWrap( this.opt.flights_api_path );
+  }
+
   function __path(path) {
     if (_.isString(path)) {
       if (path.length > 0 && path[path.length-1] != "/") {
@@ -46,6 +52,10 @@
 	return val;
       },
       getOrNull: function () {
+	return this.getOr(null);
+      },
+      get: function () { // throws error if the value is blank
+	__.assert(!_.isNull(this.getOr(null)));
 	return this.getOr(null);
       }
     };
